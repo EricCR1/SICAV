@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Panel Administrador</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👥 Panel de Administración - SICAV</h1>
+            <p>Sistema Integral de Control de Acceso Vehicular</p>
+        </div>
+
+        <!-- Navegación -->
+        <div class="navigation">
+            <button class="nav-btn active" onclick="mostrarSeccion('visitantes')">
+                🚗 Gestión de Visitantes
+            </button>
+            <button class="nav-btn" onclick="mostrarSeccion('usuarios-rfid')">
+                🪪 Usuarios con RFID
+            </button>
+        </div>
+
+        <!-- Sección de Visitantes -->
+        <div id="seccion-visitantes" class="seccion activa">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-hoy">0</div>
+                    <div>Visitantes Hoy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-mes">0</div>
+                    <div>Visitantes Este Mes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-activos">0</div>
+                    <div>Visitantes Activos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-visitantes">0</div>
+                    <div>Total Visitantes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="00000">0</div>
+                    <div>00000</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="date" id="fecha-filtro-visitantes" placeholder="Filtrar por fecha">
+                <input type="text" id="buscar-visitantes" placeholder="Buscar por nombre o placa">
+                <select id="filtro-estado-visitantes">
+                    <option value="">Todos los estados</option>
+                    <option value="activo">Activos</option>
+                    <option value="finalizado">Finalizados</option>
+                </select>
+                <button class="btn btn-primary" onclick="cargarVisitantes()">🔍 Buscar</button>
+                <button class="btn btn-secondary" onclick="exportarVisitantesExcel()">📊 Exportar Excel</button>
+                <button class="btn btn-secondary" onclick="generarReporteVisitantes()">📄 Generar Reporte</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-visitantes">
+                    <thead>
+                        <tr>
+                            <th>Fecha/Hora</th>
+                            <th>Visitante</th>
+                            <th>Motivo</th>
+                            <th>Persona a Visitar</th>
+                            <th>Vehículo</th>
+                            <th>Placas</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-visitantes">
+                        <tr>
+                            <td colspan="9" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="paginacion-visitantes"></div>
+        </div>
+
+        <!-- Sección de Usuarios RFID -->
+        <div id="seccion-usuarios-rfid" class="seccion">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-usuarios">0</div>
+                    <div>Total Usuarios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="alumnos">0</div>
+                    <div>Alumnos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="docentes">0</div>
+                    <div>Docentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="administrativos">0</div>
+                    <div>Administrativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Personal">0</div>
+                    <div>Personal</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="guardias">0</div>
+                    <div>Guardias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Provedores">0</div>
+                    <div>Proveedores</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="text" id="buscar-usuarios" placeholder="Buscar por nombre o RFID">
+                <select id="filtro-tipo-usuario">
+                    <option value="">Todos los tipos</option>
+                    <option value="docente">Docentes</option>
+                    <option value="alumno">Alumnos</option>
+                    <option value="administrativo">Administrativos</option>
+                    <option value="guardia">Guardias</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Proveedores">Proveedores</option>
+                </select>
+                <select id="filtro-estado-usuario">
+                    <option value="">Todos los estados</option>
+                    <option value="activo">Activos</option>
+                    <option value="inactivo">Inactivos</option>
+                </select>
+                <button class="btn btn-primary" onclick="cargarUsuariosRFID()">🔍 Buscar</button>
+                <button class="btn btn-success" onclick="abrirModalUsuario()">➕ Agregar Usuario</button>
+                <button class="btn btn-secondary" onclick="exportarUsuariosExcel()">📊 Exportar Excel</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-usuarios-rfid">
+                    <thead>
+                        <tr>
+                            <th>RFID</th>
+                            <th>Usuario</th>
+                            <th>Tipo</th>
+                            <th>Contacto</th>
+                            <th>Vehículo</th>
+                            <th>Placas</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-usuarios">
+                        <tr>
+                            <td colspan="9" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="paginacion-usuarios"></div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar usuario -->
+    <div id="modal-usuario" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modal-titulo">Agregar Usuario RFID</h3>
+            <form id="form-usuario">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Número de RFID</label>
+                        <input type="text" id="rfid" name="rfid" placeholder="Ej: 1234567890" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo de Usuario</label>
+                        <select id="tipo-usuario" name="tipo_usuario" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="docente">Docente</option>
+                            <option value="alumno">Alumno</option>
+                            <option value="administrativo">Administrativo</option>
+                            <option value="guardia">Guardia</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Proveedores">Proveedores</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Nombre</label>
+                        <input type="text" id="nombre-usuario" name="nombre" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Apellido</label>
+                        <input type="text" id="apellido-usuario" name="apellido" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="email-usuario" name="email">
+                    </div>
+                    <div class="input-group">
+                        <label>Teléfono</label>
+                        <input type="tel" id="telefono-usuario" name="telefono">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Placas del Vehículo</label>
+                        <input type="text" id="placas-usuario" name="placas" class="uppercase">
+                    </div>
+                    <div class="input-group">
+                        <label>Marca del Vehículo</label>
+                        <input type="text" id="marca-usuario" name="marca">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
