@@ -75,9 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.close').addEventListener('click', cerrarModal);
     
     // Prevenir envío del formulario por ahora
-    document.getElementById('form-usuario').addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log('Formulario de usuario enviado');
-        cerrarModal();
-    });
+    /*document.getElementById('form-usuario').addEventListener('submit', function(e) {
+
+    });*/
 });
