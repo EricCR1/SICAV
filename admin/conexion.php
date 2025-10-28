@@ -3,7 +3,7 @@ $host = "127.0.0.1";
 $user = "root";       // usuario por defecto
 $pass = "";           // contraseña vacía en XAMPP
 $db   = "ite";
-$port = 3306;         // 👈 importante: tu puerto de MariaDB
+$port = 3306;         
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 

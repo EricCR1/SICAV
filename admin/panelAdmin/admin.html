@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Panel Administrador</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👥 Panel de Administración - SICAV</h1>
+            <p>Sistema Integral de Control de Acceso Vehicular</p>
+        </div>
+
+        <!-- Navegación -->
+        <div class="navigation">
+            <button class="nav-btn active" onclick="mostrarSeccion('visitantes')">
+                🚗 Gestión de Visitantes
+            </button>
+            <button class="nav-btn" onclick="mostrarSeccion('usuarios-rfid')">
+                🪪 Usuarios con RFID
+            </button>
+        </div>
+
+        <!-- Sección de Visitantes -->
+        <div id="seccion-visitantes" class="seccion activa">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-hoy">0</div>
+                    <div>Visitantes Hoy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-mes">0</div>
+                    <div>Visitantes Este Mes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-activos">0</div>
+                    <div>Visitantes Activos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-visitantes">0</div>
+                    <div>Total Visitantes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="00000">0</div>
+                    <div>00000</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="date" id="fecha-filtro-visitantes" placeholder="Filtrar por fecha">
+                <input type="text" id="buscar-visitantes" placeholder="Buscar por nombre o placa">
+                <select id="filtro-estado-visitantes">
+                    <option value="">Todos los estados</option>
+                    <option value="activo">Activos</option>
+                    <option value="finalizado">Finalizados</option>
+                </select>
+                <button class="btn btn-primary" onclick="cargarVisitantes()">🔍 Buscar</button>
+                <button class="btn btn-secondary" onclick="exportarVisitantesExcel()">📊 Exportar Excel</button>
+                <button class="btn btn-secondary" onclick="generarReporteVisitantes()">📄 Generar Reporte</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-visitantes">
+                    <thead>
+                        <tr>
+                            <th>Fecha/Hora</th>
+                            <th>Visitante</th>
+                            <th>Motivo</th>
+                            <th>Persona a Visitar</th>
+                            <th>Vehículo</th>
+                            <th>Placas</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-visitantes">
+                        <tr>
+                            <td colspan="9" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="paginacion-visitantes"></div>
+        </div>
+
+        <!-- Sección de Usuarios RFID -->
+        <div id="seccion-usuarios-rfid" class="seccion">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-usuarios">0</div>
+                    <div>Total Usuarios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="alumnos">0</div>
+                    <div>Alumnos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="docentes">0</div>
+                    <div>Docentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="administrativos">0</div>
+                    <div>Administrativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Personal">0</div>
+                    <div>Personal</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="guardias">0</div>
+                    <div>Guardias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Provedores">0</div>
+                    <div>Proveedores</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="text" id="buscar-usuarios" placeholder="Buscar por nombre o RFID">
+                <select id="filtro-tipo-usuario">
+                    <option value="">Todos los tipos</option>
+                    <option value="docente">Docentes</option>
+                    <option value="alumno">Alumnos</option>
+                    <option value="administrativo">Administrativos</option>
+                    <option value="guardia">Guardias</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Proveedores">Proveedores</option>
+                </select>
+                <select id="filtro-estado-usuario">
+                    <option value="">Todos los estados</option>
+                    <option value="activo">Activos</option>
+                    <option value="inactivo">Inactivos</option>
+                </select>
+                <button class="btn btn-primary" onclick="cargarUsuariosRFID()">🔍 Buscar</button>
+                <button class="btn btn-success" onclick="abrirModalUsuario()">➕ Agregar Usuario</button>
+                <button class="btn btn-secondary" onclick="exportarUsuariosExcel()">📊 Exportar Excel</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-usuarios-rfid">
+                    <thead>
+                        <tr>
+                            <th>RFID</th>
+                            <th>Usuario</th>
+                            <th>Tipo</th>
+                            <th>Contacto</th>
+                            <th>Vehículo</th>
+                            <th>Placas</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-usuarios">
+                        <tr>
+                            <td colspan="9" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="paginacion-usuarios"></div>
+        </div>
+    </div>
+
+<!-- Modal para agregar/editar usuario -->
+<div id="modal-usuario" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-titulo">Agregar Usuario RFID</h3>
+            <span class="close">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+            <form action="guardaar.php" method="post" id="form-usuario">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Número de RFID</label>
+                        <input type="text" id="rfid" name="rfid" placeholder="Ej: 1234567890" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo de Usuario</label>
+                        <select id="tipo-usuario" name="tipo_usuario" required onchange="cambiarCamposUsuario()">
+                            <option value="">Seleccionar tipo</option>
+                            <option value="alumno">Alumno</option>
+                            <option value="docente">Docente</option>
+                            <option value="administrativo">Administrativo</option>
+                            <option value="guardia">Guardia</option>
+                            <option value="personal">Personal</option>
+                            <option value="proveedor">Proveedor</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- CAMPOS PARA ALUMNO -->
+                <div id="campos-alumno" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Alumno</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Número de Control</label>
+                            <input type="text" name="no_control" placeholder="Ej: 23760307" required>
+                        </div>
+                        <div class="input-group">
+                            <label>CURP</label>
+                            <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" name="f_nacimiento">
+                        </div>
+                        <div class="input-group">
+                            <label>Correo</label>
+                            <input type="email" name="correo">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono">
+                        </div>
+                        <div class="input-group">
+                            <label>Grado</label>
+                            <input type="text" name="grado" placeholder="Ej: 5to">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Grupo</label>
+                            <input type="text" name="grupo" placeholder="Ej: A">
+                        </div>
+                        <div class="input-group">
+                            <label>Carrera</label>
+                            <input type="text" name="carrera" placeholder="Ej: Ingeniería en Sistemas">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Estado</label>
+                            <select name="estado">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA DOCENTE -->
+                <div id="campos-docente" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Docente</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>ID Docente</label>
+                            <input type="text" name="id_docente" placeholder="Ej: 99" required>
+                        </div>
+                        <div class="input-group">
+                            <label>RFC</label>
+                            <input type="text" name="rfc" placeholder="Ej: ABC123456DEF" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" name="f_nacimiento">
+                        </div>
+                        <div class="input-group">
+                            <label>Correo</label>
+                            <input type="email" name="correo">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono">
+                        </div>
+                        <div class="input-group">
+                            <label>Especialidad</label>
+                            <input type="text" name="especialidad" placeholder="Ej: Matemáticas">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Estado</label>
+                            <select name="estado">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA ADMINISTRATIVO -->
+                <div id="campos-administrativo" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Administrativo</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>ID Administrativo</label>
+                            <input type="text" name="id_administrativo" placeholder="Ej: ADM001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Correo</label>
+                            <input type="email" name="correo">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono">
+                        </div>
+                        <div class="input-group">
+                            <label>Departamento</label>
+                            <input type="text" name="departamento" placeholder="Ej: Recursos Humanos">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Estado</label>
+                            <select name="estado">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA GUARDIA -->
+                <div id="campos-guardia" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Guardia</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>ID Guardia</label>
+                            <input type="text" name="id_guardia" placeholder="Ej: GUA001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>CURP</label>
+                            <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Turno</label>
+                            <select name="turno" required>
+                                <option value="">Seleccionar turno</option>
+                                <option value="matutino">Matutino</option>
+                                <option value="vespertino">Vespertino</option>
+                                <option value="nocturno">Nocturno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Estado</label>
+                            <select name="estado">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA PERSONAL -->
+                <div id="campos-personal" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Personal</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>ID Personal</label>
+                            <input type="text" name="id_personal" placeholder="Ej: PER001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>CURP</label>
+                            <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Área</label>
+                            <input type="text" name="area" placeholder="Ej: Mantenimiento" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Turno</label>
+                            <select name="turno" required>
+                                <option value="">Seleccionar turno</option>
+                                <option value="matutino">Matutino</option>
+                                <option value="vespertino">Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA PROVEEDOR -->
+                <div id="campos-proveedor" class="campos-especificos" style="display: none;">
+                    <h4>Datos del Proveedor</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>ID Proveedor</label>
+                            <input type="text" name="id_proveedor" placeholder="Ej: PROV001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>RFC</label>
+                            <input type="text" name="rfc" placeholder="Ej: ABC123456DEF" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido</label>
+                            <input type="text" name="apellido" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Razón Social</label>
+                            <input type="text" name="razon_social" placeholder="Ej: Suministros S.A. de C.V." required>
+                        </div>
+                        <div class="input-group">
+                            <label>Empresa</label>
+                            <input type="text" name="empresa" placeholder="Ej: Suministros S.A." required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Teléfono</label>
+                            <input type="tel" name="telefono" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Correo</label>
+                            <input type="email" name="correo" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Tipo de Servicio</label>
+                            <input type="text" name="tipo_servicio" placeholder="Ej: Limpieza" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATOS DEL VEHÍCULO (para todos los tipos) -->
+                <div id="datos-vehiculo" class="campos-vehiculo">
+                    <h4>Datos del Vehículo</h4>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Tipo de Vehículo</label>
+                            <select name="tipo_vehiculo" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="automovil">Automóvil</option>
+                                <option value="motocicleta">Motocicleta</option>
+                                <option value="camioneta">Camioneta</option>
+                                <option value="camion">Camión</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Marca</label>
+                            <input type="text" name="marca" placeholder="Ej: Toyota" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Modelo</label>
+                            <input type="text" name="modelo" placeholder="Ej: Corolla" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Año</label>
+                            <input type="number" name="año" min="1990" max="2024" placeholder="Ej: 2020" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Color</label>
+                            <input type="text" name="color" placeholder="Ej: Rojo" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Placa</label>
+                            <input type="text" name="placa" class="uppercase" placeholder="Ej: ABC123" required>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" form="form-usuario">Guardar Usuario</button>
+        </div>
+    </div>
+</div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

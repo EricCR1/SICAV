@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Login Guardia</title>
+    <link rel="stylesheet" href="login_guardia.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>🛡️ SICAV</h1>
+                <p>Sistema Integral de Control de Acceso Vehicular</p>
+                <h2>Registro de Visitantes</h2>
+            </div>
+            <div class="login-body">
+                <form id="form-guardia" class="login-form">
+                    <div class="form-group">
+                        <label for="guardia-usuario">Usuario</label>
+                        <input type="text" id="guardia-usuario" name="usuario" placeholder="Ingrese su usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guardia-password">Contraseña</label>
+                        <input type="password" id="guardia-password" name="password" placeholder="Ingrese su contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                         Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-container"></div>
+
+    <script src="login_guardia.js"></script>
+</body>
+</html>

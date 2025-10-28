@@ -66,6 +66,61 @@ function exportarUsuariosExcel() {
     console.log('Exportando usuarios a Excel...');
 }
 
+// Modificar la función para manejar el scroll
+function cambiarCamposUsuario() {
+    const tipoUsuario = document.getElementById('tipo-usuario').value;
+    
+    // Ocultar todos los campos específicos
+    document.querySelectorAll('.campos-especificos').forEach(campo => {
+        campo.style.display = 'none';
+    });
+    
+    // Mostrar los campos correspondientes al tipo de usuario seleccionado
+    if (tipoUsuario) {
+        const camposEspecificos = document.getElementById(`campos-${tipoUsuario}`);
+        if (camposEspecificos) {
+            camposEspecificos.style.display = 'block';
+        }
+    }
+    
+    // Siempre mostrar datos del vehículo
+    document.getElementById('datos-vehiculo').style.display = 'block';
+    
+    // Hacer scroll al inicio del modal body cuando cambia el tipo
+    document.querySelector('.modal-body').scrollTop = 0;
+}
+
+// Función para limpiar el formulario cuando se cierra el modal
+function limpiarFormularioUsuario() {
+    document.getElementById('form-usuario').reset();
+    document.querySelectorAll('.campos-especificos').forEach(campo => {
+        campo.style.display = 'none';
+    });
+    document.getElementById('datos-vehiculo').style.display = 'block';
+}
+
+// Modificar la función abrirModalUsuario
+function abrirModalUsuario() {
+    document.getElementById('modal-usuario').style.display = 'block';
+    document.getElementById('modal-titulo').textContent = 'Agregar Usuario RFID';
+    limpiarFormularioUsuario();
+}
+
+// Modificar la función cerrarModal
+function cerrarModal() {
+    document.getElementById('modal-usuario').style.display = 'none';
+    limpiarFormularioUsuario();
+}
+
+// Inicialización - agregar esto al DOMContentLoaded existente
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar el evento change para el select
+    document.getElementById('tipo-usuario').addEventListener('change', cambiarCamposUsuario);
+});
+
+
+
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     // Mostrar sección de visitantes por defecto
@@ -75,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.close').addEventListener('click', cerrarModal);
     
     // Prevenir envío del formulario por ahora
-    /*document.getElementById('form-usuario').addEventListener('submit', function(e) {
+    document.getElementById('form-usuario').addEventListener('submit', function(e) {
 
-    });*/
+    });
 });
