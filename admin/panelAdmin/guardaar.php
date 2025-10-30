@@ -1,10 +1,11 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include("conexion.php");
 
 // Recibir datos del formulario
-//$rfid      = $_POST['rfid'];
+$rfid = $_POST['rfid'];
 $tipo_usuario      = $_POST['tipo_usuario'];
 $nombre      = $_POST['nombre'];
 $apellido    = $_POST['apellido'];
@@ -24,12 +25,12 @@ $estado = $_POST['estado'];
 //$tipo        = $_POST['tipo_vehiculo'];
 
 //Dependiendo el tipo de usuario, definimos la tabla
-switch ($tipo_usuario) {
+/*switch ($tipo_usuario) {
 
     //REGISTRO DE ALUMNOS
-    case "alumno":
-        $sql = "INSERT INTO alumno (no_control, nombre, apellido, CURP, f_nacimiento, correo, telefono, grado, grupo, carrera, estado)  VALUES 
-        ('$nocontrol','$nombre', '$apellido', '$curp' , '$fecha' , '$correo', '$telefono', '$grado', '$grupo', '$carrera', '$estado')";
+    case "Alumno":
+        $sql = "INSERT INTO alumno (rfid, no_control, nombre, apellido, curp, f_nacimiento, correo, telefono, grado, grupo, carrera, estado)  VALUES 
+        ('$rfid','$nocontrol','$nombre', '$apellido', '$curp' , '$fecha' , '$correo', '$telefono', '$grado', '$grupo', '$carrera', '$estado')";
 
     if ($conn->query($sql) === TRUE) {
     echo " Registro exitoso";
@@ -89,16 +90,18 @@ switch ($tipo_usuario) {
         break;
     default:
         die("Tipo de usuario no válido");
+    }*/
+
+    if ($tipo_usuario == 'alumno') {
+        $sql = "INSERT INTO alumno (rfid, no_control, nombre, apellido, curp, f_nacimiento, correo, telefono, grado, grupo, carrera, estado)  VALUES 
+        ('$rfid','$nocontrol','$nombre', '$apellido', '$curp' , '$fecha' , '$correo', '$telefono', '$grado', '$grupo', '$carrera', '$estado')";
+    
+    if ($conn->query($sql) === TRUE) {
+    echo " Registro exitoso";
+    } else {
+    echo " Error: " . $conn->error;
     }
 
-
-
+    }
 $conn->close();
-
-
-
-
-
-
-
 ?>

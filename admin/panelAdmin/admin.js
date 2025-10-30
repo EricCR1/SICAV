@@ -1,22 +1,24 @@
-// Funcionalidad básica del panel de administración
+
+
+// --- Cambiar Sección ---
 function mostrarSeccion(seccion) {
     // Ocultar todas las secciones
     document.querySelectorAll('.seccion').forEach(sec => {
         sec.classList.remove('activa');
     });
-    
+
     // Quitar activo de todos los botones
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    
+
     // Mostrar sección seleccionada
     document.getElementById(`seccion-${seccion}`).classList.add('activa');
-    
+
     // Activar botón correspondiente
     document.querySelector(`.nav-btn[onclick="mostrarSeccion('${seccion}')"]`).classList.add('active');
-    
-    // Cargar datos de la sección
+
+    // Cargar datos según sección
     if (seccion === 'visitantes') {
         cargarVisitantes();
     } else if (seccion === 'usuarios-rfid') {
@@ -24,34 +26,33 @@ function mostrarSeccion(seccion) {
     }
 }
 
-// Modal functions
+// --- Funciones del Modal ---
 function abrirModalUsuario() {
     document.getElementById('modal-usuario').style.display = 'block';
     document.getElementById('modal-titulo').textContent = 'Agregar Usuario RFID';
-    document.getElementById('form-usuario').reset();
+    limpiarFormularioUsuario();
 }
 
 function cerrarModal() {
     document.getElementById('modal-usuario').style.display = 'none';
+    limpiarFormularioUsuario();
 }
 
 // Cerrar modal al hacer clic fuera
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modal = document.getElementById('modal-usuario');
     if (event.target === modal) {
         cerrarModal();
     }
-}
+};
 
-// Funciones de carga (placeholder)
+// --- Funciones de carga (placeholder) ---
 function cargarVisitantes() {
     console.log('Cargando visitantes...');
-    // Aquí irá la carga real de datos
 }
 
 function cargarUsuariosRFID() {
     console.log('Cargando usuarios RFID...');
-    // Aquí irá la carga real de datos
 }
 
 function exportarVisitantesExcel() {
@@ -66,31 +67,77 @@ function exportarUsuariosExcel() {
     console.log('Exportando usuarios a Excel...');
 }
 
-// Modificar la función para manejar el scroll
+// ================================
+// Control dinámico de formularios
+// ================================
 function cambiarCamposUsuario() {
     const tipoUsuario = document.getElementById('tipo-usuario').value;
-    
-    // Ocultar todos los campos específicos
+
+    // 🔹 Ocultar y desactivar todos los bloques
     document.querySelectorAll('.campos-especificos').forEach(campo => {
         campo.style.display = 'none';
+        campo.querySelectorAll('input, select').forEach(input => {
+            input.disabled = true;
+            input.removeAttribute('required');
+            input.value = ''; // limpia los datos si se cambió de tipo
+        });
     });
-    
-    // Mostrar los campos correspondientes al tipo de usuario seleccionado
+
+    // 🔹 Mostrar solo el bloque del tipo seleccionado
     if (tipoUsuario) {
         const camposEspecificos = document.getElementById(`campos-${tipoUsuario}`);
         if (camposEspecificos) {
             camposEspecificos.style.display = 'block';
+            camposEspecificos.querySelectorAll('input, select').forEach(input => {
+                input.disabled = false;
+                input.setAttribute('required', ''); // activa required solo en visibles
+            });
         }
     }
-    
-    // Siempre mostrar datos del vehículo
-    document.getElementById('datos-vehiculo').style.display = 'block';
-    
-    // Hacer scroll al inicio del modal body cuando cambia el tipo
+
+    // 🔹 Activar los campos de vehículo (siempre visibles)
+    const datosVehiculo = document.getElementById('datos-vehiculo');
+    if (datosVehiculo) {
+        datosVehiculo.style.display = 'block';
+        datosVehiculo.querySelectorAll('input, select').forEach(input => {
+            input.disabled = false;
+            input.setAttribute('required', '');
+        });
+    }
+
+    // 🔹 Scroll al inicio del modal
     document.querySelector('.modal-body').scrollTop = 0;
 }
 
-// Función para limpiar el formulario cuando se cierra el modal
+
+function limpiarFormularioUsuario() {
+    // 🔹 Resetea todo el formulario
+    const form = document.getElementById('form-usuario');
+    form.reset();
+
+    // 🔹 Oculta y desactiva todos los bloques específicos
+    document.querySelectorAll('.campos-especificos').forEach(campo => {
+        campo.style.display = 'none';
+        campo.querySelectorAll('input, select').forEach(input => {
+            input.disabled = true;
+            input.removeAttribute('required');
+            input.value = '';
+        });
+    });
+
+    // 🔹 Muestra datos del vehículo
+    const datosVehiculo = document.getElementById('datos-vehiculo');
+    if (datosVehiculo) {
+        datosVehiculo.style.display = 'block';
+        datosVehiculo.querySelectorAll('input, select').forEach(input => {
+            input.disabled = false;
+            input.setAttribute('required', '');
+        });
+    }
+}
+
+
+// --- Limpiar Formulario ---
 function limpiarFormularioUsuario() {
     document.getElementById('form-usuario').reset();
     document.querySelectorAll('.campos-especificos').forEach(campo => {
@@ -99,38 +146,14 @@ function limpiarFormularioUsuario() {
     document.getElementById('datos-vehiculo').style.display = 'block';
 }
 
-// Modificar la función abrirModalUsuario
-function abrirModalUsuario() {
-    document.getElementById('modal-usuario').style.display = 'block';
-    document.getElementById('modal-titulo').textContent = 'Agregar Usuario RFID';
-    limpiarFormularioUsuario();
-}
-
-// Modificar la función cerrarModal
-function cerrarModal() {
-    document.getElementById('modal-usuario').style.display = 'none';
-    limpiarFormularioUsuario();
-}
-
-// Inicialización - agregar esto al DOMContentLoaded existente
-document.addEventListener('DOMContentLoaded', function() {
-    // Configurar el evento change para el select
-    document.getElementById('tipo-usuario').addEventListener('change', cambiarCamposUsuario);
-});
-
-
-
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', function() {
+// --- Inicialización ---
+document.addEventListener('DOMContentLoaded', function () {
     // Mostrar sección de visitantes por defecto
     mostrarSeccion('visitantes');
-    
-    // Configurar cierre del modal
-    document.querySelector('.close').addEventListener('click', cerrarModal);
-    
-    // Prevenir envío del formulario por ahora
-    document.getElementById('form-usuario').addEventListener('submit', function(e) {
 
-    });
+    // Configurar el cierre del modal
+    document.querySelector('.close').addEventListener('click', cerrarModal);
+
+    // Configurar el cambio de tipo de usuario
+    document.getElementById('tipo-usuario').addEventListener('change', cambiarCamposUsuario);
 });
