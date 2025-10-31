@@ -317,48 +317,64 @@
                 </div>
 
                 <!-- CAMPOS PARA ADMINISTRATIVO -->
-                <div id="campos-administrativo" class="campos-especificos" style="display: none;">
-                    <h4>Datos del Administrativo</h4>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>ID Administrativo</label>
-                            <input type="text" name="id_administrativo" placeholder="Ej: ADM001" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombre" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Apellido</label>
-                            <input type="text" name="apellido" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Correo</label>
-                            <input type="email" name="correo">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Teléfono</label>
-                            <input type="tel" name="telefono">
-                        </div>
-                        <div class="input-group">
-                            <label>Departamento</label>
-                            <input type="text" name="departamento" placeholder="Ej: Recursos Humanos">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <label>Estado</label>
-                            <select name="estado">
-                                <option value="activo">Activo</option>
-                                <option value="inactivo">Inactivo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+<div id="campos-administrativo" class="campos-especificos" style="display: none;">
+    <h4>Datos del Administrativo</h4>
+
+    <div class="form-row">
+        <div class="input-group">
+            <label>ID Administrativo</label>
+            <input type="text" name="id_administrativo" placeholder="Ej: ADM001" required>
+        </div>
+        <div class="input-group">
+            <label>RFC</label>
+            <input type="text" name="rfc" placeholder="Ej: ABC123456DEF" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="input-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" required>
+        </div>
+        <div class="input-group">
+            <label>Apellido</label>
+            <input type="text" name="apellido" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="input-group">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" name="f_nacimiento" required>
+        </div>
+        <div class="input-group">
+            <label>Correo</label>
+            <input type="email" name="correo">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="input-group">
+            <label>Teléfono</label>
+            <input type="tel" name="telefono">
+        </div>
+        <div class="input-group">
+            <label>Departamento</label>
+            <input type="text" name="departamento" placeholder="Ej: Recursos Humanos">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="input-group">
+            <label>Estado</label>
+            <select name="estado">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+        </div>
+    </div>
+</div>
+
 
                 <!-- CAMPOS PARA GUARDIA -->
                 <div id="campos-guardia" class="campos-especificos" style="display: none;">
