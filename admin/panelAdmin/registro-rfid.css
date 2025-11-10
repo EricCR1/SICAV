@@ -1,0 +1,230 @@
+:root {
+    --color-primario: #003b6d;
+    --color-primario-hover: #002a4d;
+    --color-exito: #10b981;
+    --color-peligro: #ef4444;
+    --color-advertencia: #f59e0b;
+    --color-info: #3b82f6;
+    --color-fondo: #f5f5f5;
+    --color-texto: #374151;
+    --color-borde: #e5e7eb;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background: var(--color-primario);
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+    margin-bottom: 8px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.header p {
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Paneles de Registro */
+.registro-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.registro-panel:hover {
+    transform: translateY(-2px);
+}
+
+.registro-panel.entrada .panel-header {
+    background: var(--color-exito);
+}
+
+.registro-panel.salida .panel-header {
+    background: var(--color-peligro);
+}
+
+.panel-header {
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.panel-header i {
+    font-size: 1.5rem;
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.panel-body {
+    padding: 25px;
+}
+
+.rfid-input-container {
+    margin-bottom: 20px;
+}
+
+.rfid-input-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(0, 59, 109, 0.1);
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.btn-success {
+    background: var(--color-exito);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #0da271;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-danger {
+    background: var(--color-peligro);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Estados de Registro */
+.estado-registro {
+    min-height: 60px;
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.estado-registro.info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid var(--color-info);
+}
+
+.estado-registro.exito {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid var(--color-exito);
+}
+
+.estado-registro.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid var(--color-peligro);
+}
+
+.estado-registro.advertencia {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid var(--color-advertencia);
+}
+
+.estado-icon {
+    font-size: 1.5rem;
+}
+
+.estado-mensaje {
+    flex: 1;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+        gap: 20px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}

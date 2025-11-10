@@ -86,10 +86,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO administrativo 
-                        (id_administrativo, nombre, apellido, rfc, f_nacimiento, correo, telefono, departamento, estado, rfid)
+                        (id_administrativo, nombre, apellido, rfc, f_nacimiento, correo, telefono, area , estado, rfid)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssssss", $id_administrativo, $nombre, $apellido, $rfc, $f_nacimiento, $correo, $telefono, $departamento, $estado, $rfid);
+                $stmt->bind_param("ssssssssss", $id_administrativo, $nombre, $apellido, $rfc, $f_nacimiento, $correo, $telefono,$departamento, $estado, $rfid);
                 $stmt->execute();
 
                 $fk_field = "id_administrativo";
