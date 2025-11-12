@@ -377,33 +377,33 @@ tr:hover {
     .navigation {
         flex-direction: column;
     }
-    
+
     .filters {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .filters input, .filters select {
         min-width: auto;
     }
-    
+
     .stats {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .modal-content {
         width: 95%;
         margin: 10% auto;
     }
-    
+
     table {
         font-size: 0.8rem;
     }
-    
+
     th, td {
         padding: 8px 6px;
     }
@@ -413,11 +413,11 @@ tr:hover {
     .stats {
         grid-template-columns: 1fr;
     }
-    
+
     .header h1 {
         font-size: 1.5rem;
     }
-    
+
     .btn {
         padding: 8px 16px;
         font-size: 0.9rem;
@@ -470,8 +470,7 @@ tr:hover {
 }
 
 /* Asegurar que los inputs tengan el mismo tamaño */
-.input-group input,
-.input-group select {
+.input-group input, .input-group select {
     width: 100%;
 }
 
@@ -483,8 +482,8 @@ tr:hover {
     border-radius: 12px;
     width: 90%;
     max-width: 700px;
-    max-height: 90vh; /* Altura máxima del 90% de la ventana */
-    overflow: hidden; /* Ocultar scroll del contenedor principal */
+    max-height: 90vh;
+    overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
@@ -495,7 +494,7 @@ tr:hover {
     color: white;
     padding: 20px;
     border-radius: 12px 12px 0 0;
-    flex-shrink: 0; /* Evitar que el header se encoja */
+    flex-shrink: 0;
 }
 
 .modal-header h3 {
@@ -505,8 +504,8 @@ tr:hover {
 
 .modal-body {
     padding: 0;
-    overflow-y: auto; /* Scroll solo en el cuerpo */
-    max-height: calc(90vh - 140px); /* Altura máxima menos header y footer */
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
 }
 
 #form-usuario {
@@ -553,8 +552,7 @@ tr:hover {
 }
 
 /* Asegurar que los campos específicos se vean bien con scroll */
-.campos-especificos,
-.campos-vehiculo {
+.campos-especificos, .campos-vehiculo {
     background: #f8fafc;
     padding: 20px;
     border-radius: 8px;
@@ -567,8 +565,7 @@ tr:hover {
     border-left: 4px solid #0ea5e9;
 }
 
-.campos-especificos h4,
-.campos-vehiculo h4 {
+.campos-especificos h4, .campos-vehiculo h4 {
     color: var(--color-primario);
     margin-bottom: 15px;
     font-size: 1.1rem;
@@ -602,15 +599,15 @@ tr:hover {
         margin: 5% auto;
         max-height: 95vh;
     }
-    
+
     .modal-body {
         max-height: calc(95vh - 140px);
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .form-actions {
         flex-direction: column;
     }
@@ -620,8 +617,78 @@ tr:hover {
     .modal-content {
         max-height: 98vh;
     }
-    
+
     .modal-body {
         max-height: calc(98vh - 140px);
     }
+}
+
+/* Estilos para campos con error */
+.input-error {
+    border-color: var(--color-peligro) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.error-message {
+    color: var(--color-peligro);
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: none;
+}
+
+.input-group:has(.input-error) .error-message {
+    display: block;
+}
+
+
+/* Estilos para campos dinámicos "otro" */
+.input-group input[type="text"][id$="-input"] {
+    padding: 8px;
+    border: 2px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.input-group input[type="text"][id$="-input"]:focus {
+    outline: none;
+    border-color: var(--color-primario);
+}
+
+/* Estilos para campos con éxito */
+.input-success {
+    border-color: var(--color-exito) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Estilos para selects con opción "otro" activa */
+.input-group:has(select option[value="otro"]:checked) {
+    margin-bottom: 45px; /* Espacio para el campo adicional */
+}
+
+/* Estilos para campos dinámicos "otro" */
+.input-group input[type="text"][id$="-input"] {
+    padding: 8px;
+    border: 2px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.input-group input[type="text"][id$="-input"]:focus {
+    outline: none;
+    border-color: var(--color-primario);
+}
+
+/* Estilos para campos con éxito */
+.input-success {
+    border-color: var(--color-exito) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Estilos para selects con opción "otro" activa */
+.input-group:has(select option[value="otro"]:checked) {
+    margin-bottom: 45px; /* Espacio para el campo adicional */
 }
