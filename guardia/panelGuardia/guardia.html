@@ -20,51 +20,29 @@
         <div class="form-container">
             <div id="alert" class="alert"></div>
 
-            <form action = "guardar.php" method="post"id="visitanteForm">
+            <form action="guardar.php" method="post" id="visitanteForm">
+                
                 <!-- Datos personales -->
                 <div class="form-group">
-                    <label class="required">Datos Personales</label>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <input type="text" name="nombre" placeholder="Nombre(s)" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="apellido" placeholder="Apellidos" required>
-                        </div>
+                    <label class="required">Nombre Completo</label>
+                    <div class="input-group">
+                        <input type="text" name="nombre_completo" placeholder="Nombre completo del visitante" required>
                     </div>
                 </div>
 
-                <!-- Información de visita -->
+                <!-- Motivo -->
                 <div class="form-group">
-                    <label class="required">Información de la Visita</label>
+                    <label class="required">Motivo de la Visita</label>
                     <div class="input-group">
                         <input type="text" name="motivo" placeholder="Motivo de la visita" required>
                     </div>
                 </div>
 
-                <!-- Datos del vehículo -->
+                <!-- Número asignado -->
                 <div class="form-group">
-                    <label class="required">Datos del Vehículo</label>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <input type="text" name="placa" placeholder="Placas del vehículo" required maxlength="10" class="uppercase">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="marca" placeholder="Marca del vehículo">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="input-group">
-                            <input type="text" name="color" placeholder="Color del vehículo">
-                        </div>
-                        <div class="input-group">
-                            <select name="tipo_vehiculo">
-                                <option value="automovil">Automóvil</option>
-                                <option value="motocicleta">Motocicleta</option>
-                                <option value="camioneta">Camioneta</option>
-                                
-                            </select>
-                        </div>
+                    <label class="required">Número Asignado</label>
+                    <div class="input-group">
+                        <input type="number" name="numero_asignado" placeholder="Número entregado al visitante" required min="1">
                     </div>
                 </div>
 

@@ -8,7 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->begin_transaction();
 
     try {
-        // Variables del vehículo (comunes para todos)
+        // Variables comunes del vehículo
+        $rfid = $_POST['rfid']; // 👈 el RFID ahora pertenece al vehículo
         $tipo_vehiculo = $_POST['tipo_vehiculo'];
         $marca = $_POST['marca'];
         $modelo = $_POST['modelo'];
@@ -16,12 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $color = $_POST['color'];
         $placa = $_POST['placa'];
 
-        // Variable para guardar el nombre del campo FK
         $fk_field = "";
         $fk_value = "";
 
         switch ($tipo_usuario) {
-            //ALUMNO
             case 'alumno':
                 $no_control = $_POST['no_control'];
                 $curp = $_POST['curp'];
@@ -34,20 +33,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $grupo = $_POST['grupo'];
                 $carrera = $_POST['carrera'];
                 $estado = $_POST['estado'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO alumno 
-                        (no_control, curp, nombre, apellido, f_nacimiento, correo, telefono, grado, grupo, carrera, estado, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        (no_control, curp, nombre, apellido, f_nacimiento, correo, telefono, grado, grupo, carrera, estado)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssssssss", $no_control, $curp, $nombre, $apellido, $f_nacimiento, $correo, $telefono, $grado, $grupo, $carrera, $estado, $rfid);
+                $stmt->bind_param("sssssssssss", $no_control, $curp, $nombre, $apellido, $f_nacimiento, $correo, $telefono, $grado, $grupo, $carrera, $estado);
                 $stmt->execute();
 
                 $fk_field = "no_control";
                 $fk_value = $no_control;
                 break;
 
-            //DOCENTE 
             case 'docente':
                 $id_docente = $_POST['id_docente'];
                 $rfc = $_POST['rfc'];
@@ -58,20 +55,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $telefono = $_POST['telefono'];
                 $especialidad = $_POST['especialidad'];
                 $estado = $_POST['estado'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO docente 
-                        (id_docente, rfc, nombre, apellido, f_nacimiento, correo, telefono, especialidad, estado, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        (id_docente, rfc, nombre, apellido, f_nacimiento, correo, telefono, especialidad, estado)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssssss", $id_docente, $rfc, $nombre, $apellido, $f_nacimiento, $correo, $telefono, $especialidad, $estado, $rfid);
+                $stmt->bind_param("sssssssss", $id_docente, $rfc, $nombre, $apellido, $f_nacimiento, $correo, $telefono, $especialidad, $estado);
                 $stmt->execute();
 
                 $fk_field = "id_docente";
                 $fk_value = $id_docente;
                 break;
-
-            ///ADMINISTRATIVO
 
             case 'administrativo':
                 $id_administrativo = $_POST['id_administrativo'];
@@ -83,20 +77,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $telefono = $_POST['telefono'];
                 $departamento = $_POST['departamento'];
                 $estado = $_POST['estado'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO administrativo 
-                        (id_administrativo, nombre, apellido, rfc, f_nacimiento, correo, telefono, area , estado, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        (id_administrativo, nombre, apellido, rfc, f_nacimiento, correo, telefono, area, estado)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssssss", $id_administrativo, $nombre, $apellido, $rfc, $f_nacimiento, $correo, $telefono,$departamento, $estado, $rfid);
+                $stmt->bind_param("sssssssss", $id_administrativo, $nombre, $apellido, $rfc, $f_nacimiento, $correo, $telefono, $departamento, $estado);
                 $stmt->execute();
 
                 $fk_field = "id_administrativo";
                 $fk_value = $id_administrativo;
                 break;
 
-           //GUARDIA 
             case 'guardia':
                 $id_guardia = $_POST['id_guardia'];
                 $curp = $_POST['curp'];
@@ -105,20 +97,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $telefono = $_POST['telefono'];
                 $turno = $_POST['turno'];
                 $estado = $_POST['estado'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO guardia 
-                        (id_guardia, curp, nombre, apellido, telefono, turno, estado, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        (id_guardia, curp, nombre, apellido, telefono, turno, estado)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssss", $id_guardia, $curp, $nombre, $apellido, $telefono, $turno, $estado, $rfid);
+                $stmt->bind_param("sssssss", $id_guardia, $curp, $nombre, $apellido, $telefono, $turno, $estado);
                 $stmt->execute();
 
                 $fk_field = "id_guardia";
                 $fk_value = $id_guardia;
                 break;
 
-            //PERSONAL
             case 'personal':
                 $id_personal = $_POST['id_personal'];
                 $curp = $_POST['curp'];
@@ -127,20 +117,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $telefono = $_POST['telefono'];
                 $area = $_POST['area'];
                 $turno = $_POST['turno'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO personal 
-                        (id_personal, curp, nombre, apellido, telefono, area, turno, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        (id_personal, curp, nombre, apellido, telefono, area, turno)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssss", $id_personal, $curp, $nombre, $apellido, $telefono, $area, $turno, $rfid);
+                $stmt->bind_param("sssssss", $id_personal, $curp, $nombre, $apellido, $telefono, $area, $turno);
                 $stmt->execute();
 
                 $fk_field = "id_personal";
                 $fk_value = $id_personal;
                 break;
-
-            //PROVEEDOR
 
             case 'proveedor':
                 $id_proveedor = $_POST['id_proveedor'];
@@ -152,13 +139,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $telefono = $_POST['telefono'];
                 $correo = $_POST['correo'];
                 $tipo_servicio = $_POST['tipo_servicio'];
-                $rfid = $_POST['rfid'];
 
                 $sql = "INSERT INTO proveedor 
-                        (id_proveedor, rfc, nombre, apellido, razon_social, empresa, telefono, correo, tipo_servicio, rfid)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        (id_proveedor, rfc, nombre, apellido, razon_social, empresa, telefono, correo, tipo_servicio)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssssssss", $id_proveedor, $rfc, $nombre, $apellido, $razon_social, $empresa, $telefono, $correo, $tipo_servicio, $rfid);
+                $stmt->bind_param("sssssssss", $id_proveedor, $rfc, $nombre, $apellido, $razon_social, $empresa, $telefono, $correo, $tipo_servicio);
                 $stmt->execute();
 
                 $fk_field = "id_proveedor";
@@ -169,17 +155,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("Tipo de usuario no reconocido.");
         }
 
-        //VEHICULO
+        // Insertar vehículo con RFID
         $sql_carro = "INSERT INTO vehiculo 
-            (tipo_vehiculo, marca, modelo, año, color, placa, id_docente, no_control, id_personal, id_guardia, id_proveedor, id_administrativo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            (rfid, tipo_vehiculo, marca, modelo, año, color, placa, id_docente, no_control, id_personal, id_guardia, id_proveedor, id_administrativo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt_carro = $conn->prepare($sql_carro);
 
         // Inicializar todas las FK como NULL
         $id_docente = $no_control = $id_personal = $id_guardia = $id_proveedor = $id_administrativo = null;
 
-        // Asignar solo la FK correspondiente al tipo de usuario
         if ($fk_field === "id_docente") $id_docente = $fk_value;
         if ($fk_field === "no_control") $no_control = $fk_value;
         if ($fk_field === "id_personal") $id_personal = $fk_value;
@@ -188,20 +173,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($fk_field === "id_administrativo") $id_administrativo = $fk_value;
 
         $stmt_carro->bind_param(
-            "ssssssssssss",
-            $tipo_vehiculo, $marca, $modelo, $año, $color, $placa,
+            "sssssssssssss",
+            $rfid, $tipo_vehiculo, $marca, $modelo, $año, $color, $placa,
             $id_docente, $no_control, $id_personal, $id_guardia, $id_proveedor, $id_administrativo
         );
         $stmt_carro->execute();
 
-        // Confirmar transacción
         $conn->commit();
-
-        echo "Registro exitoso de $tipo_usuario y su vehículo.";
+        echo "✅ Registro exitoso de $tipo_usuario y su vehículo.";
 
     } catch (Exception $e) {
         $conn->rollback();
-        echo "Error: " . $e->getMessage();
+        echo "❌ Error: " . $e->getMessage();
     }
 }
 ?>
+
