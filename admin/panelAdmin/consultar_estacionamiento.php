@@ -1,11 +1,11 @@
 <?php
 include 'conexion.php';
 
-// Consulta que une todas las tablas relevantes
+// Consulta que une todas las tablas relevantes (sin visitantes)
 $sql = "
 SELECT 
-    COALESCE(a.nombre, d.nombre, ad.nombre, g.nombre, p.nombre, pr.nombre, vte.nombre) AS nombre,
-    COALESCE(a.apellido, d.apellido, ad.apellido, g.apellido, p.apellido, pr.apellido, vte.apellido) AS apellido,
+    COALESCE(a.nombre, d.nombre, ad.nombre, g.nombre, p.nombre, pr.nombre) AS nombre,
+    COALESCE(a.apellido, d.apellido, ad.apellido, g.apellido, p.apellido, pr.apellido) AS apellido,
     CASE
         WHEN a.no_control IS NOT NULL THEN 'Alumno'
         WHEN d.id_docente IS NOT NULL THEN 'Docente'
@@ -13,7 +13,6 @@ SELECT
         WHEN g.id_guardia IS NOT NULL THEN 'Guardia'
         WHEN p.id_personal IS NOT NULL THEN 'Personal'
         WHEN pr.id_proveedor IS NOT NULL THEN 'Proveedor'
-        WHEN vte.id_visitante IS NOT NULL THEN 'Visitante'
         ELSE 'Desconocido'
     END AS perfil,
     COALESCE(a.telefono, d.telefono, ad.telefono, g.telefono, p.telefono, pr.telefono) AS telefono,
@@ -29,7 +28,6 @@ LEFT JOIN administrativo ad ON v.id_administrativo = ad.id_administrativo
 LEFT JOIN guardia g ON v.id_guardia = g.id_guardia
 LEFT JOIN personal p ON v.id_personal = p.id_personal
 LEFT JOIN proveedor pr ON v.id_proveedor = pr.id_proveedor
-LEFT JOIN visitante vte ON e.id_visitante = vte.id_visitante
 ORDER BY e.fecha DESC;
 ";
 
