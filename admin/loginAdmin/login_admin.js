@@ -25,16 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    function validarCredencialesAdmin(usuario, password) {
-        // Credenciales de prueba para administrador
-        const credencialesAdmin = {
-            'admin': 'admin123',
-            'administrador': 'sicav2024',
-            'root': 'root123'
-        };
-        
-        return credencialesAdmin[usuario] === password;
-    }
 
     function mostrarAlerta(mensaje, tipo) {
         const alertDiv = document.createElement('div');
