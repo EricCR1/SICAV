@@ -1,0 +1,116 @@
+/* ===========================================
+   Estilos generales
+============================================== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #1B396A;
+    margin-bottom: 5px;
+}
+
+.subtitulo {
+    margin-bottom: 20px;
+    color: #6b7280;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Encabezados */
+.tabla thead tr {
+    background: #1B396A;
+    color: white;
+    text-align: left;
+}
+
+/* Celdas */
+.tabla th,
+.tabla td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.empty-state {
+    text-align: center;
+    color: #6b7280;
+    padding: 25px;
+}
+
+
+/* ============================
+   SWITCH (botón de salida)
+=============================== */
+
+.switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Input escondido */
+.switch-container input[type="checkbox"] {
+    display: none;
+}
+
+/* Slider */
+.switch-container .slider {
+    width: 55px;
+    height: 28px;
+    background-color: #d1d5db;
+    border-radius: 34px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+/* Botón circular */
+.switch-container .slider::before {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 2px;
+    top: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+/* Cuando está activado (Entrada → activo) */
+.switch-container input:checked + .slider {
+    background-color: #10b981; /* Verde tipo éxito */
+}
+
+.switch-container input:checked + .slider::before {
+    transform: translateX(27px);
+}
+
+/* Cuando se apaga (Salida) */
+.switch-container .slider.off {
+    background-color: #ef4444 !important; /* Rojo salida */
+}
+
+.switch-container .slider.off::before {
+    transform: translateX(27px);
+}

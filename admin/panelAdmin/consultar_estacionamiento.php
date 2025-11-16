@@ -1,7 +1,7 @@
 <?php
 include 'conexion.php';
 
-// Consulta que une todas las tablas relevantes (sin visitantes)
+// Consulta que obtiene solo usuarios con RFID válidos (excluye visitantes por completo)
 $sql = "
 SELECT 
     COALESCE(a.nombre, d.nombre, ad.nombre, g.nombre, p.nombre, pr.nombre) AS nombre,
@@ -13,7 +13,6 @@ SELECT
         WHEN g.id_guardia IS NOT NULL THEN 'Guardia'
         WHEN p.id_personal IS NOT NULL THEN 'Personal'
         WHEN pr.id_proveedor IS NOT NULL THEN 'Proveedor'
-        ELSE 'Desconocido'
     END AS perfil,
     COALESCE(a.telefono, d.telefono, ad.telefono, g.telefono, p.telefono, pr.telefono) AS telefono,
     COALESCE(a.correo, d.correo, ad.correo, pr.correo) AS correo,
@@ -28,6 +27,14 @@ LEFT JOIN administrativo ad ON v.id_administrativo = ad.id_administrativo
 LEFT JOIN guardia g ON v.id_guardia = g.id_guardia
 LEFT JOIN personal p ON v.id_personal = p.id_personal
 LEFT JOIN proveedor pr ON v.id_proveedor = pr.id_proveedor
+-- 🔹 Esta condición excluye los registros sin usuario asociado (visitantes)
+WHERE 
+    a.no_control IS NOT NULL
+    OR d.id_docente IS NOT NULL
+    OR ad.id_administrativo IS NOT NULL
+    OR g.id_guardia IS NOT NULL
+    OR p.id_personal IS NOT NULL
+    OR pr.id_proveedor IS NOT NULL
 ORDER BY e.fecha DESC;
 ";
 

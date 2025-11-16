@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitantes Activos</title>
+    <link rel="stylesheet" href="bajaVisitantes.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>👥 Visitantes Activos</h1>
+    <p class="subtitulo">Control de entradas y salidas</p>
+
+    <div class="table-container">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Número</th>
+                    <th>Motivo</th>
+                    <th>Fecha / Hora</th>
+                    <th style="width: 120px; text-align:center;">Estado</th>
+                </tr>
+            </thead>
+                    
+            <tbody id="tabla-visitantes-activos">
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        Cargando visitantes...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="bajaVisitantes.js"></script>
+
+</body>
+</html>

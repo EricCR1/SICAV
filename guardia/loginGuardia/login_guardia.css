@@ -201,4 +201,56 @@ body {
     .login-header h1 {
         font-size: 1.5rem;
     }
+    /* Centrar perfectamente el switch en su celda */
+.switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tamaño del switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Barra del switch */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #d1d5db;
+    border-radius: 34px;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+}
+
+/* Encendido */
+.switch input:checked + .slider {
+    background-color: #10b981;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(27px);
+}
+
 }

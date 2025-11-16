@@ -1,0 +1,428 @@
+Base de datos llamada = ite
+usuario = root
+password = ''
+
+
+//DESDE ABAJO SE COPIA Y PEGA
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `ite`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `administrativo`
+--
+
+CREATE TABLE `administrativo` (
+  `id_administrativo` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `area` varchar(50) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `administrativo`
+--
+
+INSERT INTO `administrativo` (`id_administrativo`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `area`, `estado`) VALUES
+(984123, 'Bladimir', 'Nava', 'DADC143131141', '2005-10-13', 'bladi@gmail.com', '6461073462', 'Finanzas', 'activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno`
+--
+
+CREATE TABLE `alumno` (
+  `no_control` varchar(8) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `grado` int(11) DEFAULT NULL,
+  `grupo` varchar(10) DEFAULT NULL,
+  `carrera` varchar(25) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `alumno`
+--
+
+INSERT INTO `alumno` (`no_control`, `nombre`, `apellido`, `curp`, `f_nacimiento`, `correo`, `telefono`, `grado`, `grupo`, `carrera`, `estado`) VALUES
+('23760769', 'Eric', 'Cabrera', 'CARE050820HBCBDRA7', '2005-08-20', 'eric@gmail.com', '6461480335', 5, 'B', 'Ingeniería en Sistemas Co', 'activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `docente`
+--
+
+CREATE TABLE `docente` (
+  `id_docente` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `especialidad` varchar(50) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `docente`
+--
+
+INSERT INTO `docente` (`id_docente`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `especialidad`, `estado`) VALUES
+(6324, 'Maria', 'Rodriguez', 'XADS124533GSD', '2000-06-16', 'eric12@gmail.com', '6461480335', 'Matematicas', 'activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estacionamiento`
+--
+
+CREATE TABLE `estacionamiento` (
+  `no_registro` int(11) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `accion` tinyint(1) DEFAULT NULL,
+  `rfid` int(11) DEFAULT NULL,
+  `id_visitante` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estacionamiento`
+--
+
+INSERT INTO `estacionamiento` (`no_registro`, `fecha`, `accion`, `rfid`, `id_visitante`) VALUES
+(32, '2025-11-11 23:08:51', 0, 8979687, NULL),
+(35, '2025-11-12 19:02:48', 0, 749234, NULL),
+(36, '2025-11-12 22:23:02', 1, 9008885, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `guardia`
+--
+
+CREATE TABLE `guardia` (
+  `id_guardia` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `turno` varchar(20) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `guardia`
+--
+
+INSERT INTO `guardia` (`id_guardia`, `nombre`, `apellido`, `curp`, `telefono`, `turno`, `estado`) VALUES
+(5212341, 'Angel', 'Rivera', 'CARE341297JIFRFGW2', '6461442234', 'vespertino', 'activo'),
+(5432123, 'Memo', 'Memin', 'CARE341297JIFRFGW2', '6643294832', 'matutino', 'inactivo'),
+(6573421, 'Bladimir', 'Vergara', 'FARE050820HBCBDRA3', '2353245522', 'matutino', 'activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos`
+--
+
+CREATE TABLE `movimientos` (
+  `id` int(11) NOT NULL,
+  `rfid` varchar(20) NOT NULL,
+  `tipo_movimiento` enum('entrada','salida') NOT NULL,
+  `fecha_hora` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `movimientos`
+--
+
+INSERT INTO `movimientos` (`id`, `rfid`, `tipo_movimiento`, `fecha_hora`) VALUES
+(1, '34223', 'entrada', '2025-11-09 00:42:09'),
+(2, '34223', 'salida', '2025-11-10 13:19:15'),
+(3, '34223', 'entrada', '2025-11-10 13:19:50'),
+(4, '34223', 'salida', '2025-11-10 13:19:53');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal`
+--
+
+CREATE TABLE `personal` (
+  `id_personal` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `area` varchar(20) DEFAULT NULL,
+  `turno` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `personal`
+--
+
+INSERT INTO `personal` (`id_personal`, `nombre`, `apellido`, `curp`, `telefono`, `area`, `turno`) VALUES
+(890973, 'Doris', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'matutino');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+CREATE TABLE `proveedor` (
+  `id_proveedor` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `razon_social` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `tipo_servicio` varchar(50) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`id_proveedor`, `nombre`, `apellido`, `razon_social`, `rfc`, `telefono`, `correo`, `tipo_servicio`, `empresa`) VALUES
+(7898543, 'Miguel', 'Villalobos', 'S.A. de C.V.', 'ABC1234567NJ', '6461238664', 'miguelin@desinformador.com', 'Desinformacion', 'Desinformadores');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
+  `rol` enum('admin','guardia') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `contraseña`, `rol`) VALUES
+(1, 'admin', 'admin123', 'admin'),
+(2, 'juan', 'juanpass', 'guardia'),
+(3, 'maria', 'mariapass', 'guardia');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vehiculo`
+--
+
+CREATE TABLE `vehiculo` (
+  `rfid` int(11) NOT NULL,
+  `tipo_vehiculo` varchar(20) DEFAULT NULL,
+  `marca` varchar(50) DEFAULT NULL,
+  `modelo` varchar(50) DEFAULT NULL,
+  `año` int(11) DEFAULT NULL,
+  `color` varchar(15) DEFAULT NULL,
+  `placa` varchar(10) DEFAULT NULL,
+  `id_docente` int(11) DEFAULT NULL,
+  `no_control` varchar(8) DEFAULT NULL,
+  `id_personal` int(11) DEFAULT NULL,
+  `id_guardia` int(11) DEFAULT NULL,
+  `id_proveedor` int(11) DEFAULT NULL,
+  `id_administrativo` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `vehiculo`
+--
+
+INSERT INTO `vehiculo` (`rfid`, `tipo_vehiculo`, `marca`, `modelo`, `año`, `color`, `placa`, `id_docente`, `no_control`, `id_personal`, `id_guardia`, `id_proveedor`, `id_administrativo`) VALUES
+(12312, 'motocicleta', 'BMW', 'Jetta', 2009, 'Celeste', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 984123),
+(45645, 'automovil', 'Fiat', 'Jetta', 2006, 'Rojo', 'IOHG4F', 6324, NULL, NULL, NULL, NULL, NULL),
+(132454, 'camion', 'Toyota', 'Versa', 2018, 'Rojo', 'SFLLASD', NULL, NULL, NULL, 5212341, NULL, NULL),
+(234134, 'camion', 'otro', 'Versa', 2004, 'Azul', '2112312', NULL, NULL, NULL, 5432123, NULL, NULL),
+(749234, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 890973, NULL, NULL, NULL),
+(8979687, 'motocicleta', 'BMW', 'Corolla', 1999, 'Vino', 'JHSFE313', NULL, '23760769', NULL, NULL, NULL, NULL),
+(9008885, 'camioneta', 'Volkswagen', 'Bocho', 2002, 'Plata', 'WDF3223SD', NULL, NULL, NULL, NULL, 7898543, NULL),
+(325213123, 'motocicleta', 'Chevrolet', 'Bocho', 1992, 'Celeste', '423432', NULL, NULL, NULL, 6573421, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `visitante`
+--
+
+CREATE TABLE `visitante` (
+  `id_visitante` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `motivo` text DEFAULT NULL,
+  `numero` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `administrativo`
+--
+ALTER TABLE `administrativo`
+  ADD PRIMARY KEY (`id_administrativo`);
+
+--
+-- Indices de la tabla `alumno`
+--
+ALTER TABLE `alumno`
+  ADD PRIMARY KEY (`no_control`);
+
+--
+-- Indices de la tabla `docente`
+--
+ALTER TABLE `docente`
+  ADD PRIMARY KEY (`id_docente`);
+
+--
+-- Indices de la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  ADD PRIMARY KEY (`no_registro`),
+  ADD KEY `id_visitante` (`id_visitante`),
+  ADD KEY `fk_estacionamiento_rfid` (`rfid`);
+
+--
+-- Indices de la tabla `guardia`
+--
+ALTER TABLE `guardia`
+  ADD PRIMARY KEY (`id_guardia`);
+
+--
+-- Indices de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_rfid` (`rfid`),
+  ADD KEY `idx_fecha` (`fecha_hora`);
+
+--
+-- Indices de la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD PRIMARY KEY (`id_personal`);
+
+--
+-- Indices de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  ADD PRIMARY KEY (`id_proveedor`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `vehiculo`
+--
+ALTER TABLE `vehiculo`
+  ADD PRIMARY KEY (`rfid`),
+  ADD KEY `id_docente` (`id_docente`),
+  ADD KEY `no_control` (`no_control`),
+  ADD KEY `id_personal` (`id_personal`),
+  ADD KEY `id_guardia` (`id_guardia`),
+  ADD KEY `id_proveedor` (`id_proveedor`),
+  ADD KEY `id_administrativo` (`id_administrativo`);
+
+--
+-- Indices de la tabla `visitante`
+--
+ALTER TABLE `visitante`
+  ADD PRIMARY KEY (`id_visitante`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+
+--
+-- AUTO_INCREMENT de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7898544;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `visitante`
+--
+ALTER TABLE `visitante`
+  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  ADD CONSTRAINT `estacionamiento_ibfk_2` FOREIGN KEY (`id_visitante`) REFERENCES `visitante` (`id_visitante`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_estacionamiento_rfid` FOREIGN KEY (`rfid`) REFERENCES `vehiculo` (`rfid`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `vehiculo`
+--
+ALTER TABLE `vehiculo`
+  ADD CONSTRAINT `vehiculo_ibfk_1` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_2` FOREIGN KEY (`no_control`) REFERENCES `alumno` (`no_control`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_3` FOREIGN KEY (`id_personal`) REFERENCES `personal` (`id_personal`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_4` FOREIGN KEY (`id_guardia`) REFERENCES `guardia` (`id_guardia`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_5` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_6` FOREIGN KEY (`id_administrativo`) REFERENCES `administrativo` (`id_administrativo`) ON DELETE SET NULL ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
