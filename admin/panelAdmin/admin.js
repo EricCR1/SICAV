@@ -44,10 +44,32 @@ window.onclick = function (event) {
     }
 };
 
-// --- Funciones de carga (placeholder) ---
-function cargarVisitantes() {
-    console.log('Cargando visitantes...');
+async function actualizarContadores() {
+    // Hoy
+    fetch("contadores/visitantesHoy.php")
+        .then(r => r.text())
+        .then(num => document.getElementById("visitantes-hoy").innerText = num);
+
+    // Semana
+    fetch("contadores/visitantesSemana.php")
+        .then(r => r.text())
+        .then(num => document.getElementById("visitantes-semana").innerText = num);
+
+    // Mes
+    fetch("contadores/visitantesMes.php")
+        .then(r => r.text())
+        .then(num => document.getElementById("visitantes-mes").innerText = num);
+
+    fetch("contadores/visitantesActivos.php")
+    .then(r => r.text())
+    .then(num => document.getElementById("visitantes-activos").innerText = num);
 }
+
+// Carga inicial
+actualizarContadores();
+
+// Actualizar cada 5 segundos
+setInterval(actualizarContadores, 5000);
 
 function cargarUsuariosRFID() {
     console.log('Cargando usuarios RFID...');
