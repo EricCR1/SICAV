@@ -45,24 +45,42 @@ window.onclick = function (event) {
 };
 
 async function actualizarContadores() {
-    // Hoy
+   // Visitantes hoy
     fetch("contadores/visitantesHoy.php")
         .then(r => r.text())
         .then(num => document.getElementById("visitantes-hoy").innerText = num);
 
-    // Semana
+    // Visitantes semana
     fetch("contadores/visitantesSemana.php")
         .then(r => r.text())
         .then(num => document.getElementById("visitantes-semana").innerText = num);
 
-    // Mes
+    // Visitantes mes
     fetch("contadores/visitantesMes.php")
         .then(r => r.text())
         .then(num => document.getElementById("visitantes-mes").innerText = num);
 
+    // Visitantes activos
     fetch("contadores/visitantesActivos.php")
-    .then(r => r.text())
-    .then(num => document.getElementById("visitantes-activos").innerText = num);
+        .then(r => r.text())
+        .then(num => document.getElementById("visitantes-activos").innerText = num);
+
+    // Usuarios RFID activos
+    try {
+        const res = await fetch("contadores/usuarios_activos.php");
+        const data = await res.json();
+
+        document.getElementById("total-Alumnos").innerText = data.alumno;
+        document.getElementById("Docentes").innerText = data.docente;
+        document.getElementById("Administrativos").innerText = data.administrativo;
+        document.getElementById("Personal").innerText = data.personal;
+        document.getElementById("Guardias").innerText = data.guardia;
+        document.getElementById("Proveedores").innerText = data.proveedor;
+        document.getElementById("totalUsuarios").innerText = data.total;
+
+    } catch (e) {
+        console.error("Error cargando usuarios activos:", e);
+    }
 }
 
 // Carga inicial
