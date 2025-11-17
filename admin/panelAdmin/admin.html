@@ -117,20 +117,20 @@
 
             <div class="filters">
                 <input type="text" id="buscar-rfid" placeholder="Buscar por nombre o RFID">
-                <button class="btn btn-primary" id="btn-buscar" onclick="cargarUsuariosRFID() ">🔍 Buscar</button>
+                <button class="btn btn-primary" id="btn-buscar">🔍 Buscar</button>
                 <select id="filtro-tipo-usuario">
                     <option value="">Todos los tipos</option>
-                    <option value="docente">Docentes</option>
-                    <option value="alumno">Alumnos</option>
-                    <option value="administrativo">Administrativos</option>
-                    <option value="guardia">Guardias</option>
+                    <option value="Docente">Docentes</option>
+                    <option value="Alumno">Alumnos</option>
+                    <option value="Administrativo">Administrativos</option>
+                    <option value="Guardia">Guardias</option>
                     <option value="Personal">Personal</option>
-                    <option value="Proveedores">Proveedores</option>
+                    <option value="Proveedor">Proveedores</option>
                 </select>
                 <select id="filtro-estado-usuario">
                     <option value="">Todos los estados</option>
-                    <option value="activo">Activos</option>
-                    <option value="inactivo">Inactivos</option>
+                    <option value="0">Activos</option>
+                    <option value="1">Inactivos</option>
                 </select>
                 <button class="btn btn-success" onclick="abrirModalUsuario()">➕ Agregar Usuario</button>
                 <button class="btn btn-secondary" onclick="exportarUsuariosExcel()">📊 Exportar Excel</button>

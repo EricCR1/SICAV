@@ -1,18 +1,32 @@
-(() => {
-  const cuerpo = document.getElementById('cuerpo-tabla-usuarios');
+let registrosRFID = []; 
+const cuerpo = document.getElementById('cuerpo-tabla-usuarios');
+let intervaloAuto = null;  // Intervalo dinámico
 
-  async function cargarEstacionamiento() {
+// --- Función que carga los registros desde PHP ---
+async function cargarRegistrosRFID() {
     try {
-      const res = await fetch('consultar_estacionamiento.php');
-      const datos = await res.json();
-      cuerpo.innerHTML = '';
+        const res = await fetch('consultar_estacionamiento.php');
+        const datos = await res.json();
 
-      if (!Array.isArray(datos) || datos.length === 0) {
+        registrosRFID = datos;
+        renderTablaRFID(datos);
+
+    } catch (err) {
+        console.error("Error cargando registros:", err);
+        cuerpo.innerHTML = `<tr><td colspan="7">Error al obtener datos</td></tr>`;
+    }
+}
+
+// --- Renderizar tabla ---
+function renderTablaRFID(lista) {
+    cuerpo.innerHTML = '';
+
+    if (!Array.isArray(lista) || lista.length === 0) {
         cuerpo.innerHTML = `<tr><td colspan="7">No hay registros</td></tr>`;
         return;
-      }
+    }
 
-      datos.forEach(r => {
+    lista.forEach(r => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${r.nombre || ''} ${r.apellido || ''}</td>
@@ -24,35 +38,52 @@
           <td>${r.accion == '1' ? 'Salida' : 'Entrada'}</td>
         `;
         cuerpo.appendChild(fila);
-      });
-    } catch (err) {
-      console.error('Error al cargar registros:', err);
-      cuerpo.innerHTML = `<tr><td colspan="7">Error al obtener datos</td></tr>`;
-    }
-  }
-
-  // Carga inicial y actualización automática
-  cargarEstacionamiento();
-  setInterval(cargarEstacionamiento, 5000);
-})();
-
-let registrosRFID = []; // Lista global
-
-async function cargarRegistrosRFID() {
-    const res = await fetch("consultar_estacionamiento.php");
-    const data = await res.json();
-    registrosRFID = data;  
-    renderTablaRFID(data);
+    });
 }
 
+// --- FUNCIÓN PARA BUSCAR ---
 document.getElementById("btn-buscar").addEventListener("click", () => {
-    const texto = document.getElementById("buscar-rfid").value.toLowerCase();
 
-    const filtrados = registrosRFID.filter(r =>
-        r.nombre.toLowerCase().includes(texto) ||
-        r.apellido.toLowerCase().includes(texto) ||
-        r.rfid.toString().includes(texto)
-    );
+    clearInterval(intervaloAuto);
+
+    const texto = document.getElementById("buscar-rfid").value.toLowerCase();
+    const estado = document.getElementById("filtro-estado-usuario").value; 
+    const tipo = document.getElementById("filtro-tipo-usuario").value;
+
+    const filtrados = registrosRFID.filter(r => {
+        
+        // --- Filtro por texto (nombre, apellido, RFID) ---
+        const nombre = (r.nombre || "").toLowerCase();
+        const apellido = (r.apellido || "").toLowerCase();
+        const nombreCompleto = `${nombre} ${apellido}`;
+        const rfid = (r.rfid || "").toString();
+
+        const coincideTexto =
+            nombre.includes(texto) ||
+            apellido.includes(texto) ||
+            nombreCompleto.includes(texto) ||
+            rfid.includes(texto);
+
+        // --- Filtro por estado (0 entrada / 1 salida) ---
+        const coincideEstado = 
+            estado === "" || r.accion == estado;
+
+        // --- Filtro por tipo de usuario ---
+        const coincideTipo = 
+            tipo === "" || (r.perfil && r.perfil.toLowerCase() === tipo.toLowerCase());
+
+        return coincideTexto && coincideEstado && coincideTipo;
+    });
 
     renderTablaRFID(filtrados);
+
+    // 🔁 Reanudar refresco automático después de 12 segundos
+    intervaloAuto = setTimeout(() => {
+        intervaloAuto = setInterval(cargarRegistrosRFID, 1000);
+    }, 12000);
 });
+
+
+// --- CARGA INICIAL ---
+cargarRegistrosRFID();
+intervaloAuto = setInterval(cargarRegistrosRFID, 1000);
