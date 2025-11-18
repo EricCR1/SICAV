@@ -48,15 +48,15 @@
             </div>
 
             <div class="filters">
-                <input type="date" id="fecha-filtro-visitantes" placeholder="Filtrar por fecha">
+                <input type="date" id="filtro-fecha" placeholder="Filtrar por fecha">
                 <!-- <input type="text" id="buscar-visitantes" placeholder="Buscar por nombre o #"> -->
-                <select id="filtro-estado-visitantes">
+                <select id="filtro-estado-visitante">
                     <option value="">Todos los estados</option>
-                    <option value="activo">Entrada</option>
-                    <option value="finalizado">Salida</option>
+                    <option value="0">Entrada</option>
+                    <option value="1">Salida</option>
                 </select>
-                <input type="text" id="buscar-visitantes" placeholder="Buscar por 'nombre' o '#'">
-                <button class="btn btn-primary" onclick="cargarVisitantes()">🔍 Buscar</button>
+                <input type="text" id="buscar-visitante" placeholder="Buscar por 'nombre' o '#'">
+                <button id="btn-buscar-visitante" class="btn btn-primary">🔍 Buscar</button>
                 <button class="btn btn-secondary" onclick="exportarVisitantesExcel()">📊 Exportar Excel</button>
                 <button class="btn btn-secondary" onclick="generarReporteVisitantes()">📄 Generar Reporte</button>
             </div>
@@ -116,7 +116,7 @@
             </div>
 
             <div class="filters">
-                <input type="text" id="buscar-rfid" placeholder="Buscar por nombre o RFID">
+                <input type="text" id="buscar-rfid" placeholder="Buscar por nombre">
                 <button class="btn btn-primary" id="btn-buscar">🔍 Buscar</button>
                 <select id="filtro-tipo-usuario">
                     <option value="">Todos los tipos</option>
@@ -156,7 +156,7 @@
                             <td colspan="7" class="empty-state">No hay datos cargados</td>
                         </tr>
                     </tbody>
-                </table>
+                </table>                
             </div>
             <div class="pagination" id="paginacion-usuarios"></div>
         </div>
@@ -717,6 +717,7 @@
             </div>
         </div>
     </div>
+    
     <script src="actualizar_estacionamiento.js"></script>
     <script src="actualizar_visitantes.js"></script>
 
