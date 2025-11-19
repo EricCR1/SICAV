@@ -1,30 +1,12 @@
 <?php
 include "conexion.php";
 
-$id = $_GET['id'] ?? '';
-if (!$id) {
-    http_response_code(400);
-    echo "Falta id";
-    exit;
-}
+$id = isset($_GET["id"]) ? mysqli_real_escape_string($conn, $_GET["id"]) : '';
 
-$conn->begin_transaction();
-try {
-    // eliminar vehiculos del docente
-    $delV = $conn->prepare("DELETE FROM vehiculo WHERE id_docente=?");
-    $delV->bind_param("s", $id);
-    $delV->execute();
+if (empty($id)) { echo "Falta id"; exit; }
 
-    // eliminar docente
-    $delD = $conn->prepare("DELETE FROM docente WHERE id_docente=?");
-    $delD->bind_param("s", $id);
-    $delD->execute();
+$conn->query("DELETE FROM docente WHERE id_docente='$id'");
 
-    $conn->commit();
-    echo "Docente eliminado correctamente.";
-} catch (Exception $e) {
-    $conn->rollback();
-    http_response_code(500);
-    echo "Error: " . $e->getMessage();
-}
+echo ($conn->affected_rows>0) ? "Docente eliminado." : "No se encontró docente con ese id.";
 ?>
+

@@ -1,10 +1,11 @@
 <?php
 include "conexion.php";
 
-$id = $_GET["id"];
+$id = isset($_GET["id"]) ? mysqli_real_escape_string($conn, $_GET["id"]) : '';
 
-$conn->query("DELETE FROM vehiculo WHERE id_guardia='$id'");
+if (empty($id)) { echo "Falta id"; exit; }
+
 $conn->query("DELETE FROM guardia WHERE id_guardia='$id'");
 
-echo "Guardia eliminado.";
+echo ($conn->affected_rows>0) ? "Guardia eliminado." : "No se encontró guardia con ese id.";
 ?>
