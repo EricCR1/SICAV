@@ -10,18 +10,29 @@ if (!$conn) {
     die("No hay conexión: " . mysqli_connect_error());
 }
 
-$nombre = mysqli_real_escape_string($conn, $_POST["usuario"]);
-$password = mysqli_real_escape_string($conn, $_POST["password"]);
+$usuario   = $_POST['usuario'] ?? '';
+$pass      = $_POST['password'] ?? '';
 
-$query = "SELECT * FROM usuarios WHERE nombre='$nombre' AND contraseña='$password' AND (rol='admin' OR rol='guardia')";
-$result = mysqli_query($conn, $query);
+$sql = $conn->prepare("CALL validar_usuario(?, ?)");
+$sql->bind_param("ss", $usuario, $pass);
+$sql->execute();
 
-if (mysqli_num_rows($result) == 1) {
-    // ✅ Si el usuario existe, redirige al panel
-    header("Location: ../panelGuardia/guardia.html");
-    exit();
-} else {
-    // ❌ Usuario o contraseña incorrectos
+$res = $sql->get_result();
+
+if ($res->num_rows == 1) {
+    $row = $res->fetch_assoc();
+
+    // Validación por rol
+    if ($row["rol"] == "admin") {
+        header("Location: ../panelAdmin/admin.html");
+        exit;
+    } 
+    else if ($row["rol"] == "guardia") {
+        header("Location: ../panelGuardia/guardia.html");
+        exit;
+    }
+} 
+else {
     echo "<script>
             alert('Usuario o contraseña incorrectos');
             window.location.href='login_guardia.html';

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Alumnos</title>
+    <link rel="stylesheet" href="alumnos.css">
+</head>
+<body>
+
+<h1>Gestión de Alumnos</h1>
+
+<button class="btn crear" onclick="abrirModal()">➕ Agregar Alumno</button>
+
+<div class="tabla-container">
+    <table>
+        <thead>
+            <tr>
+                <th>No. Control</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Vehículos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-alumnos">
+            <tr><td colspan="6">Cargando...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h2 id="modal-titulo">Nuevo Alumno</h2>
+
+        <form id="form-alumno">
+            <input type="hidden" id="modo" name="modo">
+
+            <label>No. Control</label>
+            <input type="text" id="no_control" name="no_control" required>
+
+            <label>Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label>Apellido</label>
+            <input type="text" id="apellido" name="apellido" required>
+
+            <label>CURP</label>
+            <input type="text" id="curp" name="curp" required>
+
+            <label>Fecha de nacimiento</label>
+            <input type="date" id="f_nacimiento" name="f_nacimiento">
+
+            <label>Correo</label>
+            <input type="email" id="correo" name="correo">
+
+            <label>Teléfono</label>
+            <input type="text" id="telefono" name="telefono">
+
+            <label>Grado</label>
+            <input type="text" id="grado" name="grado">
+
+            <label>Grupo</label>
+            <input type="text" id="grupo" name="grupo">
+
+            <label>Carrera</label>
+            <input type="text" id="carrera" name="carrera">
+
+            <label>Estado</label>
+            <select id="estado" name="estado">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+
+            <hr>
+
+            <h3>Vehículos</h3>
+            <div id="vehiculos-container"></div>
+
+            <button type="button" class="btn agregar" onclick="agregarVehiculo()">➕ Agregar Vehículo</button>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn guardar">Guardar</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script src="alumnos.js"></script>
+</body>
+</html>

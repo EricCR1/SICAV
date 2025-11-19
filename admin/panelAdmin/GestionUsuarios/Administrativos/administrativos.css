@@ -1,0 +1,29 @@
+:root{
+  --bg:#f6f7fb; --card:#fff; --accent:#1B396A; --muted:#6b7280; --danger:#ef4444;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Arial; background:var(--bg); margin:0; color:#111}
+.page{max-width:1100px;margin:28px auto;padding:18px}
+.page-header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{color:var(--accent);margin:0}
+.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-secondary{background:#eef2ff;color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--accent);border:1px solid #e6e9ef}
+.table-wrap{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+.table{width:100%;border-collapse:collapse}
+.table th, .table td{padding:10px 12px;border-bottom:1px solid #eef2f6;text-align:left;font-size:14px}
+.table th{background:var(--accent);color:#fff;position:sticky;top:0}
+.empty{text-align:center;color:var(--muted);padding:18px}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);padding:20px;z-index:50}
+.modal-panel{background:var(--card);width:100%;max-width:800px;border-radius:12px;padding:18px;box-shadow:0 12px 50px rgba(0,0,0,0.2)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid label{display:block;font-size:13px;color:#334155}
+.grid input, .grid select{width:100%;padding:8px;border-radius:8px;border:1px solid #e6e9ef;margin-top:6px}
+hr{border:none;border-top:1px solid #eef2f6;margin:12px 0}
+.veh-row{display:grid;grid-template-columns:repeat(4,1fr) 70px;gap:8px;margin-bottom:8px;align-items:center}
+.veh-row input{padding:8px;border-radius:8px;border:1px solid #e6e9ef}
+.veh-remove{background:#fee2e2;color:var(--danger);border-radius:8px;border:0;padding:8px;cursor:pointer}
+.veh-buttons{margin:8px 0}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.veh-row{grid-template-columns:1fr 1fr}}

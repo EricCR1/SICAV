@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Personal</title>
+    <link rel="stylesheet" href="personal.css">
+</head>
+<body>
+
+<h1>Gestión de Personal</h1>
+
+<button class="btn crear" onclick="abrirModal()">➕ Agregar Personal</button>
+
+<div class="tabla-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID Personal</th>
+                <th>Nombre</th>
+                <th>CURP</th>
+                <th>Teléfono</th>
+                <th>Área</th>
+                <th>Turno</th>
+                <th>Vehículo (Placa)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-personal">
+            <tr><td colspan="8">Cargando...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h2 id="modal-titulo">Nuevo Personal</h2>
+
+        <form id="form-personal">
+            <input type="hidden" id="modo" name="modo">
+
+            <label>ID Personal</label>
+            <input type="text" id="id_personal" name="id_personal" required>
+
+            <label>Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label>Apellido</label>
+            <input type="text" id="apellido" name="apellido" required>
+
+            <label>CURP</label>
+            <input type="text" id="curp" name="curp" required>
+
+            <label>Teléfono</label>
+            <input type="text" id="telefono" name="telefono">
+
+            <label>Área</label>
+            <input type="text" id="area" name="area">
+
+            <label>Turno</label>
+            <select id="turno" name="turno">
+                <option value="Matutino">Matutino</option>
+                <option value="Vespertino">Vespertino</option>
+                <option value="Nocturno">Nocturno</option>
+            </select>
+
+            <hr>
+            <h3>Datos del Vehículo</h3>
+
+            <label>RFID</label>
+            <input type="text" id="rfid" name="rfid">
+
+            <label>Tipo de vehículo</label>
+            <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
+
+            <label>Marca</label>
+            <input type="text" id="marca" name="marca">
+
+            <label>Modelo</label>
+            <input type="text" id="modelo" name="modelo">
+
+            <label>Año</label>
+            <input type="text" id="año" name="año">
+
+            <label>Color</label>
+            <input type="text" id="color" name="color">
+
+            <label>Placa</label>
+            <input type="text" id="placa" name="placa">
+
+            <div class="modal-buttons">
+                <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn guardar">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="personal.js"></script>
+</body>
+</html>

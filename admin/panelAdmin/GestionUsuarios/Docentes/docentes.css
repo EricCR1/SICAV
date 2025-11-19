@@ -1,0 +1,39 @@
+:root{
+  --bg:#f4f6f9; --card:#fff; --accent:#1b396a; --muted:#6b7280;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:Inter,Segoe UI,Arial; background:var(--bg); color:#111;
+}
+.container{max-width:1100px; margin:28px auto; padding:20px;}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{margin:0;color:var(--accent)}
+.controls .btn{margin-left:8px}
+.table-wrap{background:var(--card);border-radius:10px;padding:10px;box-shadow:0 6px 20px rgba(16,24,40,.06)}
+.tabla{width:100%;border-collapse:collapse}
+.tabla thead{background:var(--accent);color:#fff}
+.tabla th, .tabla td{padding:10px 12px;border-bottom:1px solid #eee;text-align:left}
+.empty{text-align:center;color:var(--muted);padding:18px}
+.btn{display:inline-block;padding:8px 12px;border-radius:8px;border:none;background:#e6eefc;color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.warn{background:#fff3cd;color:#92400e;border:1px solid #f5c06a}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);z-index:40}
+.modal[aria-hidden="false"]{display:flex}
+.modal-panel{width:95%;max-width:820px;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 10px 40px rgba(2,6,23,.2)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid label{display:block;font-size:13px;color:var(--muted)}
+.grid input, .grid select{width:100%;padding:8px;border-radius:8px;border:1px solid #e6e6e6;margin-top:6px}
+.vehiculos{margin-top:14px}
+#lista-vehiculos .veh{border:1px dashed #e6e6e6;padding:10px;border-radius:8px;margin-bottom:10px;background:#fafafa}
+.veh .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.veh label{font-size:13px;color:var(--muted)}
+.veh input{padding:6px;border-radius:6px;border:1px solid #e6e6e6}
+.veh .mini{grid-column:span 1}
+.veh .full{grid-column:span 3}
+.veh .veh-actions{display:flex;gap:8px;justify-content:flex-end}
+.veh-btns{display:flex;gap:8px;margin-top:8px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+@media (max-width:720px){
+  .grid{grid-template-columns:1fr}
+  .veh .row{grid-template-columns:1fr}
+}

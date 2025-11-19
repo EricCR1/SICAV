@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestión de Administrativos</title>
+  <link rel="stylesheet" href="administrativos.css">
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <h1>Administrativos</h1>
+      <button class="btn btn-primary" id="btn-nuevo">➕ Nuevo Administrativo</button>
+    </header>
+
+    <section class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Área</th>
+            <th>Estado</th>
+            <th>Vehículos</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-administrativos">
+          <tr><td colspan="8" class="empty">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-panel">
+      <h2 id="modal-title">Nuevo Administrativo</h2>
+      <form id="form-admin">
+        <input type="hidden" name="modo" id="modo" value="nuevo">
+        <div class="grid">
+          <label>No. ID (id_administrativo)
+            <input type="text" name="id_administrativo" id="id_administrativo" required>
+          </label>
+
+          <label>Nombre
+            <input type="text" name="nombre" id="nombre" required>
+          </label>
+
+          <label>Apellido
+            <input type="text" name="apellido" id="apellido" required>
+          </label>
+
+          <label>RFC
+            <input type="text" name="rfc" id="rfc">
+          </label>
+
+          <label>Fecha de nacimiento
+            <input type="date" name="f_nacimiento" id="f_nacimiento">
+          </label>
+
+          <label>Correo
+            <input type="email" name="correo" id="correo">
+          </label>
+
+          <label>Teléfono
+            <input type="text" name="telefono" id="telefono">
+          </label>
+
+          <label>Área
+            <input type="text" name="area" id="area">
+          </label>
+
+          <label>Estado
+            <select name="estado" id="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </label>
+        </div>
+
+        <hr>
+
+        <h3>Vehículos (puede agregar varios)</h3>
+        <div id="vehiculos-list"></div>
+        <div class="veh-buttons">
+          <button type="button" class="btn btn-secondary" id="btn-add-vehicle">➕ Añadir vehículo</button>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="administrativo.js"></script>
+</body>
+</html>
