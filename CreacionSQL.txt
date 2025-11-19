@@ -3,7 +3,14 @@ usuario = root
 password = ''
 
 
-//DESDE ABAJO SE COPIA Y PEGA
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 19-11-2025 a las 19:12:20
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,6 +25,98 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ite`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarEntradaRFID` (IN `p_rfid` VARCHAR(20))   BEGIN
+    DECLARE v_existe INT DEFAULT 0;
+    DECLARE v_ultima_accion CHAR(1);
+    DECLARE v_fecha DATETIME;
+    
+    -- Verificar que el RFID exista en vehículo
+    SELECT COUNT(*) INTO v_existe
+    FROM vehiculo
+    WHERE rfid = p_rfid;
+
+    IF v_existe = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'RFID no existe en la tabla vehiculo';
+    END IF;
+
+    -- Obtener última acción
+    SELECT accion INTO v_ultima_accion
+    FROM estacionamiento
+    WHERE rfid = p_rfid
+    ORDER BY fecha DESC
+    LIMIT 1;
+
+    -- Si la última acción fue entrada (0), bloquear otra entrada
+    IF v_ultima_accion = '0' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El vehículo ya está dentro (último registro fue entrada)';
+    END IF;
+
+    -- Registrar entrada
+    SET v_fecha = NOW();
+
+    INSERT INTO estacionamiento(fecha, accion, rfid)
+    VALUES (v_fecha, '0', p_rfid);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarSalidaRFID` (IN `p_rfid` VARCHAR(20))   BEGIN
+    DECLARE v_existe INT DEFAULT 0;
+    DECLARE v_ultima_accion CHAR(1) DEFAULT NULL;
+    DECLARE v_fecha DATETIME;
+
+    -- 1. Validar que el RFID exista en la tabla vehiculo
+    SELECT COUNT(*) INTO v_existe
+    FROM vehiculo
+    WHERE rfid = p_rfid;
+
+    IF v_existe = 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Este RFID NO está registrado.';
+    END IF;
+
+    -- 2. Obtener último registro en estacionamiento
+    SELECT accion INTO v_ultima_accion
+    FROM estacionamiento
+    WHERE rfid = p_rfid
+    ORDER BY fecha DESC
+    LIMIT 1;
+
+    -- 3. Si no hay registros previos → nunca entró
+    IF v_ultima_accion IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'No se puede registrar salida: nunca registró entrada.';
+    END IF;
+
+    -- 4. Si el último registro fue salida → no permitir otra
+    IF v_ultima_accion = '1' THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'El vehículo YA registró salida.';
+    END IF;
+
+    -- 5. Registrar SALIDA
+    SET v_fecha = NOW();
+
+    INSERT INTO estacionamiento(fecha, accion, rfid)
+    VALUES (v_fecha, '1', p_rfid);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_usuario` (IN `p_usuario` VARCHAR(50), IN `p_password` VARCHAR(50))   BEGIN
+    SELECT id, nombre, rol
+    FROM usuarios
+    WHERE nombre = p_usuario
+      AND contraseña = p_password
+    LIMIT 1;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -42,7 +141,7 @@ CREATE TABLE `administrativo` (
 --
 
 INSERT INTO `administrativo` (`id_administrativo`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `area`, `estado`) VALUES
-(984123, 'Bladimir', 'Nava', 'DADC143131141', '2005-10-13', 'bladi@gmail.com', '6461073462', 'Finanzas', 'activo');
+(984123, 'Bladimir', 'Nava', 'XADS124533GSD', '2025-11-05', 'bladi@gmail.com', '6461073462', 'RH', 'activo');
 
 -- --------------------------------------------------------
 
@@ -69,7 +168,7 @@ CREATE TABLE `alumno` (
 --
 
 INSERT INTO `alumno` (`no_control`, `nombre`, `apellido`, `curp`, `f_nacimiento`, `correo`, `telefono`, `grado`, `grupo`, `carrera`, `estado`) VALUES
-('23760769', 'Eric', 'Cabrera', 'CARE050820HBCBDRA7', '2005-08-20', 'eric@gmail.com', '6461480335', 5, 'B', 'Ingeniería en Sistemas Co', 'activo');
+('22467012', 'Joseee', 'Sanchez', 'DGAD031208HSDHJJME', '2006-02-25', 'jose@gmail.com', '6462748131', 11, 'B', 'Ingeniería en Sistemas Co', 'activo');
 
 -- --------------------------------------------------------
 
@@ -94,7 +193,8 @@ CREATE TABLE `docente` (
 --
 
 INSERT INTO `docente` (`id_docente`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `especialidad`, `estado`) VALUES
-(6324, 'Maria', 'Rodriguez', 'XADS124533GSD', '2000-06-16', 'eric12@gmail.com', '6461480335', 'Matematicas', 'activo');
+(543123, 'Angelaa', 'Rodriguez', 'SFAS124213124', '2005-06-14', 'jose@gmail.com', '6461480335', 'Matematicas', 'activo'),
+(4563234, 'Eric', 'Cabrera', 'XADS124533GSD', '2004-02-10', 'eric@gmail.com', '6461480335', 'Matematicas', 'activo');
 
 -- --------------------------------------------------------
 
@@ -115,9 +215,56 @@ CREATE TABLE `estacionamiento` (
 --
 
 INSERT INTO `estacionamiento` (`no_registro`, `fecha`, `accion`, `rfid`, `id_visitante`) VALUES
-(32, '2025-11-11 23:08:51', 0, 8979687, NULL),
-(35, '2025-11-12 19:02:48', 0, 749234, NULL),
-(36, '2025-11-12 22:23:02', 1, 9008885, NULL);
+(137, '2025-11-15 23:31:00', 1, NULL, NULL),
+(138, '2025-11-15 23:31:32', 0, NULL, NULL),
+(139, '2025-11-15 23:35:43', 0, NULL, 113),
+(140, '2025-11-15 23:36:01', 1, NULL, 113),
+(141, '2025-11-16 00:07:43', 0, NULL, 114),
+(142, '2025-11-16 00:07:48', 1, NULL, 114),
+(143, '2025-11-16 00:09:56', 0, NULL, 115),
+(144, '2025-11-16 00:10:16', 1, NULL, 115),
+(145, '2025-11-16 00:11:08', 0, NULL, 116),
+(146, '2025-11-16 00:11:21', 1, NULL, 116),
+(147, '2025-11-16 15:03:41', 0, NULL, NULL),
+(148, '2025-11-16 15:03:52', 1, NULL, NULL),
+(149, '2025-11-16 15:04:52', 0, NULL, NULL),
+(150, '2025-11-16 15:04:58', 1, NULL, NULL),
+(151, '2025-11-16 15:23:39', 0, NULL, NULL),
+(152, '2025-11-16 16:12:34', 0, NULL, NULL),
+(153, '2025-11-16 16:12:51', 1, NULL, NULL),
+(154, '2025-11-16 16:13:16', 0, NULL, NULL),
+(155, '2025-11-16 16:17:25', 1, NULL, NULL),
+(156, '2025-11-16 16:24:46', 0, NULL, NULL),
+(157, '2025-11-16 16:24:56', 1, NULL, NULL),
+(158, '2025-11-16 18:03:40', 0, NULL, NULL),
+(159, '2025-11-16 18:03:55', 1, NULL, NULL),
+(160, '2025-11-16 18:53:57', 0, NULL, NULL),
+(161, '2025-11-16 23:06:57', 0, NULL, NULL),
+(162, '2025-11-17 01:00:25', 0, NULL, 117),
+(163, '2025-11-17 13:44:08', 0, NULL, 118),
+(164, '2025-11-17 13:44:26', 0, NULL, 119),
+(165, '2025-11-17 14:32:53', 1, NULL, 119),
+(166, '2025-11-17 14:36:27', 0, NULL, 120),
+(167, '2025-11-17 14:36:48', 1, NULL, 120),
+(168, '2025-11-17 14:36:51', 0, NULL, 121),
+(169, '2025-11-17 14:37:09', 1, NULL, 121),
+(170, '2025-11-17 14:37:45', 1, NULL, NULL),
+(171, '2025-11-17 14:37:59', 0, NULL, NULL),
+(172, '2025-11-17 14:54:07', 0, NULL, 122),
+(173, '2025-11-17 17:26:07', 1, NULL, 118),
+(174, '2025-11-17 17:31:11', 1, NULL, NULL),
+(175, '2025-11-17 17:31:13', 0, NULL, NULL),
+(176, '2025-11-17 17:40:19', 0, NULL, NULL),
+(177, '2025-11-17 17:40:42', 1, NULL, NULL),
+(178, '2025-11-17 17:41:06', 0, NULL, 123),
+(179, '2025-11-17 17:41:21', 1, NULL, 123),
+(180, '2025-11-19 07:35:05', 0, NULL, 124),
+(181, '2025-11-19 07:36:33', 1, NULL, 124),
+(182, '2025-11-19 07:36:46', 1, NULL, 117),
+(183, '2025-11-19 07:37:02', 0, NULL, 125),
+(184, '2025-11-19 07:38:37', 0, 12312, NULL),
+(185, '2025-11-19 07:39:11', 0, NULL, NULL),
+(186, '2025-11-19 07:39:44', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -140,9 +287,7 @@ CREATE TABLE `guardia` (
 --
 
 INSERT INTO `guardia` (`id_guardia`, `nombre`, `apellido`, `curp`, `telefono`, `turno`, `estado`) VALUES
-(5212341, 'Angel', 'Rivera', 'CARE341297JIFRFGW2', '6461442234', 'vespertino', 'activo'),
-(5432123, 'Memo', 'Memin', 'CARE341297JIFRFGW2', '6643294832', 'matutino', 'inactivo'),
-(6573421, 'Bladimir', 'Vergara', 'FARE050820HBCBDRA3', '2353245522', 'matutino', 'activo');
+(23523435, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Matutino', 'activo');
 
 -- --------------------------------------------------------
 
@@ -188,7 +333,7 @@ CREATE TABLE `personal` (
 --
 
 INSERT INTO `personal` (`id_personal`, `nombre`, `apellido`, `curp`, `telefono`, `area`, `turno`) VALUES
-(890973, 'Doris', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'matutino');
+(890973, 'Doris Berenice', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'Matutino');
 
 -- --------------------------------------------------------
 
@@ -213,7 +358,7 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id_proveedor`, `nombre`, `apellido`, `razon_social`, `rfc`, `telefono`, `correo`, `tipo_servicio`, `empresa`) VALUES
-(7898543, 'Miguel', 'Villalobos', 'S.A. de C.V.', 'ABC1234567NJ', '6461238664', 'miguelin@desinformador.com', 'Desinformacion', 'Desinformadores');
+(2984723, 'Ceciliaaaa', 'Cabrera Rodríguez', 'S.A. de C.V.', 'GDA754234KFG', '6462144521', 'cecilia@twins.com', 'Flores', 'Twins S.A de C.V');
 
 -- --------------------------------------------------------
 
@@ -264,14 +409,13 @@ CREATE TABLE `vehiculo` (
 --
 
 INSERT INTO `vehiculo` (`rfid`, `tipo_vehiculo`, `marca`, `modelo`, `año`, `color`, `placa`, `id_docente`, `no_control`, `id_personal`, `id_guardia`, `id_proveedor`, `id_administrativo`) VALUES
-(12312, 'motocicleta', 'BMW', 'Jetta', 2009, 'Celeste', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 984123),
-(45645, 'automovil', 'Fiat', 'Jetta', 2006, 'Rojo', 'IOHG4F', 6324, NULL, NULL, NULL, NULL, NULL),
-(132454, 'camion', 'Toyota', 'Versa', 2018, 'Rojo', 'SFLLASD', NULL, NULL, NULL, 5212341, NULL, NULL),
-(234134, 'camion', 'otro', 'Versa', 2004, 'Azul', '2112312', NULL, NULL, NULL, 5432123, NULL, NULL),
+(12312, 'Automovil', 'BMW', 'Jetta', 2015, 'Turquesa', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 984123),
+(181100, 'automovil', 'Volkswagen', 'Versa', 2017, 'Azul', 'FSA3RASF', NULL, NULL, NULL, NULL, 2984723, NULL),
 (749234, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 890973, NULL, NULL, NULL),
-(8979687, 'motocicleta', 'BMW', 'Corolla', 1999, 'Vino', 'JHSFE313', NULL, '23760769', NULL, NULL, NULL, NULL),
-(9008885, 'camioneta', 'Volkswagen', 'Bocho', 2002, 'Plata', 'WDF3223SD', NULL, NULL, NULL, NULL, 7898543, NULL),
-(325213123, 'motocicleta', 'Chevrolet', 'Bocho', 1992, 'Celeste', '423432', NULL, NULL, NULL, 6573421, NULL, NULL);
+(2134234, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', 4563234, NULL, NULL, NULL, NULL, NULL),
+(3243214, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', 543123, NULL, NULL, NULL, NULL, NULL),
+(8979687, 'Automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'JHSFE313', NULL, '22467012', NULL, NULL, NULL, NULL),
+(181100121, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -285,6 +429,25 @@ CREATE TABLE `visitante` (
   `motivo` text DEFAULT NULL,
   `numero` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `visitante`
+--
+
+INSERT INTO `visitante` (`id_visitante`, `nombre`, `motivo`, `numero`) VALUES
+(113, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 11),
+(114, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 11),
+(115, 'Memo Guzman', 'Reprobar calculo', 19),
+(116, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 16),
+(117, 'Miguel', 'Hacer un proyecto de estacionamiento', 85),
+(118, 'Eric Cabrera Rodriguez', 'Recorger su titulo', 14),
+(119, 'Miguel', 'Porque si', 15),
+(120, 'CECILIA', 'A molestar', 24),
+(121, 'Eric Cabrera', 'Ver a un profe', 24),
+(122, 'Eric Cabrera Rodriguez', 'Ver a un profe', 12),
+(123, 'Cecilia', 'Dejar Flores', 18),
+(124, 'Angel', 'Jugar Smash', 23),
+(125, 'Angel', 'Jugar Smash', 23);
 
 --
 -- Índices para tablas volcadas
@@ -374,7 +537,7 @@ ALTER TABLE `visitante`
 -- AUTO_INCREMENT de la tabla `estacionamiento`
 --
 ALTER TABLE `estacionamiento`
-  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
@@ -398,7 +561,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `visitante`
 --
 ALTER TABLE `visitante`
-  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- Restricciones para tablas volcadas
