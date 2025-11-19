@@ -23,14 +23,10 @@ if ($res->num_rows == 1) {
     $row = $res->fetch_assoc();
 
     // Validación por rol
-    if ($row["rol"] == "admin") {
-        header("Location: ../panelAdmin/admin.html");
-        exit;
-    } 
-    else if ($row["rol"] == "guardia") {
+    if ($row["rol"] == "guardia") {
         header("Location: ../panelGuardia/guardia.html");
         exit;
-    }
+    } 
 } 
 else {
     echo "<script>

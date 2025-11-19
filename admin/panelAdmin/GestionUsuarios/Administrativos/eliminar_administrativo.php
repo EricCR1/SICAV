@@ -1,28 +1,12 @@
 <?php
-include 'conexion.php';
+include "conexion.php";
 
-$id = $_GET['id'] ?? '';
-if (empty($id)) {
-    echo "ID faltante.";
-    exit;
-}
+$id = isset($_GET["id"]) ? mysqli_real_escape_string($conn, $_GET["id"]) : '';
 
-$conn->begin_transaction();
-try {
-    // eliminar vehiculos asociados
-    $stmtV = $conn->prepare("DELETE FROM vehiculo WHERE id_administrativo = ?");
-    $stmtV->bind_param("s", $id);
-    $stmtV->execute();
+if (empty($id)) { echo "Falta id"; exit; }
 
-    // eliminar administrativo
-    $stmtA = $conn->prepare("DELETE FROM administrativo WHERE id_administrativo = ?");
-    $stmtA->bind_param("s", $id);
-    $stmtA->execute();
+$conn->query("DELETE FROM administrativo WHERE id_administrativo='$id'");
 
-    $conn->commit();
-    echo "✅ Administrativo eliminado.";
-} catch (Exception $e) {
-    $conn->rollback();
-    echo "Error: " . $e->getMessage();
-}
+echo ($conn->affected_rows>0) ? "Administrativo eliminado." : "No se encontró administrativo con ese id.";
 ?>
+

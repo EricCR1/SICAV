@@ -2,13 +2,12 @@ Base de datos llamada = ite
 usuario = root
 password = ''
 
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-11-2025 a las 19:12:20
+-- Tiempo de generación: 19-11-2025 a las 22:25:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -137,11 +136,17 @@ CREATE TABLE `administrativo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `administrativo`
+-- Disparadores `administrativo`
 --
+DELIMITER $$
+CREATE TRIGGER `trg_delete_administrativo` BEFORE DELETE ON `administrativo` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_administrativo = OLD.id_administrativo);
 
-INSERT INTO `administrativo` (`id_administrativo`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `area`, `estado`) VALUES
-(984123, 'Bladimir', 'Nava', 'XADS124533GSD', '2025-11-05', 'bladi@gmail.com', '6461073462', 'RH', 'activo');
+  DELETE FROM vehiculo WHERE id_administrativo = OLD.id_administrativo;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -164,11 +169,19 @@ CREATE TABLE `alumno` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `alumno`
+-- Disparadores `alumno`
 --
+DELIMITER $$
+CREATE TRIGGER `trg_delete_alumno` BEFORE DELETE ON `alumno` FOR EACH ROW BEGIN
+  -- borrar historial de estacionamiento de los RFIDs de ese alumno
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE no_control = OLD.no_control);
 
-INSERT INTO `alumno` (`no_control`, `nombre`, `apellido`, `curp`, `f_nacimiento`, `correo`, `telefono`, `grado`, `grupo`, `carrera`, `estado`) VALUES
-('22467012', 'Joseee', 'Sanchez', 'DGAD031208HSDHJJME', '2006-02-25', 'jose@gmail.com', '6462748131', 11, 'B', 'Ingeniería en Sistemas Co', 'activo');
+  -- borrar vehículos asociados al alumno
+  DELETE FROM vehiculo WHERE no_control = OLD.no_control;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -189,12 +202,17 @@ CREATE TABLE `docente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `docente`
+-- Disparadores `docente`
 --
+DELIMITER $$
+CREATE TRIGGER `trg_delete_docente` BEFORE DELETE ON `docente` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_docente = OLD.id_docente);
 
-INSERT INTO `docente` (`id_docente`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `especialidad`, `estado`) VALUES
-(543123, 'Angelaa', 'Rodriguez', 'SFAS124213124', '2005-06-14', 'jose@gmail.com', '6461480335', 'Matematicas', 'activo'),
-(4563234, 'Eric', 'Cabrera', 'XADS124533GSD', '2004-02-10', 'eric@gmail.com', '6461480335', 'Matematicas', 'activo');
+  DELETE FROM vehiculo WHERE id_docente = OLD.id_docente;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -262,9 +280,24 @@ INSERT INTO `estacionamiento` (`no_registro`, `fecha`, `accion`, `rfid`, `id_vis
 (181, '2025-11-19 07:36:33', 1, NULL, 124),
 (182, '2025-11-19 07:36:46', 1, NULL, 117),
 (183, '2025-11-19 07:37:02', 0, NULL, 125),
-(184, '2025-11-19 07:38:37', 0, 12312, NULL),
 (185, '2025-11-19 07:39:11', 0, NULL, NULL),
-(186, '2025-11-19 07:39:44', 1, NULL, NULL);
+(186, '2025-11-19 07:39:44', 1, NULL, NULL),
+(187, '2025-11-19 11:33:50', 0, 8979687, NULL),
+(188, '2025-11-19 11:33:59', 1, 8979687, NULL),
+(189, '2025-11-19 11:34:02', 0, 8979687, NULL),
+(190, '2025-11-19 11:34:03', 1, 8979687, NULL),
+(191, '2025-11-19 11:47:44', 0, 3243214, NULL),
+(192, '2025-11-19 11:47:47', 1, 3243214, NULL),
+(193, '2025-11-19 11:47:49', 0, 3243214, NULL),
+(194, '2025-11-19 11:47:51', 1, 3243214, NULL),
+(195, '2025-11-19 11:47:55', 0, 3243214, NULL),
+(196, '2025-11-19 11:49:11', 1, 3243214, NULL),
+(197, '2025-11-19 11:56:06', 0, NULL, NULL),
+(198, '2025-11-19 11:56:08', 1, NULL, NULL),
+(199, '2025-11-19 11:56:09', 0, NULL, NULL),
+(200, '2025-11-19 11:56:13', 1, NULL, NULL),
+(201, '2025-11-19 11:56:14', 0, NULL, NULL),
+(202, '2025-11-19 11:56:16', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -288,6 +321,19 @@ CREATE TABLE `guardia` (
 
 INSERT INTO `guardia` (`id_guardia`, `nombre`, `apellido`, `curp`, `telefono`, `turno`, `estado`) VALUES
 (23523435, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Matutino', 'activo');
+
+--
+-- Disparadores `guardia`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_guardia` BEFORE DELETE ON `guardia` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_guardia = OLD.id_guardia);
+
+  DELETE FROM vehiculo WHERE id_guardia = OLD.id_guardia;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -333,7 +379,20 @@ CREATE TABLE `personal` (
 --
 
 INSERT INTO `personal` (`id_personal`, `nombre`, `apellido`, `curp`, `telefono`, `area`, `turno`) VALUES
-(890973, 'Doris Berenice', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'Matutino');
+(89345678, 'Doris Berenice', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'Matutino');
+
+--
+-- Disparadores `personal`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_personal` BEFORE DELETE ON `personal` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_personal = OLD.id_personal);
+
+  DELETE FROM vehiculo WHERE id_personal = OLD.id_personal;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -354,11 +413,17 @@ CREATE TABLE `proveedor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `proveedor`
+-- Disparadores `proveedor`
 --
+DELIMITER $$
+CREATE TRIGGER `trg_delete_proveedor` BEFORE DELETE ON `proveedor` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_proveedor = OLD.id_proveedor);
 
-INSERT INTO `proveedor` (`id_proveedor`, `nombre`, `apellido`, `razon_social`, `rfc`, `telefono`, `correo`, `tipo_servicio`, `empresa`) VALUES
-(2984723, 'Ceciliaaaa', 'Cabrera Rodríguez', 'S.A. de C.V.', 'GDA754234KFG', '6462144521', 'cecilia@twins.com', 'Flores', 'Twins S.A de C.V');
+  DELETE FROM vehiculo WHERE id_proveedor = OLD.id_proveedor;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -409,13 +474,10 @@ CREATE TABLE `vehiculo` (
 --
 
 INSERT INTO `vehiculo` (`rfid`, `tipo_vehiculo`, `marca`, `modelo`, `año`, `color`, `placa`, `id_docente`, `no_control`, `id_personal`, `id_guardia`, `id_proveedor`, `id_administrativo`) VALUES
-(12312, 'Automovil', 'BMW', 'Jetta', 2015, 'Turquesa', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 984123),
-(181100, 'automovil', 'Volkswagen', 'Versa', 2017, 'Azul', 'FSA3RASF', NULL, NULL, NULL, NULL, 2984723, NULL),
-(749234, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 890973, NULL, NULL, NULL),
-(2134234, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', 4563234, NULL, NULL, NULL, NULL, NULL),
-(3243214, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', 543123, NULL, NULL, NULL, NULL, NULL),
-(8979687, 'Automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'JHSFE313', NULL, '22467012', NULL, NULL, NULL, NULL),
-(181100121, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL);
+(998877, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 89345678, NULL, NULL, NULL),
+(3243214, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', NULL, NULL, NULL, NULL, NULL, NULL),
+(8979687, 'Automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'JHSFE313', NULL, NULL, NULL, NULL, NULL, NULL),
+(987654321, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -537,7 +599,7 @@ ALTER TABLE `visitante`
 -- AUTO_INCREMENT de la tabla `estacionamiento`
 --
 ALTER TABLE `estacionamiento`
-  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
