@@ -180,11 +180,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_carro->execute();
 
         $conn->commit();
-        echo "✅ Registro exitoso de $tipo_usuario y su vehículo.";
+        echo "<script>
+        alert('Registro Correcto');
+            window.history.back();
+          </script>";
 
     } catch (Exception $e) {
-        $conn->rollback();
-        echo "❌ Error: " . $e->getMessage();
+         $conn->rollback();
+
+    $error = addslashes($e->getMessage()); // evitar romper el script
+    echo "<script>
+            alert('❌ Error: $error');
+            window.history.back();
+          </script>";
     }
 }
 ?>
