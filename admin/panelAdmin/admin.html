@@ -57,8 +57,7 @@
                 </select>
                 <input type="text" id="buscar-visitante" placeholder="Buscar por 'nombre' o '#'">
                 <button id="btn-buscar-visitante" class="btn btn-primary">🔍 Buscar</button>
-                <button class="btn btn-secondary" onclick="exportarVisitantesExcel()">📊 Exportar Excel</button>
-                <button class="btn btn-secondary" onclick="generarReporteVisitantes()">📄 Generar Reporte</button>
+                <button class="btn btn-secondary" onclick="exportarVisitantesPDF()">Exportar Visitantes PDF</button>
             </div>
 
             <div class="table-container">
@@ -133,8 +132,9 @@
                     <option value="1">Inactivos</option>
                 </select>
                 <button class="btn btn-success" onclick="abrirModalUsuario()">➕ Agregar Usuario</button>
-                <button class="btn btn-secondary" onclick="exportarUsuariosExcel()">📊 Exportar Excel</button>
                 <button class="btn btn-secondary" onclick="location.href='GestionUsuarios/menu.html'">Gestionar Usuarios👤</button>
+                <button class="btn btn-secondary" onclick="exportarPDF()">Exportar Registros</button>
+
             </div>
 
             <div class="table-container">
@@ -715,6 +715,7 @@
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
                 <button type="submit" class="btn btn-primary" form="form-usuario">Guardar Usuario</button>
+
                 
             </div>
         </div>

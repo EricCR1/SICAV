@@ -1,3 +1,45 @@
+window.exportarPDF = async function () {
+    try {
+        const res = await fetch("exportarPDF.php");
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "reporte.pdf"; 
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+
+    } catch (err) {
+        console.error("Error al exportar PDF:", err);
+        alert("❌ No se pudo generar el PDF.");
+    }
+}
+
+ window.exportarVisitantesPDF = async function() {
+    try {
+        const res = await fetch("exportarVisitantesPDF.php");
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Visitantes_Hoy.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+    } catch (err) {
+        console.error("Error al exportar visitantes PDF:", err);
+        alert("❌ No se pudo generar el PDF de visitantes.");
+    }
+}
+
+
 // --- Cambiar Sección ---
 function mostrarSeccion(seccion) {
     // Ocultar todas las secciones
