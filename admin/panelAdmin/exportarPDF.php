@@ -8,7 +8,7 @@ use Dompdf\Options;
 $options = new Options();
 $options->set('isRemoteEnabled', true);
 $dompdf = new Dompdf($options);
-
+date_default_timezone_set("America/Tijuana");
 // Conexión BD
 include "conexion.php";
 

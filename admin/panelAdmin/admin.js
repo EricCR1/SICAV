@@ -21,7 +21,7 @@ window.exportarPDF = async function () {
 
  window.exportarVisitantesPDF = async function() {
     try {
-        const res = await fetch("exportarVisitantesPDF.php");
+        const res = await fetch("exportarPDF_visitantes.php");
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
 

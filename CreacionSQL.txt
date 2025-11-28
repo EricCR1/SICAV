@@ -3,9 +3,14 @@ usuario = root
 password = ''
 
 Se instala 'Composer' 
-
 https://getcomposer.org/download/
 Descarga el archivo Composer-Setup.exe
+
+
+pip install pyserial
+(comando para empezar abrir un puerto serial y prender leds) 
+
+
 
 -- phpMyAdmin SQL Dump
 -- version 5.2.1

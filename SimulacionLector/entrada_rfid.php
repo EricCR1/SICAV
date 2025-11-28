@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         echo "✅ Entrada registrada correctamente.";
 
+        // // ---------- Ejecutar Python para activar el LED ----------
+        // $command = "python arduino_led.py";
+        // exec($command);
+
     } catch (mysqli_sql_exception $e) {
 
         // Mensaje de error enviado desde SIGNAL

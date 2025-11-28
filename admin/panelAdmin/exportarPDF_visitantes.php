@@ -7,7 +7,7 @@ use Dompdf\Options;
 $options = new Options();
 $options->set('isRemoteEnabled', true);
 $dompdf = new Dompdf($options);
-
+date_default_timezone_set("America/Tijuana");
 include "conexion.php";
 
 // 🔹 Fecha actual para el título
@@ -32,7 +32,7 @@ $res = $conn->query($sql);
 
 // 🔹 Construir HTML del PDF
 $html = "
-<h2 style='text-align:center;'>Reporte de Visitantes – ($fechaHoy)</h2>
+<h2 style='text-align:center;'>Reporte de Visitantes – $fechaHoy</h2>
 <table border='1' width='100%' style='border-collapse: collapse; font-size:12px;'>
 <tr>
 <th>Número</th>
