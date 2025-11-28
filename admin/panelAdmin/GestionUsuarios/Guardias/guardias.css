@@ -69,3 +69,27 @@ input, select {
     padding: 8px;
     margin-top: 5px;
 }
+
+.modal-content {
+    background: white;
+    width: 450px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 8px;
+
+    max-height: 85vh;          /* Limita el tamaño del modal */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-scroll {
+    overflow-y: auto;          /* Activa scroll interno */
+    max-height: 70vh;          /* Área desplazable */
+    padding-right: 10px;       /* Evita que el scroll tape texto */
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    text-align: right;
+    margin-top: 10px;
+}

@@ -34,67 +34,72 @@
 <!-- MODAL -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h2 id="modal-titulo">Nuevo Personal</h2>
 
-        <form id="form-personal">
-            <input type="hidden" id="modo" name="modo">
+        <div class="modal-scroll">
+            <h2 id="modal-titulo">Nuevo Personal</h2>
 
-            <label>ID Personal</label>
-            <input type="text" id="id_personal" name="id_personal" required>
+            <form id="form-personal">
+                <input type="hidden" id="modo" name="modo">
 
-            <label>Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
+                <label>ID Personal</label>
+                <input type="text" id="id_personal" name="id_personal" required>
 
-            <label>Apellido</label>
-            <input type="text" id="apellido" name="apellido" required>
+                <label>Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-            <label>CURP</label>
-            <input type="text" id="curp" name="curp" required>
+                <label>Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
 
-            <label>Teléfono</label>
-            <input type="text" id="telefono" name="telefono">
+                <label>CURP</label>
+                <input type="text" id="curp" name="curp" required>
 
-            <label>Área</label>
-            <input type="text" id="area" name="area">
+                <label>Teléfono</label>
+                <input type="text" id="telefono" name="telefono">
 
-            <label>Turno</label>
-            <select id="turno" name="turno">
-                <option value="Matutino">Matutino</option>
-                <option value="Vespertino">Vespertino</option>
-                <option value="Nocturno">Nocturno</option>
-            </select>
+                <label>Área</label>
+                <input type="text" id="area" name="area">
 
-            <hr>
-            <h3>Datos del Vehículo</h3>
+                <label>Turno</label>
+                <select id="turno" name="turno">
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Nocturno">Nocturno</option>
+                </select>
 
-            <label>RFID</label>
-            <input type="text" id="rfid" name="rfid">
+                <hr>
+                <h3>Datos del Vehículo</h3>
 
-            <label>Tipo de vehículo</label>
-            <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
+                <label>RFID</label>
+                <input type="text" id="rfid" name="rfid">
 
-            <label>Marca</label>
-            <input type="text" id="marca" name="marca">
+                <label>Tipo de vehículo</label>
+                <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
 
-            <label>Modelo</label>
-            <input type="text" id="modelo" name="modelo">
+                <label>Marca</label>
+                <input type="text" id="marca" name="marca">
 
-            <label>Año</label>
-            <input type="text" id="año" name="año">
+                <label>Modelo</label>
+                <input type="text" id="modelo" name="modelo">
 
-            <label>Color</label>
-            <input type="text" id="color" name="color">
+                <label>Año</label>
+                <input type="text" id="año" name="año">
 
-            <label>Placa</label>
-            <input type="text" id="placa" name="placa">
+                <label>Color</label>
+                <input type="text" id="color" name="color">
 
-            <div class="modal-buttons">
-                <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
-                <button type="submit" class="btn guardar">Guardar</button>
-            </div>
-        </form>
+                <label>Placa</label>
+                <input type="text" id="placa" name="placa">
+            </form>
+        </div>
+
+        <div class="modal-buttons">
+            <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
+            <button type="submit" form="form-personal" class="btn guardar">Guardar</button>
+        </div>
+
     </div>
 </div>
+
 
 <script src="personal.js"></script>
 </body>

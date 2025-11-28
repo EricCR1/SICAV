@@ -27,3 +27,94 @@ hr{border:none;border-top:1px solid #eef2f6;margin:12px 0}
 .veh-buttons{margin:8px 0}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.veh-row{grid-template-columns:1fr 1fr}}
+
+/* ----------- RESPONSIVE GENERAL ------------ */
+
+@media(max-width: 900px) {
+  .page {
+    padding: 12px;
+  }
+}
+
+/* ----------- TABLA RESPONSIVA ------------ */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 800px; /* Mantener estructura pero scrollable */
+}
+
+/* ----------- MODAL RESPONSIVO ------------ */
+
+@media(max-width: 800px) {
+  .modal-panel {
+    max-width: 95%;
+    padding: 14px;
+  }
+}
+
+/* Grid del formulario → de 2 columnas a 1 columna en pantallas pequeñas */
+@media(max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ----------- VEHÍCULOS RESPONSIVO ------------ */
+
+@media(max-width: 720px) {
+  .veh-row {
+    grid-template-columns: 1fr 1fr; /* 2 columnas */
+    gap: 6px;
+  }
+
+  /* Campos se expanden a 100% */
+  .veh-row input {
+    width: 100%;
+  }
+
+  /* Botón eliminar ocupa toda la fila */
+  .veh-remove {
+    grid-column: span 2;
+  }
+}
+
+/* ----------- HEADER RESPONSIVO ------------ */
+
+@media(max-width: 600px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  #btn-nuevo {
+    width: 100%;
+  }
+}
+
+/* ----------- BOTONES EN EL MODAL ------------ */
+
+@media(max-width: 600px) {
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}
+
+/* ----- SCROLL INTERNO DEL MODAL ----- */
+
+.modal {
+  overflow: hidden; /* evitar que todo el fondo se mueva */
+}
+
+.modal-panel {
+  max-height: 90vh;   /* nunca más alto que la pantalla */
+  overflow-y: auto;   /* scroll interno */
+  padding-right: 10px; /* espacio para el scroll */
+}

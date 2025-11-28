@@ -81,3 +81,22 @@ button {
     background: #007bff;
     color: white;
 }
+
+.modal-content {
+    background: white;
+    width: 40%;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+
+    max-height: 85vh;    /* altura máxima del modal */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-scroll {
+    overflow-y: auto;    /* scroll interno */
+    max-height: 70vh;    /* evita que crezca demasiado */
+    padding-right: 10px; /* evita que el scroll tape contenido */
+    margin-bottom: 15px;
+}

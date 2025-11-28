@@ -33,69 +33,73 @@
 <!-- MODAL -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h2 id="modal-titulo">Nuevo Proveedor</h2>
 
-        <form id="form-proveedor">
-            <input type="hidden" id="modo" name="modo">
+        <div class="modal-scroll">
+            <h2 id="modal-titulo">Nuevo Proveedor</h2>
 
-            <label>ID Proveedor</label>
-            <input type="text" id="id_proveedor" name="id_proveedor" required>
+            <form id="form-proveedor">
+                <input type="hidden" id="modo" name="modo">
 
-            <label>Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
+                <label>ID Proveedor</label>
+                <input type="text" id="id_proveedor" name="id_proveedor" required>
 
-            <label>Apellido</label>
-            <input type="text" id="apellido" name="apellido" required>
+                <label>Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-            <label>Razón Social</label>
-            <input type="text" id="razon_social" name="razon_social" required>
+                <label>Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
 
-            <label>RFC</label>
-            <input type="text" id="rfc" name="rfc" required>
+                <label>Razón Social</label>
+                <input type="text" id="razon_social" name="razon_social" required>
 
-            <label>Telefono</label>
-            <input type="text" id="telefono" name="telefono" required>
+                <label>RFC</label>
+                <input type="text" id="rfc" name="rfc" required>
 
-            <label>Correo</label>
-            <input type="email" id="correo" name="correo">
+                <label>Telefono</label>
+                <input type="text" id="telefono" name="telefono" required>
 
-            <label>Tipo Servicio</label>
-            <input type="text" id="tipo_servicio" name="tipo_servicio">
+                <label>Correo</label>
+                <input type="email" id="correo" name="correo">
 
-            <label>Empresa</label>
-            <input type="text" id="empresa" name="empresa">
+                <label>Tipo Servicio</label>
+                <input type="text" id="tipo_servicio" name="tipo_servicio">
 
-            <hr>
-            <h3>Datos del Vehículo</h3>
+                <label>Empresa</label>
+                <input type="text" id="empresa" name="empresa">
 
-            <label>RFID</label>
-            <input type="text" id="rfid" name="rfid">
+                <hr>
+                <h3>Datos del Vehículo</h3>
 
-            <label>Tipo Vehículo</label>
-            <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
+                <label>RFID</label>
+                <input type="text" id="rfid" name="rfid">
 
-            <label>Marca</label>
-            <input type="text" id="marca" name="marca">
+                <label>Tipo Vehículo</label>
+                <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
 
-            <label>Modelo</label>
-            <input type="text" id="modelo" name="modelo">
+                <label>Marca</label>
+                <input type="text" id="marca" name="marca">
 
-            <label>Año</label>
-            <input type="text" id="año" name="año">
+                <label>Modelo</label>
+                <input type="text" id="modelo" name="modelo">
 
-            <label>Color</label>
-            <input type="text" id="color" name="color">
+                <label>Año</label>
+                <input type="text" id="año" name="año">
 
-            <label>Placa</label>
-            <input type="text" id="placa" name="placa">
+                <label>Color</label>
+                <input type="text" id="color" name="color">
 
-            <div class="modal-buttons">
-                <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
-                <button type="submit" class="btn guardar">Guardar</button>
-            </div>
-        </form>
+                <label>Placa</label>
+                <input type="text" id="placa" name="placa">
+            </form>
+        </div>
+
+        <div class="modal-buttons">
+            <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
+            <button type="submit" form="form-proveedor" class="btn guardar">Guardar</button>
+        </div>
     </div>
 </div>
+
 
 <script src="proveedores.js"></script>
 </body>

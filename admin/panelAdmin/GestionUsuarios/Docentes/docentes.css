@@ -37,3 +37,13 @@ h1{margin:0;color:var(--accent)}
   .grid{grid-template-columns:1fr}
   .veh .row{grid-template-columns:1fr}
 }
+
+.modal {
+  overflow: hidden; /* evita que toda la página se mueva */
+}
+
+.modal-panel {
+  max-height: 90vh;     /* no excede la pantalla */
+  overflow-y: auto;     /* scroll interno */
+  padding-right: 12px;  /* espacio para scroll */
+}
