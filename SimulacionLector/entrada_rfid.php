@@ -13,8 +13,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "✅ Entrada registrada correctamente.";
 
         // // ---------- Ejecutar Python para activar el LED ----------
-    $command = "python arduino_led.py";
-    exec($command);
+    $python = "C:\\Users\\EricC\\AppData\\Local\\Programs\\Python\\Python313\\python.exe";
+$script = "C:\\xampp\\htdocs\\SICAV\\SimulacionLector\\arduino_ledEntrada.py";
+
+$command = "$python $script 2>&1";
+exec($command, $output);
+
+echo "<pre>";
+print_r($output);
+echo "</pre>";
 
     } catch (mysqli_sql_exception $e) {
 
