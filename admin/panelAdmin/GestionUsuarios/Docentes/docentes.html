@@ -13,6 +13,13 @@
       <div class="controls">
         <button class="btn primary" id="btn-nuevo" onclick="abrirModalNuevo()">➕ Agregar Docente</button>
       </div>
+
+      <form action="importarDocente.php" method="POST" enctype="multipart/form-data">
+    
+    <label for="csv">Subir archivo CSV:</label>
+    <input type="file" name="archivo" accept=".csv" required>
+    <button type="submit">Importar Usuarios</button>
+      </form>
     </header>
 
     <section class="table-wrap">

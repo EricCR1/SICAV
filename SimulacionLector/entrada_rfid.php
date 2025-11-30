@@ -19,9 +19,9 @@ $script = "C:\\xampp\\htdocs\\SICAV\\SimulacionLector\\arduino_ledEntrada.py";
 $command = "$python $script 2>&1";
 exec($command, $output);
 
-echo "<pre>";
-print_r($output);
-echo "</pre>";
+// echo "<pre>";
+// print_r($output);
+// echo "</pre>";
 
     } catch (mysqli_sql_exception $e) {
 

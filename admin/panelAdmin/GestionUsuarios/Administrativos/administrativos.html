@@ -11,6 +11,12 @@
     <header class="page-header">
       <h1>Administrativos</h1>
       <button class="btn btn-primary" id="btn-nuevo">➕ Nuevo Administrativo</button>
+      <form action="importarAdministrativo.php" method="POST" enctype="multipart/form-data">
+    
+    <label for="csv">Subir archivo CSV:</label>
+    <input type="file" name="archivo" accept=".csv" required>
+    <button type="submit">Importar Usuarios</button>
+      </form>
     </header>
 
     <section class="table-wrap">
