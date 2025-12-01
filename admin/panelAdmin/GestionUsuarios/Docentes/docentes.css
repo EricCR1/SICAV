@@ -58,10 +58,6 @@
       gap: 12px;
     }
 
-    .top h1::before {
-      content: "👨‍🏫";
-      font-size: 36px;
-    }
 
     .controls {
       display: flex;

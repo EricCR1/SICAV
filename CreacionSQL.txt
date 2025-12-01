@@ -17,7 +17,7 @@ pip install pyserial
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-11-2025 a las 22:25:25
+-- Tiempo de generación: 01-12-2025 a las 03:30:30
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -146,6 +146,22 @@ CREATE TABLE `administrativo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `administrativo`
+--
+
+INSERT INTO `administrativo` (`id_administrativo`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `area`, `estado`) VALUES
+(5001, 'María', 'Salas', 'SALM850321HDG', '1985-03-21', 'maria.salas@ite.mx', '6465551122', 'Recursos Humanos', 'Activo'),
+(5002, 'Carlos', 'Herrera', 'HERC900715HBC', '1990-07-15', 'carlos.herrera@ite.mx', '6465553344', 'Finanzas', 'Activo'),
+(500231, 'María', 'Salas', 'SALM850321HDG', '1985-03-21', 'maria.salas@ite.mx', '6465551122', 'Recursos Humanos', 'Activo'),
+(523002, 'Carlos', 'Herrera', 'HERC900715HBC', '1990-07-15', 'carlos.herrera@ite.mx', '6465553344', 'Finanzas', 'Activo'),
+(3270001, 'Memo', 'Rivera', 'DASE234236452', '2006-11-15', 'eric12@gmail.com', '6462738932', 'Almacén', 'inactivo'),
+(65241231, 'Jorgee', 'Mercado', 'GDA754234KFG', '2010-02-21', 'jose@gmail.com', '4352123566', 'Biblioteca', 'activo'),
+(83424123, 'Doris', 'Cruz', 'GFSD423412512', '2005-02-07', 'doris@gmail.com', '6469848241', 'Almacén', 'activo'),
+(353246222, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Recursos Humanos', 'activo'),
+(652414251, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Servicios Escolares', 'activo'),
+(2147483647, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Control Escolar', 'activo');
+
+--
 -- Disparadores `administrativo`
 --
 DELIMITER $$
@@ -179,6 +195,28 @@ CREATE TABLE `alumno` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `alumno`
+--
+
+INSERT INTO `alumno` (`no_control`, `nombre`, `apellido`, `curp`, `f_nacimiento`, `correo`, `telefono`, `grado`, `grupo`, `carrera`, `estado`) VALUES
+('23760300', 'Eric', 'Cabrera', 'FARE050820HBCBDD53', '2009-06-09', 'eric@gmail.com', '6461480335', 12, 'Semiescola', 'Ingeniería en Sistemas Co', 'activo'),
+('23760752', 'Maria', 'Rodriguez', 'FARW054320HBCBDR53', '2004-02-10', 'bladi@gmail.com', '6461076335', 10, 'A', 'Ingeniería en Sistemas Co', 'activo'),
+('23780124', 'Angel', 'Rivera', 'ARVB040216HBCBDD73', '2004-02-16', 'eric@gmail.com', '646148033', 5, 'A', 'Ingeniería en sistemas co', 'activo'),
+('23780125', 'María', 'López', 'MALM040305MBCPPR02', '2004-03-05', 'maria.lopez@gmail.com', '6465551122', 3, 'B', 'Ingeniería en sistemas co', 'activo'),
+('23780130', 'Luis', 'Pérez', 'LUIP040101HBCSRL21', '2004-01-01', 'luis@gmail.com', '6461112233', 3, 'A', 'ISC', ''),
+('23780131', 'Ana', 'Ruiz', 'ANAR040202MBCSWF12', '2004-02-02', 'ana@gmail.com', '6462223344', 2, 'C', 'IIGE', 'activo'),
+('23780140', 'Marco', 'López', 'MARL040303HBCPRC12', '2004-03-03', 'marco@gmail.com', '6465551122', 1, 'A', 'ISC', 'Activo'),
+('23780141', 'Sofia', 'Mendoza', 'SOFM040404MBCNTL34', '2004-04-04', 'sofia@gmail.com', '6465552233', 2, 'B', 'IIAL', 'Activo'),
+('23780142', 'Carlos', 'Hernandez', 'CARH040505HBCSPL57', '2004-05-05', 'carlos@gmail.com', '6465553344', 3, 'C', 'IECE', 'Activo'),
+('23780143', 'Valeria', 'Reyes', 'VALR040606MBCNYL98', '2004-06-06', 'valeria@gmail.com', '6465554455', 1, 'B', 'ISC', 'Activo'),
+('23780144', 'Jorge', 'Salinas', 'JORS040707HBCNLN21', '2004-07-07', 'jorge@gmail.com', '6465555566', 2, 'A', 'IGE', 'Activo'),
+('23780145', 'Daniela', 'Ramos', 'DANR040808MBCMSL45', '2004-08-08', 'daniela@gmail.com', '6465556677', 3, 'A', 'IIGE', 'Activo'),
+('23780146', 'Ricardo', 'Ortiz', 'RICO040909HBCNRD78', '2004-09-09', 'ricardo@gmail.com', '6465557788', 2, 'C', 'ISC', 'Activo'),
+('23780147', 'Lucia', 'Gomez', 'LUCG041010MBCMXL90', '2004-10-10', 'lucia@gmail.com', '6465558899', 1, 'C', 'IIAL', 'Activo'),
+('23780148', 'Emilio', 'Vargas', 'EMIV041111HBCGRM87', '2004-11-11', 'emilio@gmail.com', '6465559900', 2, 'B', 'IECE', 'Activo'),
+('23780149', 'Karina', 'Cruz', 'KARC041212MBCNRL65', '2004-12-12', 'karina@gmail.com', '6465551011', 3, 'B', 'IGE', 'Activo');
+
+--
 -- Disparadores `alumno`
 --
 DELIMITER $$
@@ -210,6 +248,30 @@ CREATE TABLE `docente` (
   `especialidad` varchar(50) DEFAULT NULL,
   `estado` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `docente`
+--
+
+INSERT INTO `docente` (`id_docente`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `especialidad`, `estado`) VALUES
+(5001, 'Carlos', 'Mendoza', 'MENC800512HBC', '1980-05-12', 'carlos.mendoza@ite.edu', '6462213344', 'Matemáticas', 'Activo'),
+(5002, 'María', 'Lopez', 'LOPM790823MBC', '1979-08-23', 'maria.lopez@ite.edu', '6463319988', 'Arquitectura', 'Activo'),
+(6700, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(12345, 'Juan', 'Pérez', 'PEJJ800101HBC', '1980-01-01', 'juan@gmail.com', '6461112233', 'Matemáticas', 'Activo'),
+(12346, 'Laura', 'Gómez', 'GOML820202MBC', '1982-02-02', 'laura@gmail.com', '6462223344', 'Electrónica', 'Activo'),
+(62004, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67001, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67004, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(543123, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(678954, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(2353241, 'Eric', 'Cabrera', 'KFAR326231212', '2006-06-16', 'eric@gmail.com', '6461073462', 'Matematicas', 'activo'),
+(4563234, 'GuillermoOO', 'Guzman', 'GDA754234KFG', '2005-06-21', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(54312355, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67895411, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(71123233, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(85710153, 'Memo', 'Mendoza', 'BJDF082579241', '2008-02-11', 'miguelin@desinformador.com', '6462348394', 'Matematicas', 'inactivo'),
+(451334234, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(543123233, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo');
 
 --
 -- Disparadores `docente`
@@ -292,22 +354,51 @@ INSERT INTO `estacionamiento` (`no_registro`, `fecha`, `accion`, `rfid`, `id_vis
 (183, '2025-11-19 07:37:02', 0, NULL, 125),
 (185, '2025-11-19 07:39:11', 0, NULL, NULL),
 (186, '2025-11-19 07:39:44', 1, NULL, NULL),
-(187, '2025-11-19 11:33:50', 0, 8979687, NULL),
-(188, '2025-11-19 11:33:59', 1, 8979687, NULL),
-(189, '2025-11-19 11:34:02', 0, 8979687, NULL),
-(190, '2025-11-19 11:34:03', 1, 8979687, NULL),
-(191, '2025-11-19 11:47:44', 0, 3243214, NULL),
-(192, '2025-11-19 11:47:47', 1, 3243214, NULL),
-(193, '2025-11-19 11:47:49', 0, 3243214, NULL),
-(194, '2025-11-19 11:47:51', 1, 3243214, NULL),
-(195, '2025-11-19 11:47:55', 0, 3243214, NULL),
-(196, '2025-11-19 11:49:11', 1, 3243214, NULL),
+(187, '2025-11-19 11:33:50', 0, NULL, NULL),
+(188, '2025-11-19 11:33:59', 1, NULL, NULL),
+(189, '2025-11-19 11:34:02', 0, NULL, NULL),
+(190, '2025-11-19 11:34:03', 1, NULL, NULL),
+(191, '2025-11-19 11:47:44', 0, NULL, NULL),
+(192, '2025-11-19 11:47:47', 1, NULL, NULL),
+(193, '2025-11-19 11:47:49', 0, NULL, NULL),
+(194, '2025-11-19 11:47:51', 1, NULL, NULL),
+(195, '2025-11-19 11:47:55', 0, NULL, NULL),
+(196, '2025-11-19 11:49:11', 1, NULL, NULL),
 (197, '2025-11-19 11:56:06', 0, NULL, NULL),
 (198, '2025-11-19 11:56:08', 1, NULL, NULL),
 (199, '2025-11-19 11:56:09', 0, NULL, NULL),
 (200, '2025-11-19 11:56:13', 1, NULL, NULL),
 (201, '2025-11-19 11:56:14', 0, NULL, NULL),
-(202, '2025-11-19 11:56:16', 1, NULL, NULL);
+(202, '2025-11-19 11:56:16', 1, NULL, NULL),
+(203, '2025-11-21 20:34:12', 0, 65979080, NULL),
+(204, '2025-11-21 20:34:35', 0, NULL, 126),
+(205, '2025-11-21 20:37:35', 0, 987654321, NULL),
+(206, '2025-11-21 20:37:38', 1, 987654321, NULL),
+(207, '2025-11-21 20:37:53', 0, 998877, NULL),
+(208, '2025-11-21 20:37:55', 1, 998877, NULL),
+(209, '2025-11-21 20:42:54', 0, 653423241, NULL),
+(210, '2025-11-22 19:14:40', 0, NULL, 127),
+(211, '2025-11-22 19:14:46', 1, NULL, 122),
+(212, '2025-11-22 21:45:52', 0, NULL, 128),
+(213, '2025-11-22 21:46:15', 0, NULL, 129),
+(214, '2025-11-23 00:48:23', 0, NULL, 130),
+(215, '2025-11-23 00:48:26', 1, NULL, 129),
+(216, '2025-11-23 00:48:29', 1, NULL, 126),
+(217, '2025-11-25 08:10:46', 0, NULL, 131),
+(218, '2025-11-25 08:11:01', 1, NULL, 131),
+(219, '2025-11-25 08:13:54', 0, 641, NULL),
+(220, '2025-11-25 08:14:16', 1, 641, NULL),
+(221, '2025-11-27 09:48:15', 0, 641, NULL),
+(222, '2025-11-27 10:10:07', 1, 641, NULL),
+(223, '2025-11-27 11:02:36', 0, 641, NULL),
+(224, '2025-11-27 11:53:26', 0, NULL, 132),
+(225, '2025-11-27 13:19:49', 1, 641, NULL),
+(226, '2025-11-27 13:19:52', 0, 641, NULL),
+(227, '2025-11-27 21:01:20', 0, 11115, NULL),
+(228, '2025-11-27 21:01:27', 1, 11115, NULL),
+(229, '2025-11-27 21:01:49', 0, NULL, 133),
+(230, '2025-11-27 23:31:43', 1, NULL, 133),
+(231, '2025-11-27 23:31:53', 1, NULL, 128);
 
 -- --------------------------------------------------------
 
@@ -330,7 +421,13 @@ CREATE TABLE `guardia` (
 --
 
 INSERT INTO `guardia` (`id_guardia`, `nombre`, `apellido`, `curp`, `telefono`, `turno`, `estado`) VALUES
-(23523435, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Matutino', 'activo');
+(3001, 'Jorge', 'Mendoza', 'MENJ900102HBCNDL08', '6463312244', 'Matutino', 'activo'),
+(3002, 'Elena', 'Ramos', 'RAME920530MBCSRN03', '6464423355', 'Nocturno', 'Activo'),
+(4662374, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'nocturno', 'inactivo'),
+(5212341, 'Angel', 'Cruz', 'CARE341297JIFRFGW2', '6461238664', 'vespertino', 'activo'),
+(8492341, 'Bladimir', 'Nava', 'VHRN341297JIFRFGW2', '6462643932', 'vespertino', 'inactivo'),
+(23523435, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Matutino', 'activo'),
+(47234235, 'Eric', 'Cabrera', 'CARE050820HBFGARA7', '6461238664', 'matutino', 'activo');
 
 --
 -- Disparadores `guardia`
@@ -389,6 +486,12 @@ CREATE TABLE `personal` (
 --
 
 INSERT INTO `personal` (`id_personal`, `nombre`, `apellido`, `curp`, `telefono`, `area`, `turno`) VALUES
+(266, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(2661, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(4001, 'Sofía', 'Martínez', 'MARS910311MBCNRF07', '6468892211', 'Mantenimiento', 'Matutino'),
+(4002, 'Diego', 'Carrillo', 'CARD950928HBCMRS05', '6467783322', 'Sistemas', 'Vespertino'),
+(45266, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(6732849, 'Edwin', 'Nava', 'GRVE341297JIFRFGW2', '6462738932', 'Mantenimiento', 'vespertino'),
 (89345678, 'Doris Berenice', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'Matutino');
 
 --
@@ -421,6 +524,16 @@ CREATE TABLE `proveedor` (
   `tipo_servicio` varchar(50) DEFAULT NULL,
   `empresa` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`id_proveedor`, `nombre`, `apellido`, `razon_social`, `rfc`, `telefono`, `correo`, `tipo_servicio`, `empresa`) VALUES
+(501, 'Carlos', 'Mendoza', 'Servicios Integrales Mendoza', 'CAME820315HG1', '6641123344', 'carlos.mendoza@sim.com', 'Mantenimiento', 'SIM SA de CV'),
+(502, 'Andrea', 'López', 'Limpieza Profesional López', 'ANLO900522JH3', '6642234455', 'andrea.lopez@lpl.com', 'Limpieza', 'LPL Servicios'),
+(85123, 'Mariaaaaa', 'Rodriguez', 'S. de R.L. de C.V.', 'XADS124533GSD', '6461480335', 'cecilia@twins.com', 'Flores', 'Twins S.A de C.V'),
+(5598543, 'Jesus', 'Guzman', 'S.A. de C.V.', 'RED325125LKN', '6461146234', 'miguelin@desinformador.com', 'Electronica', 'Electronica S.A DE CV');
 
 --
 -- Disparadores `proveedor`
@@ -484,10 +597,68 @@ CREATE TABLE `vehiculo` (
 --
 
 INSERT INTO `vehiculo` (`rfid`, `tipo_vehiculo`, `marca`, `modelo`, `año`, `color`, `placa`, `id_docente`, `no_control`, `id_personal`, `id_guardia`, `id_proveedor`, `id_administrativo`) VALUES
+(641, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 266, NULL, NULL, NULL),
+(6411, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 2661, NULL, NULL, NULL),
+(9001, 'Auto', 'Nissan', 'March', 2019, 'Gris', 'ABC123', 12345, NULL, NULL, NULL, NULL, NULL),
+(9002, 'Moto', 'Honda', 'CBR150', 2020, 'Negro', 'XYZ789', 12346, NULL, NULL, NULL, NULL, NULL),
+(9901, 'Auto', 'Nissan', 'Versa', 2018, 'Azul', 'ABC123', NULL, '23780130', NULL, NULL, NULL, NULL),
+(9902, 'Moto', 'Honda', 'CBR250', 2020, 'Rojo', 'XYZ789', NULL, '23780131', NULL, NULL, NULL, NULL),
+(9910, 'Auto', 'Chevrolet', 'Spark', 2017, 'Blanco', 'JHG231', NULL, '23780140', NULL, NULL, NULL, NULL),
+(9911, 'Auto', 'Kia', 'Rio', 2019, 'Negro', 'TRW540', NULL, '23780141', NULL, NULL, NULL, NULL),
+(9912, 'Moto', 'Yamaha', 'R15', 2021, 'Azul', 'PLM921', NULL, '23780142', NULL, NULL, NULL, NULL),
+(9913, 'Auto', 'Toyota', 'Yaris', 2018, 'Gris', 'KSD442', NULL, '23780143', NULL, NULL, NULL, NULL),
+(9914, 'Auto', 'Hyundai', 'Accent', 2020, 'Rojo', 'DFB882', NULL, '23780144', NULL, NULL, NULL, NULL),
+(9915, 'Auto', 'Mazda', '3', 2021, 'Plata', 'LKU203', NULL, '23780145', NULL, NULL, NULL, NULL),
+(9916, 'Moto', 'Suzuki', 'GSX150', 2019, 'Negro', 'RTE918', NULL, '23780146', NULL, NULL, NULL, NULL),
+(9917, 'Auto', 'Volkswagen', 'Polo', 2016, 'Azul', 'WER651', NULL, '23780147', NULL, NULL, NULL, NULL),
+(9918, 'Auto', 'Ford', 'Fiesta', 2017, 'Rojo', 'MBL762', NULL, '23780148', NULL, NULL, NULL, NULL),
+(9919, 'Auto', 'Honda', 'Civic', 2018, 'Blanco', 'TYU889', NULL, '23780149', NULL, NULL, NULL, NULL),
+(11115, 'automovil', 'BMW', 'Corolla', 2009, 'Marrón', 'asfq2312', 67004, NULL, NULL, NULL, NULL, NULL),
+(11152, 'automovil', 'BMW', 'Corolla', 2009, 'Marrón', 'asfq2312', 62004, NULL, NULL, NULL, NULL, NULL),
+(11312, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, '23760300', NULL, NULL, NULL, NULL),
+(34223, 'motocicleta', 'Honda', 'Jetta', 2002, 'Turquesa', 'SFLLASD', 2353241, NULL, NULL, NULL, NULL, NULL),
+(42123, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, NULL, NULL, NULL, 85123, NULL),
+(44123, 'Automovil', 'Nissan', 'Corola', 2011, 'Azul', '243HGV3', NULL, '23780125', NULL, NULL, NULL, NULL),
+(88001, 'Auto', 'Toyota', 'Corolla', 2019, 'Gris', 'XZT901', 5001, NULL, NULL, NULL, NULL, NULL),
+(88002, 'Pickup', 'Ford', 'Ranger', 2021, 'Blanco', 'PLK442', 5002, NULL, NULL, NULL, NULL, NULL),
+(88101, 'Camioneta', 'Ford', 'Ranger', 2019, 'Blanco', 'XZT452', NULL, NULL, NULL, NULL, 501, NULL),
+(88102, 'Auto', 'Toyota', 'Corolla', 2021, 'Gris', 'LPM903', NULL, NULL, NULL, NULL, 502, NULL),
+(99051, 'Auto', 'Kia', 'Rio', 2018, 'Plateado', 'RIO512', NULL, NULL, NULL, 3001, NULL, NULL),
+(99052, 'Moto', 'Yamaha', 'MT15', 2021, 'Negro', 'YMH210', NULL, NULL, NULL, 3002, NULL, NULL),
+(99101, 'Auto', 'Hyundai', 'Elantra', 2019, 'Gris', 'HLT910', NULL, NULL, 4001, NULL, NULL, NULL),
+(99102, 'Camioneta', 'Toyota', 'Hilux', 2020, 'Blanco', 'TYH550', NULL, NULL, 4002, NULL, NULL, NULL),
+(175979, 'automovil', 'Ford', 'Corolla', 2009, 'Celeste', 'asfq2312', 543123, NULL, NULL, NULL, NULL, NULL),
+(645664, 'motocicleta', 'Subaru', 'Bocho', 2003, 'Celeste', 'WDF3223SD', NULL, NULL, NULL, 5212341, NULL, NULL),
+(672341, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 45266, NULL, NULL, NULL),
+(880101, 'Auto', 'Toyota', 'Corolla', 2019, 'Blanco', 'ABC901', NULL, NULL, NULL, NULL, NULL, 5001),
+(880102, 'Camioneta', 'Ford', 'Ranger', 2020, 'Negro', 'XYZ450', NULL, NULL, NULL, NULL, NULL, 5002),
 (998877, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 89345678, NULL, NULL, NULL),
-(3243214, 'camioneta', 'Chevrolet', 'Jetta', 2005, 'Azul', 'IOHG4F', NULL, NULL, NULL, NULL, NULL, NULL),
-(8979687, 'Automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'JHSFE313', NULL, NULL, NULL, NULL, NULL, NULL),
-(987654321, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL);
+(2894234, 'camion', 'Ford', 'Versa', 2024, 'Verde militar', 'WDF3223SD', NULL, NULL, 6732849, NULL, NULL, NULL),
+(2924813, 'camioneta', 'Mercedes-Benz', 'Bocho', 2003, 'Morado', 'KJHD42', NULL, NULL, NULL, NULL, 5598543, NULL),
+(3242332, 'automovil', 'BMW', 'Corolla', 2005, 'Celeste', 'SDFFDS221', NULL, NULL, NULL, 4662374, NULL, NULL),
+(3452413, 'automovil', 'Audi', 'Corolla', 1997, 'Rosa', 'WDF3223SD', NULL, NULL, NULL, 47234235, NULL, NULL),
+(4564577, 'motocicleta', 'Chevrolet', 'Corolla', 2009, 'Turquesa', 'asfq2312', 54312355, NULL, NULL, NULL, NULL, NULL),
+(8348752, 'motocicleta', 'General Motors', 'Jetta', 2010, 'Bronce', 'SFL42SD', NULL, NULL, NULL, NULL, NULL, 83424123),
+(8708843, 'automovil', 'Mitsubishi', 'Corolla', 2009, 'Verde militar', 'asfq2312', 678954, NULL, NULL, NULL, NULL, NULL),
+(32485123, 'Automovil', 'Nissan', 'Corola', 2009, 'Rojo', '213HGV3', NULL, '23780124', NULL, NULL, NULL, NULL),
+(32523424, 'motocicleta', 'BMW', 'Bocho', 1997, 'Celeste', 'WDF3223SD', NULL, '23760752', NULL, NULL, NULL, NULL),
+(42123123, 'automovil', 'Peugeot', 'Corolla', 2009, 'Celeste', 'asfq2312', 451334234, NULL, NULL, NULL, NULL, NULL),
+(45645664, 'automovil', 'Chevrolet', 'Bocho', 2008, 'Turquesa', 'SFLLASD', NULL, NULL, NULL, NULL, NULL, 3270001),
+(48328491, 'motocicleta', 'Peugeot', 'Corolla', 2009, 'Celeste', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 2147483647),
+(51123123, 'automovil', 'Volkswagen', 'Corolla', 2009, 'Rosa', 'asfq2312', 543123233, NULL, NULL, NULL, NULL, NULL),
+(51123423, 'automovil', 'Volkswagen', 'Corolla', 2009, 'Rosa', 'asfq2312', 71123233, NULL, NULL, NULL, NULL, NULL),
+(65979080, 'motocicleta', 'Chevrolet', 'Corolla', 2009, 'Turquesa', 'asfq2312', 4563234, NULL, NULL, NULL, NULL, NULL),
+(67529341, 'motocicleta', 'Mercedes-Benz', 'Bocho', 2003, 'Verde militar', 'SFLLASD', 85710153, NULL, NULL, NULL, NULL, NULL),
+(87085843, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', 6700, NULL, NULL, NULL, NULL, NULL),
+(88014202, 'Camioneta', 'Ford', 'Ranger', 2020, 'Negro', 'XYZ450', NULL, NULL, NULL, NULL, NULL, 523002),
+(88230101, 'Auto', 'Toyota', 'Corolla', 2019, 'Blanco', 'ABC901', NULL, NULL, NULL, NULL, NULL, 500231),
+(234123123, 'motocicleta', 'Mercedes-Benz', 'Corolla', 2009, 'Celeste', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 652414251),
+(653423241, 'motocicleta', 'Peugeot', 'Corolla', 2004, 'Celeste', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 65241231),
+(832492343, 'automovil', 'Mazda', 'Jetta', 2006, 'Celeste', '743rnt241', NULL, NULL, NULL, 8492341, NULL, NULL),
+(870858431, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', 67001, NULL, NULL, NULL, NULL, NULL),
+(870884311, 'automovil', 'Mitsubishi', 'Corolla', 2009, 'Verde militar', 'asfq2312', 67895411, NULL, NULL, NULL, NULL, NULL),
+(987654321, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL),
+(2147483647, 'motocicleta', 'Mercedes-Benz', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 353246222);
 
 -- --------------------------------------------------------
 
@@ -519,7 +690,15 @@ INSERT INTO `visitante` (`id_visitante`, `nombre`, `motivo`, `numero`) VALUES
 (122, 'Eric Cabrera Rodriguez', 'Ver a un profe', 12),
 (123, 'Cecilia', 'Dejar Flores', 18),
 (124, 'Angel', 'Jugar Smash', 23),
-(125, 'Angel', 'Jugar Smash', 23);
+(125, 'Angel', 'Jugar Smash', 23),
+(126, 'Bladimir', 'Jugar Smash', 21),
+(127, 'Eric Cabrera Rodriguez', 'Reprobar calculo', 1),
+(128, 'Bladimir', 'Jugar Smash', 9),
+(129, 'Eric', 'Dejar Flores', 32),
+(130, 'Juan', 'Porque si', 15),
+(131, 'Eric', 'Recoger papeles', 17),
+(132, 'Eric', 'Recoger papeles', 17),
+(133, 'Doris', 'Porque si', 24);
 
 --
 -- Índices para tablas volcadas
@@ -609,7 +788,7 @@ ALTER TABLE `visitante`
 -- AUTO_INCREMENT de la tabla `estacionamiento`
 --
 ALTER TABLE `estacionamiento`
-  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos`
@@ -633,7 +812,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `visitante`
 --
 ALTER TABLE `visitante`
-  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- Restricciones para tablas volcadas
