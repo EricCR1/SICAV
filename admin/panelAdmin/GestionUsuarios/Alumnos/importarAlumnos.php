@@ -94,9 +94,15 @@ if (($handle = fopen($archivo, "r")) !== FALSE) {
     }
 
     fclose($handle);
-    echo "✔ Importación doble completada correctamente.";
+    echo "<script>
+        alert('Registro Correcto');
+            window.history.back();
+          </script>";
 
 } else {
-    echo "❌ No se pudo abrir el archivo CSV.";
+    echo "<script>
+        alert('No se puedo importar el archivo');
+            window.history.back();
+          </script>";
 }
 ?>

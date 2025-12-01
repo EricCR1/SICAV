@@ -1,7 +1,7 @@
 <?php
 $host = "127.0.0.1"; 
-$user = "root";       // usuario por defecto
-$pass = "";           // contraseña vacía en XAMPP
+$user = "root";       
+$pass = "";          
 $db   = "ite";
 $port = 3306;         
 
