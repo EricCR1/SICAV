@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Entidades</title>
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+<div class="overlay">
+    <div class="panel">
+
+        <h2 class="titulo">ITE - GESTION DE USUARIOS</h2>
+        <p class="subtitulo">Seleccione la categoría que desea administrar</p>
+
+        <div class="botones-container">
+
+            <button class="btn-entidad" onclick="location.href='alumnos/alumnos.html'">
+                Alumnos
+            </button>
+
+            <button class="btn-entidad" onclick="location.href='Docentes/docentes.html'">
+                Docentes
+            </button>
+
+            <button class="btn-entidad" onclick="location.href='Administrativos/administrativos.html'">
+                Administrativos
+            </button>
+
+            <button class="btn-entidad" onclick="location.href='Guardias/guardias.html'">
+                Guardias
+            </button>
+
+            <button class="btn-entidad" onclick="location.href='Personal/personal.html'">
+                Personal
+            </button>
+
+            <button class="btn-entidad" onclick="location.href='Proveedor/proveedor.html'">
+                Proveedores
+            </button>
+
+        </div>
+
+        <button class="btn-cerrar" onclick="location.href='../admin.html'">Cerrar ✖</button>
+    </div>
+</div>
+
+<script>
+function irA(seccion) {
+    alert("Abrir página de: " + seccion);
+    // aquí después rediriges:
+    // window.location.href = "ruta/" + seccion + ".html";
+}
+
+function cerrarMenu() {
+    document.querySelector(".overlay").style.display = "none";
+}
+</script>
+
+</body>
+</html>

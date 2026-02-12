@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestión de Docentes</title>
+  <link rel="stylesheet" href="docentes.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="top">
+      <h1>Docentes</h1>
+      <div class="controls">
+        <button class="btn primary" id="btn-nuevo" onclick="abrirModalNuevo()">➕ Agregar Docente</button>
+      </div>
+
+      <form action="importarDocente.php" method="POST" enctype="multipart/form-data">
+    
+    <label for="csv">Subir archivo CSV:</label>
+    <input type="file" name="archivo" accept=".csv" required>
+    <button type="submit">Importar Usuarios</button>
+      </form>
+    </header>
+
+    <section class="table-wrap">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>ID Docente</th>
+            <th>Nombre</th>
+            <th>RFC</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Especialidad</th>
+            <th>Vehículos</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-docentes">
+          <tr><td colspan="8" class="empty">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-panel">
+      <h2 id="modal-title">Nuevo Docente</h2>
+      <form id="form-docente">
+        <input type="hidden" id="modo" name="modo" value="nuevo">
+
+        <div class="grid">
+          <label>ID Docente <input id="id_docente" name="id_docente" required></label>
+          <label>Nombre <input id="nombre" name="nombre" required></label>
+          <label>Apellido <input id="apellido" name="apellido" required></label>
+          <label>RFC <input id="rfc" name="rfc" required></label>
+          <label>Fecha Nacimiento <input id="f_nacimiento" name="f_nacimiento" type="date"></label>
+          <label>Correo <input id="correo" name="correo" type="email"></label>
+          <label>Teléfono <input id="telefono" name="telefono"></label>
+          <label>Especialidad <input id="especialidad" name="especialidad"></label>
+          <label>Estado
+            <select id="estado" name="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </label>
+        </div>
+
+        <hr>
+
+        <div class="vehiculos">
+          <h3>Vehículos <small>(puede añadir varios)</small></h3>
+          <div id="lista-vehiculos"></div>
+          <div class="veh-btns">
+            <button type="button" class="btn" id="btn-add-veh">➕ Añadir vehículo</button>
+            <button type="button" class="btn warn" id="btn-clear-veh">🗑 Limpiar vehículos</button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn" onclick="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="docentes.js"></script>
+</body>
+</html>

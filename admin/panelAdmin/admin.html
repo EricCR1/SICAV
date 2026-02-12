@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Panel Administrador</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="admin.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Panel de Administración - SICAV</h1>
+            <p>Sistema Integral de Control de Acceso Vehicular</p>
+        </div>
+
+        <!-- Navegación -->
+        <div class="navigation">
+            <button class="nav-btn active" onclick="mostrarSeccion('visitantes')"> 🚗 Gestión de Visitantes </button>
+            <button class="nav-btn" onclick="mostrarSeccion('usuarios-rfid')"> 🪪 Usuarios con RFID </button>
+        </div>
+
+        <!-- Sección de Visitantes -->
+        <div id="seccion-visitantes" class="seccion activa">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-hoy">0</div>
+                    <div>Visitantes Hoy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-semana">0</div>
+                    <div>Visitantes Esta Semana</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-mes">0</div>
+                    <div>Visitantes Este mes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visitantes-activos">0</div>
+                    <div>Visitantes Dentro del Instituto</div>
+                </div>
+                <!-- <div class="stat-card">
+                    <div class="stat-number" id="00000">0</div>
+                    <div>00000</div>
+                </div> -->
+            </div>
+
+            <div class="filters">
+                <input type="date" id="filtro-fecha" placeholder="Filtrar por fecha">
+                <!-- <input type="text" id="buscar-visitantes" placeholder="Buscar por nombre o #"> -->
+                <select id="filtro-estado-visitante">
+                    <option value="">Todos los estados</option>
+                    <option value="0">Entrada</option>
+                    <option value="1">Salida</option>
+                </select>
+                <input type="text" id="buscar-visitante" placeholder="Buscar por 'nombre' o '#'">
+                <button id="btn-buscar-visitante" class="btn btn-primary">🔍 Buscar</button>
+                <button class="btn btn-secondary" onclick="exportarVisitantesPDF()">Exportar Visitantes PDF</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-visitantes">
+                    <thead>
+                        <tr>
+                            <th>Numero asignado</th>
+                            <th>Nombre</th>
+                            <th>Motivo</th>
+                            <th>Fecha/Hora</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-visitantes">
+                        <tr>
+                            <td colspan="5" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" id="paginacion-visitantes"></div>
+        </div>
+
+        <!-- Sección de Usuarios RFID -->
+        <div id="seccion-usuarios-rfid" class="seccion">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-Alumnos">0</div>
+                    <div>Alumnos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Docentes">0</div>
+                    <div>Docentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Administrativos">0</div>
+                    <div>Administrativos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Personal">0</div>
+                    <div>Personal</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Guardias">0</div>
+                    <div>Guardias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="Proveedores">0</div>
+                    <div>Proveedores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalUsuarios">0</div>
+                    <div>Total Usuarios</div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="text" id="buscar-rfid" placeholder="Buscar por nombre">
+                <button class="btn btn-primary" id="btn-buscar">🔍 Buscar</button>
+                <select id="filtro-tipo-usuario">
+                    <option value="">Todos los tipos</option>
+                    <option value="Docente">Docentes</option>
+                    <option value="Alumno">Alumnos</option>
+                    <option value="Administrativo">Administrativos</option>
+                    <option value="Guardia">Guardias</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Proveedor">Proveedores</option>
+                </select>
+                <select id="filtro-estado-usuario">
+                    <option value="">Todos los estados</option>
+                    <option value="0">Activos</option>
+                    <option value="1">Inactivos</option>
+                </select>
+                <button class="btn btn-success" onclick="abrirModalUsuario()">➕ Agregar Usuario</button>
+                <button class="btn btn-secondary" onclick="location.href='GestionUsuarios/menu.html'">👤Gestionar Usuarios</button>
+                <button class="btn btn-secondary" onclick="exportarPDF()">Exportar Registros</button>
+
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-usuarios-rfid">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Perfil</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
+                            <th>Placa</th>
+                            <th>Fecha/Hora</th>
+                            <th>Accion</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla-usuarios">
+                        <tr>
+                            <td colspan="7" class="empty-state">No hay datos cargados</td>
+                        </tr>
+                    </tbody>
+                </table>                
+            </div>
+            <div class="pagination" id="paginacion-usuarios"></div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar usuario -->
+    <div id="modal-usuario" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-titulo">Agregar Usuario RFID</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form action="/SICAV/admin/panelAdmin/guardaar.php" method="post" id="form-usuario">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Número de RFID</label>
+                            <input type="text" id="rfid" name="rfid" placeholder="Ej: 1234567890" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Tipo de Usuario</label>
+                            <select id="tipo-usuario" name="tipo_usuario" required onchange="cambiarCamposUsuario()">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="alumno">Alumno</option>
+                                <option value="docente">Docente</option>
+                                <option value="administrativo">Administrativo</option>
+                                <option value="guardia">Guardia</option>
+                                <option value="personal">Personal</option>
+                                <option value="proveedor">Proveedor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS PARA ALUMNO -->
+                    <div id="campos-alumno" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Alumno</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Número de Control</label>
+                                <input type="text" name="no_control" placeholder="Ej: 23760320" pattern="[0-9]{8}" 
+                                       title="Debe contener exactamente 8 números" required maxlength="8">
+                            </div>
+                            <div class="input-group">
+                                <label>CURP</label>
+                                <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" 
+                                       pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}" 
+                                       title="Formato: 4 letras + 6 números + 6 letras + 2 caracteres alfanuméricos" required maxlength="18">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="date" name="f_nacimiento">
+                            </div>
+                            <div class="input-group">
+                                <label>Correo</label>
+                                <input type="email" name="correo" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                                       title="Debe contener un símbolo @ y un dominio válido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" pattern="[0-9]{10}" 
+                                       title="Debe contener exactamente 10 números" required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Grado</label>
+                                <select name="grado" required>
+                                    <option value="">Seleccionar grado</option>
+                                    <option value="1">1ro</option>
+                                    <option value="2">2do</option>
+                                    <option value="3">3ro</option>
+                                    <option value="4">4to</option>
+                                    <option value="5">5to</option>
+                                    <option value="6">6to</option>
+                                    <option value="7">7mo</option>
+                                    <option value="8">8vo</option>
+                                    <option value="9">9no</option>
+                                    <option value="10">10mo</option>
+                                    <option value="11">11vo</option>
+                                    <option value="12">12vo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Grupo</label>
+                                <select name="grupo" required>
+                                    <option value="">Seleccionar grupo</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="Semiescolarizado">Semiescolarizado</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Carrera</label>
+                                <select name="carrera" required>
+                                    <option value="">Seleccionar carrera</option>
+                                    <option value="Ingeniería en Sistemas Computacionales">Ingeniería en Sistemas Computacionales</option>
+                                    <option value="Ingeniería en Innovación Agrícola Sustentable">Ingeniería en Innovación Agrícola Sustentable</option>
+                                    <option value="Ingeniería Electromecánica">Ingeniería Electromecánica</option>
+                                    <option value="Ingeniería Electrónica">Ingeniería Electrónica</option>
+                                    <option value="Ingeniería en Gestión Empresarial">Ingeniería en Gestión Empresarial</option>
+                                    <option value="Ingeniería Industrial">Ingeniería Industrial</option>
+                                    <option value="Ingeniería Mecatrónica">Ingeniería Mecatrónica</option>
+                                    <option value="Licenciatura en Administración">Licenciatura en Administración</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Estado</label>
+                                <select name="estado">
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                   <!-- CAMPOS PARA DOCENTE -->
+                    <div id="campos-docente" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Docente</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>ID Docente</label>
+                                <input type="text" name="id_docente" placeholder="Ej: 99" required>
+                            </div>
+                            <div class="input-group">
+                                <label>RFC</label>
+                                <input type="text" name="rfc" placeholder="Ej: XAXX010101000" 
+                                    pattern="[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}" 
+                                    title="Formato: 3-4 letras + 6 números + 3 caracteres alfanuméricos" 
+                                    required maxlength="13" class="uppercase">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="date" name="f_nacimiento">
+                            </div>
+                            <div class="input-group">
+                                <label>Correo</label>
+                                <input type="email" name="correo" 
+                                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                                    title="Debe contener un símbolo @ y un dominio válido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" 
+                                    pattern="[0-9]{10}" title="Debe contener exactamente 10 números" 
+                                    required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Especialidad</label>
+                                <input type="text" name="especialidad" placeholder="Ej: Matemáticas, Física, Programación" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Estado</label>
+                                <select name="estado">
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS PARA ADMINISTRATIVO -->
+                    <div id="campos-administrativo" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Administrativo</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>ID Administrativo</label>
+                                <input type="text" name="id_administrativo" placeholder="Ej: ADM001" required>
+                            </div>
+                            <div class="input-group">
+                                <label>RFC</label>
+                                <input type="text" name="rfc" placeholder="Ej: XAXX010101000" 
+                                    pattern="[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}" 
+                                    title="Formato: 3-4 letras + 6 números + 3 caracteres alfanuméricos" 
+                                    required maxlength="13" class="uppercase">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="date" name="f_nacimiento" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Correo</label>
+                                <input type="email" name="correo" 
+                                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                                    title="Debe contener un símbolo @ y un dominio válido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" 
+                                    pattern="[0-9]{10}" title="Debe contener exactamente 10 números" 
+                                    required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Departamento</label>
+                                <select name="departamento" required>
+                                    <option value="">Seleccionar departamento</option>
+                                    <option value="Recursos Humanos">Recursos Humanos</option>
+                                    <option value="Finanzas">Finanzas</option>
+                                    <option value="Administración">Administración</option>
+                                    <option value="Servicios Escolares">Servicios Escolares</option>
+                                    <option value="Vinculación">Vinculación</option>
+                                    <option value="Planeación">Planeación</option>
+                                    <option value="Control Escolar">Control Escolar</option>
+                                    <option value="Biblioteca">Biblioteca</option>
+                                    <option value="Laboratorios">Laboratorios</option>
+                                    <option value="Comunicación">Comunicación</option>
+                                    <option value="Almacén">Almacén</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Estado</label>
+                                <select name="estado">
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS PARA GUARDIA -->
+                    <div id="campos-guardia" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Guardia</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>ID Guardia</label>
+                                <input type="text" name="id_guardia" placeholder="Ej: GUA001" required>
+                            </div>
+                            <div class="input-group">
+                                <label>CURP</label>
+                                <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" 
+                                    pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}" 
+                                    title="Formato: 4 letras + 6 números + 6 letras + 2 caracteres alfanuméricos" 
+                                    required maxlength="18">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" 
+                                    pattern="[0-9]{10}" title="Debe contener exactamente 10 números" 
+                                    required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Turno</label>
+                                <select name="turno" required>
+                                    <option value="">Seleccionar turno</option>
+                                    <option value="matutino">Matutino</option>
+                                    <option value="vespertino">Vespertino</option>
+                                    <option value="nocturno">Nocturno</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Estado</label>
+                                <select name="estado">
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS PARA PERSONAL -->
+                    <div id="campos-personal" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Personal</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>ID Personal</label>
+                                <input type="text" name="id_personal" placeholder="Ej: PER001" required>
+                            </div>
+                            <div class="input-group">
+                                <label>CURP</label>
+                                <input type="text" name="curp" placeholder="Ej: ABC123456DEF789GHI" 
+                                    pattern="[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}" 
+                                    title="Formato: 4 letras + 6 números + 6 letras + 2 caracteres alfanuméricos" 
+                                    required maxlength="18">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" 
+                                    pattern="[0-9]{10}" title="Debe contener exactamente 10 números" 
+                                    required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Área</label>
+                                <select name="area" required>
+                                    <option value="">Seleccionar área</option>
+                                    <option value="Mantenimiento">Mantenimiento</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                    <option value="Cafetería">Cafetería</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Turno</label>
+                                <select name="turno" required>
+                                    <option value="">Seleccionar turno</option>
+                                    <option value="matutino">Matutino</option>
+                                    <option value="vespertino">Vespertino</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAMPOS PARA PROVEEDOR -->
+                    <div id="campos-proveedor" class="campos-especificos" style="display: none;">
+                        <h4>Datos del Proveedor</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>ID Proveedor</label>
+                                <input type="text" name="id_proveedor" placeholder="Ej: PROV001" required>
+                            </div>
+                            <div class="input-group">
+                                <label>RFC</label>
+                                <input type="text" name="rfc" placeholder="Ej: ABC123456DEF" 
+                                    pattern="[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}" 
+                                    title="Formato: 3-4 letras + 6 números + 3 caracteres alfanuméricos" 
+                                    required maxlength="13" class="uppercase">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Apellido</label>
+                                <input type="text" name="apellido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Razón Social</label>
+                                <select name="razon_social" required>
+                                    <option value="">Seleccionar razón social</option>
+                                    <option value="S.A. de C.V.">S.A. de C.V.</option>
+                                    <option value="S. de R.L. de C.V.">S. de R.L. de C.V.</option>
+                                    <option value="S.A.S. de C.V.">S.A.S. de C.V.</option>
+                                    <option value="S.C.">S.C.</option>
+                                    <option value="A.C.">A.C.</option>
+                                    <option value="S. en N.C.">S. en N.C.</option>
+                                    <option value="S. en C. por A.">S. en C. por A.</option>
+                                    <option value="S. de R.L.">S. de R.L.</option>
+                                    <option value="S. de R.L. de I.P.">S. de R.L. de I.P.</option>
+                                    <option value="S. de S.S.">S. de S.S.</option>
+                                    <option value="otra">Otra razón social</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Empresa</label>
+                                <input type="text" name="empresa" placeholder="Ej: Suministros S.A." required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Teléfono</label>
+                                <input type="tel" name="telefono" placeholder="Ej: 4491234567" 
+                                    pattern="[0-9]{10}" title="Debe contener exactamente 10 números" 
+                                    required maxlength="10">
+                            </div>
+                            <div class="input-group">
+                                <label>Correo</label>
+                                <input type="email" name="correo" 
+                                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                                    title="Debe contener un símbolo @ y un dominio válido" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Tipo de Servicio</label>
+                                <input type="text" name="tipo_servicio" placeholder="Ej: Limpieza" required>
+                            </div>
+                            <div class="input-group" id="otra-razon-social-container" style="display: none;">
+                                <label>Especificar Razón Social</label>
+                                <input type="text" name="otra_razon_social" placeholder="Escriba la razón social">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DATOS DEL VEHÍCULO (para todos los tipos) -->
+                    <div id="datos-vehiculo" class="campos-vehiculo">
+                        <h4>Datos del Vehículo</h4>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Tipo de Vehículo</label>
+                                <select name="tipo_vehiculo" required>
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="automovil">Automóvil</option>
+                                    <option value="motocicleta">Motocicleta</option>
+                                    <option value="camioneta">Camioneta</option>
+                                    <option value="camion">Camión</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Marca</label>
+                                <select name="marca" required>
+                                    <option value="">Seleccionar marca</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Volkswagen">Volkswagen</option>
+                                    <option value="General Motors">General Motors</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Kia">Kia</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Mazda">Mazda</option>
+                                    <option value="Fiat">Fiat</option>
+                                    <option value="Renault">Renault</option>
+                                    <option value="Peugeot">Peugeot</option>
+                                    <option value="Chevrolet">Chevrolet</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                    <option value="Audi">Audi</option>
+                                    <option value="Volvo">Volvo</option>
+                                    <option value="Subaru">Subaru</option>
+                                    <option value="Mitsubishi">Mitsubishi</option>
+                                    <option value="Suzuki">Suzuki</option>
+                                    <option value="Dodge">Dodge</option>
+                                    <option value="Chrysler">Chrysler</option>
+                                    <option value="Jeep">Jeep</option>
+                                    <option value="Ram">Ram</option>
+                                    <option value="Buick">Buick</option>
+                                    <option value="Cadillac">Cadillac</option>
+                                    <option value="Infiniti">Infiniti</option>
+                                    <option value="Lexus">Lexus</option>
+                                    <option value="Acura">Acura</option>
+                                    <option value="Lincoln">Lincoln</option>
+                                    <option value="Porsche">Porsche</option>
+                                    <option value="Jaguar">Jaguar</option>
+                                    <option value="Land Rover">Land Rover</option>
+                                    <option value="Mini">Mini</option>
+                                    <option value="Smart">Smart</option>
+                                    <option value="otro">Otra marca</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Modelo</label>
+                                <input type="text" name="modelo" placeholder="Ej: Corolla, Versa, Jetta" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Año</label>
+                                <input type="number" name="año" min="1990" max="2024" placeholder="Ej: 2020" 
+                                    pattern="[0-9]{4}" title="Debe ser un año de 4 dígitos" required maxlength="4">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label>Color</label>
+                                <select name="color" required>
+                                    <option value="">Seleccionar color</option>
+                                    <option value="Blanco">Blanco</option>
+                                    <option value="Negro">Negro</option>
+                                    <option value="Gris">Gris</option>
+                                    <option value="Plata">Plata</option>
+                                    <option value="Azul">Azul</option>
+                                    <option value="Rojo">Rojo</option>
+                                    <option value="Verde">Verde</option>
+                                    <option value="Amarillo">Amarillo</option>
+                                    <option value="Naranja">Naranja</option>
+                                    <option value="Marrón">Marrón</option>
+                                    <option value="Beige">Beige</option>
+                                    <option value="Dorado">Dorado</option>
+                                    <option value="Bronce">Bronce</option>
+                                    <option value="Vino">Vino</option>
+                                    <option value="Morado">Morado</option>
+                                    <option value="Rosa">Rosa</option>
+                                    <option value="Turquesa">Turquesa</option>
+                                    <option value="Celeste">Celeste</option>
+                                    <option value="Verde militar">Verde militar</option>
+                                    <option value="otro">Otro color</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Placa</label>
+                                <input type="text" name="placa" class="uppercase" placeholder="Ej: ABC123" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="reset" class="btn btn-secondary">🗑️ Limpiar Formulario </button>
+                </form>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" form="form-usuario">Guardar Usuario</button>
+
+                
+            </div>
+        </div>
+    </div>
+    
+    <script src="actualizar_estacionamiento.js"></script>
+    <script src="actualizar_visitantes.js"></script>
+
+
+
+</body>
+
+
+</html>

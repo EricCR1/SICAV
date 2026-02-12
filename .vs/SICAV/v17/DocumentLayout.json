@@ -1,17 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\",
+  "WorkspaceRootPath": "C:\\xampp\\htdocs\\SICAV\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\admin\\admin.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\SICAV\\admin\\admin.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:admin\\admin.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\SICAV\\admin\\admin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:admin\\admin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\SICAV\\admin\\admin.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:admin\\admin.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:guardia\\guardia.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:guardia\\guardia.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
@@ -22,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,42 +42,66 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "guardia.html",
-              "DocumentMoniker": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.html",
-              "RelativeDocumentMoniker": "guardia\\guardia.html",
-              "ToolTip": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.html",
-              "RelativeToolTip": "guardia\\guardia.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-09-29T04:12:38.422Z",
+              "DocumentIndex": 0,
+              "Title": "admin.js",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.js",
+              "RelativeDocumentMoniker": "admin\\admin.js",
+              "ToolTip": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.js",
+              "RelativeToolTip": "admin\\admin.js",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-16T01:20:04.868Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "admin.css",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.css",
+              "RelativeDocumentMoniker": "admin\\admin.css",
+              "ToolTip": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.css",
+              "RelativeToolTip": "admin\\admin.css",
+              "ViewState": "AgIAAGwCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-10-16T01:19:59.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "guardia.css",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.css",
+              "RelativeDocumentMoniker": "guardia\\guardia.css",
+              "ToolTip": "C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.css",
+              "RelativeToolTip": "guardia\\guardia.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-09-29T04:12:37.604Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "guardia.css",
-              "DocumentMoniker": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.css",
-              "RelativeDocumentMoniker": "guardia\\guardia.css",
-              "ToolTip": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\guardia\\guardia.css",
-              "RelativeToolTip": "guardia\\guardia.css",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-09-29T04:12:37.604Z",
+              "Title": "admin.html",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.html",
+              "RelativeDocumentMoniker": "admin\\admin.html",
+              "ToolTip": "C:\\xampp\\htdocs\\SICAV\\admin\\admin.html",
+              "RelativeToolTip": "admin\\admin.html",
+              "ViewState": "AgIAACkCAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-09-29T04:11:32.6Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "admin.html",
-              "DocumentMoniker": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\admin\\admin.html",
-              "RelativeDocumentMoniker": "admin\\admin.html",
-              "ToolTip": "C:\\Users\\EricC\\Downloads\\SICAV\\SICAV\\admin\\admin.html",
-              "RelativeToolTip": "admin\\admin.html",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "guardia.html",
+              "DocumentMoniker": "C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.html",
+              "RelativeDocumentMoniker": "guardia\\guardia.html",
+              "ToolTip": "C:\\xampp\\htdocs\\SICAV\\guardia\\guardia.html",
+              "RelativeToolTip": "guardia\\guardia.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-09-29T04:11:32.6Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T04:12:38.422Z"
             }
           ]
         }

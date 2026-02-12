@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Registro de Visitantes</title>
+    <link rel="stylesheet" href="guardia.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Registro de Visitantes</h1>
+            <p>Complete los datos del visitante</p>
+            <div class="status-bar">
+                <span id="fecha-hora"></span>
+                <span class="status-online">● En línea</span>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div id="alert" class="alert"></div>
+
+            <form action="guardar.php" method="post" id="visitanteForm">
+                
+                <!-- Datos personales -->
+                <div class="form-group">
+                    <label class="required">Nombre Completo</label>
+                    <div class="input-group">
+                        <input type="text" name="nombre_completo" placeholder="Nombre completo del visitante" required>
+                    </div>
+                </div>
+
+                <!-- Motivo -->
+                <div class="form-group">
+                    <label class="required">Motivo de la Visita</label>
+                    <div class="input-group">
+                        <input type="text" name="motivo" placeholder="Motivo de la visita" required>
+                    </div>
+                </div>
+
+                <!-- Número asignado -->
+                <div class="form-group">
+                    <label class="required">Número Asignado</label>
+                    <div class="input-group">
+                        <input type="number" name="numero_asignado" placeholder="Número entregado al visitante" required min="1">
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <button type="submit" class="btn btn-primary">
+                    📝 Registrar Visitante
+                </button>
+
+                <div class="quick-actions">
+                    <button type="reset" class="btn btn-secondary">
+                        🗑️ Limpiar Formulario
+                    </button>
+
+                <a href="bajaVisitantes.html" class="btn btn-primary" style="text-decoration:none; text-align:center;">
+                    Visitantes
+                </a>
+                </div>
+
+            </form>
+            <div id="mensaje" style="margin-top:10px; font-weight:bold;"></div>
+
+        </div>
+    </div>
+    <script src="guardia.js"></script>
+</body>
+</html>

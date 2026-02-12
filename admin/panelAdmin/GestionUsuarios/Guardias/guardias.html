@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Guardias</title>
+    <link rel="stylesheet" href="guardias.css">
+</head>
+<body>
+
+<h1>Gestión de Guardias</h1>
+
+<button class="btn crear" onclick="abrirModal()">➕ Agregar Guardia</button>
+<form action="importarGuardia.php" method="POST" enctype="multipart/form-data">
+    
+    <label for="csv">Subir archivo CSV:</label>
+    <input type="file" name="archivo" accept=".csv" required>
+    <button type="submit">Importar Usuarios</button>
+      </form>
+
+<div class="tabla-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID Guardia</th>
+                <th>Nombre</th>
+                <th>CURP</th>
+                <th>Teléfono</th>
+                <th>Turno</th>
+                <th>Placa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-guardias">
+            <tr><td colspan="7">Cargando...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+
+        <div class="modal-scroll">
+            <h2 id="modal-titulo">Nuevo Guardia</h2>
+
+            <form id="form-guardia">
+                <input type="hidden" id="modo" name="modo">
+
+                <label>ID Guardia</label>
+                <input type="text" id="id_guardia" name="id_guardia" required>
+
+                <label>Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label>Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
+
+                <label>CURP</label>
+                <input type="text" id="curp" name="curp" required>
+
+                <label>Teléfono</label>
+                <input type="text" id="telefono" name="telefono">
+
+                <label>Turno</label>
+                <select id="turno" name="turno">
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Nocturno">Nocturno</option>
+                </select>
+
+                <label>Estado</label>
+                <select id="estado" name="estado">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
+
+                <hr>
+
+                <h3>Vehículo</h3>
+
+                <label>RFID</label>
+                <input type="text" id="rfid" name="rfid">
+
+                <label>Tipo de Vehículo</label>
+                <input type="text" id="tipo_vehiculo" name="tipo_vehiculo">
+
+                <label>Marca</label>
+                <input type="text" id="marca" name="marca">
+
+                <label>Modelo</label>
+                <input type="text" id="modelo" name="modelo">
+
+                <label>Año</label>
+                <input type="text" id="año" name="año">
+
+                <label>Color</label>
+                <input type="text" id="color" name="color">
+
+                <label>Placa</label>
+                <input type="text" id="placa" name="placa">
+            </form>
+        </div>
+
+        <div class="modal-buttons">
+            <button type="button" class="btn cancelar" onclick="cerrarModal()">Cancelar</button>
+            <button type="submit" form="form-guardia" class="btn guardar">Guardar</button>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="guardias.js"></script>
+</body>
+</html>

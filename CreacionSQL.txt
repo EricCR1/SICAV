@@ -1,0 +1,842 @@
+Base de datos llamada = ite
+usuario = root
+password = ''
+
+Se instala 'Composer' 
+https://getcomposer.org/download/
+Descarga el archivo Composer-Setup.exe
+
+
+pip install pyserial
+(comando para empezar abrir un puerto serial y prender leds) 
+
+
+
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 01-12-2025 a las 03:30:30
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `ite`
+--
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarEntradaRFID` (IN `p_rfid` VARCHAR(20))   BEGIN
+    DECLARE v_existe INT DEFAULT 0;
+    DECLARE v_ultima_accion CHAR(1);
+    DECLARE v_fecha DATETIME;
+    
+    -- Verificar que el RFID exista en vehículo
+    SELECT COUNT(*) INTO v_existe
+    FROM vehiculo
+    WHERE rfid = p_rfid;
+
+    IF v_existe = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'RFID no existe en la tabla vehiculo';
+    END IF;
+
+    -- Obtener última acción
+    SELECT accion INTO v_ultima_accion
+    FROM estacionamiento
+    WHERE rfid = p_rfid
+    ORDER BY fecha DESC
+    LIMIT 1;
+
+    -- Si la última acción fue entrada (0), bloquear otra entrada
+    IF v_ultima_accion = '0' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El vehículo ya está dentro (último registro fue entrada)';
+    END IF;
+
+    -- Registrar entrada
+    SET v_fecha = NOW();
+
+    INSERT INTO estacionamiento(fecha, accion, rfid)
+    VALUES (v_fecha, '0', p_rfid);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarSalidaRFID` (IN `p_rfid` VARCHAR(20))   BEGIN
+    DECLARE v_existe INT DEFAULT 0;
+    DECLARE v_ultima_accion CHAR(1) DEFAULT NULL;
+    DECLARE v_fecha DATETIME;
+
+    -- 1. Validar que el RFID exista en la tabla vehiculo
+    SELECT COUNT(*) INTO v_existe
+    FROM vehiculo
+    WHERE rfid = p_rfid;
+
+    IF v_existe = 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Este RFID NO está registrado.';
+    END IF;
+
+    -- 2. Obtener último registro en estacionamiento
+    SELECT accion INTO v_ultima_accion
+    FROM estacionamiento
+    WHERE rfid = p_rfid
+    ORDER BY fecha DESC
+    LIMIT 1;
+
+    -- 3. Si no hay registros previos → nunca entró
+    IF v_ultima_accion IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'No se puede registrar salida: nunca registró entrada.';
+    END IF;
+
+    -- 4. Si el último registro fue salida → no permitir otra
+    IF v_ultima_accion = '1' THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'El vehículo YA registró salida.';
+    END IF;
+
+    -- 5. Registrar SALIDA
+    SET v_fecha = NOW();
+
+    INSERT INTO estacionamiento(fecha, accion, rfid)
+    VALUES (v_fecha, '1', p_rfid);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_usuario` (IN `p_usuario` VARCHAR(50), IN `p_password` VARCHAR(50))   BEGIN
+    SELECT id, nombre, rol
+    FROM usuarios
+    WHERE nombre = p_usuario
+      AND contraseña = p_password
+    LIMIT 1;
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `administrativo`
+--
+
+CREATE TABLE `administrativo` (
+  `id_administrativo` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `area` varchar(50) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `administrativo`
+--
+
+INSERT INTO `administrativo` (`id_administrativo`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `area`, `estado`) VALUES
+(5001, 'María', 'Salas', 'SALM850321HDG', '1985-03-21', 'maria.salas@ite.mx', '6465551122', 'Recursos Humanos', 'Activo'),
+(5002, 'Carlos', 'Herrera', 'HERC900715HBC', '1990-07-15', 'carlos.herrera@ite.mx', '6465553344', 'Finanzas', 'Activo'),
+(500231, 'María', 'Salas', 'SALM850321HDG', '1985-03-21', 'maria.salas@ite.mx', '6465551122', 'Recursos Humanos', 'Activo'),
+(523002, 'Carlos', 'Herrera', 'HERC900715HBC', '1990-07-15', 'carlos.herrera@ite.mx', '6465553344', 'Finanzas', 'Activo'),
+(3270001, 'Memo', 'Rivera', 'DASE234236452', '2006-11-15', 'eric12@gmail.com', '6462738932', 'Almacén', 'inactivo'),
+(65241231, 'Jorgee', 'Mercado', 'GDA754234KFG', '2010-02-21', 'jose@gmail.com', '4352123566', 'Biblioteca', 'activo'),
+(83424123, 'Doris', 'Cruz', 'GFSD423412512', '2005-02-07', 'doris@gmail.com', '6469848241', 'Almacén', 'activo'),
+(353246222, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Recursos Humanos', 'activo'),
+(652414251, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Servicios Escolares', 'activo'),
+(2147483647, 'Luis', 'Mercado', 'HNVW219481231', '2010-02-21', 'jose@gmail.com', '4352123566', 'Control Escolar', 'activo');
+
+--
+-- Disparadores `administrativo`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_administrativo` BEFORE DELETE ON `administrativo` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_administrativo = OLD.id_administrativo);
+
+  DELETE FROM vehiculo WHERE id_administrativo = OLD.id_administrativo;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno`
+--
+
+CREATE TABLE `alumno` (
+  `no_control` varchar(8) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `grado` int(11) DEFAULT NULL,
+  `grupo` varchar(10) DEFAULT NULL,
+  `carrera` varchar(25) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `alumno`
+--
+
+INSERT INTO `alumno` (`no_control`, `nombre`, `apellido`, `curp`, `f_nacimiento`, `correo`, `telefono`, `grado`, `grupo`, `carrera`, `estado`) VALUES
+('23760300', 'Eric', 'Cabrera', 'FARE050820HBCBDD53', '2009-06-09', 'eric@gmail.com', '6461480335', 12, 'Semiescola', 'Ingeniería en Sistemas Co', 'activo'),
+('23760752', 'Maria', 'Rodriguez', 'FARW054320HBCBDR53', '2004-02-10', 'bladi@gmail.com', '6461076335', 10, 'A', 'Ingeniería en Sistemas Co', 'activo'),
+('23780124', 'Angel', 'Rivera', 'ARVB040216HBCBDD73', '2004-02-16', 'eric@gmail.com', '646148033', 5, 'A', 'Ingeniería en sistemas co', 'activo'),
+('23780125', 'María', 'López', 'MALM040305MBCPPR02', '2004-03-05', 'maria.lopez@gmail.com', '6465551122', 3, 'B', 'Ingeniería en sistemas co', 'activo'),
+('23780130', 'Luis', 'Pérez', 'LUIP040101HBCSRL21', '2004-01-01', 'luis@gmail.com', '6461112233', 3, 'A', 'ISC', ''),
+('23780131', 'Ana', 'Ruiz', 'ANAR040202MBCSWF12', '2004-02-02', 'ana@gmail.com', '6462223344', 2, 'C', 'IIGE', 'activo'),
+('23780140', 'Marco', 'López', 'MARL040303HBCPRC12', '2004-03-03', 'marco@gmail.com', '6465551122', 1, 'A', 'ISC', 'Activo'),
+('23780141', 'Sofia', 'Mendoza', 'SOFM040404MBCNTL34', '2004-04-04', 'sofia@gmail.com', '6465552233', 2, 'B', 'IIAL', 'Activo'),
+('23780142', 'Carlos', 'Hernandez', 'CARH040505HBCSPL57', '2004-05-05', 'carlos@gmail.com', '6465553344', 3, 'C', 'IECE', 'Activo'),
+('23780143', 'Valeria', 'Reyes', 'VALR040606MBCNYL98', '2004-06-06', 'valeria@gmail.com', '6465554455', 1, 'B', 'ISC', 'Activo'),
+('23780144', 'Jorge', 'Salinas', 'JORS040707HBCNLN21', '2004-07-07', 'jorge@gmail.com', '6465555566', 2, 'A', 'IGE', 'Activo'),
+('23780145', 'Daniela', 'Ramos', 'DANR040808MBCMSL45', '2004-08-08', 'daniela@gmail.com', '6465556677', 3, 'A', 'IIGE', 'Activo'),
+('23780146', 'Ricardo', 'Ortiz', 'RICO040909HBCNRD78', '2004-09-09', 'ricardo@gmail.com', '6465557788', 2, 'C', 'ISC', 'Activo'),
+('23780147', 'Lucia', 'Gomez', 'LUCG041010MBCMXL90', '2004-10-10', 'lucia@gmail.com', '6465558899', 1, 'C', 'IIAL', 'Activo'),
+('23780148', 'Emilio', 'Vargas', 'EMIV041111HBCGRM87', '2004-11-11', 'emilio@gmail.com', '6465559900', 2, 'B', 'IECE', 'Activo'),
+('23780149', 'Karina', 'Cruz', 'KARC041212MBCNRL65', '2004-12-12', 'karina@gmail.com', '6465551011', 3, 'B', 'IGE', 'Activo');
+
+--
+-- Disparadores `alumno`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_alumno` BEFORE DELETE ON `alumno` FOR EACH ROW BEGIN
+  -- borrar historial de estacionamiento de los RFIDs de ese alumno
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE no_control = OLD.no_control);
+
+  -- borrar vehículos asociados al alumno
+  DELETE FROM vehiculo WHERE no_control = OLD.no_control;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `docente`
+--
+
+CREATE TABLE `docente` (
+  `id_docente` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `f_nacimiento` date DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `especialidad` varchar(50) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `docente`
+--
+
+INSERT INTO `docente` (`id_docente`, `nombre`, `apellido`, `rfc`, `f_nacimiento`, `correo`, `telefono`, `especialidad`, `estado`) VALUES
+(5001, 'Carlos', 'Mendoza', 'MENC800512HBC', '1980-05-12', 'carlos.mendoza@ite.edu', '6462213344', 'Matemáticas', 'Activo'),
+(5002, 'María', 'Lopez', 'LOPM790823MBC', '1979-08-23', 'maria.lopez@ite.edu', '6463319988', 'Arquitectura', 'Activo'),
+(6700, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(12345, 'Juan', 'Pérez', 'PEJJ800101HBC', '1980-01-01', 'juan@gmail.com', '6461112233', 'Matemáticas', 'Activo'),
+(12346, 'Laura', 'Gómez', 'GOML820202MBC', '1982-02-02', 'laura@gmail.com', '6462223344', 'Electrónica', 'Activo'),
+(62004, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67001, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67004, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(543123, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(678954, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(2353241, 'Eric', 'Cabrera', 'KFAR326231212', '2006-06-16', 'eric@gmail.com', '6461073462', 'Matematicas', 'activo'),
+(4563234, 'GuillermoOO', 'Guzman', 'GDA754234KFG', '2005-06-21', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(54312355, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(67895411, 'Miguel', 'Mercado', 'GDA754234KFG', '2005-06-06', 'jose@gmail.com', '4352123566', 'Matematicas', 'activo'),
+(71123233, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(85710153, 'Memo', 'Mendoza', 'BJDF082579241', '2008-02-11', 'miguelin@desinformador.com', '6462348394', 'Matematicas', 'inactivo'),
+(451334234, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo'),
+(543123233, 'Luis', 'Mercado', 'SDGV325321231', '2007-02-06', 'cecilia@twins.com', '4352123566', 'Matematicas', 'activo');
+
+--
+-- Disparadores `docente`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_docente` BEFORE DELETE ON `docente` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_docente = OLD.id_docente);
+
+  DELETE FROM vehiculo WHERE id_docente = OLD.id_docente;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estacionamiento`
+--
+
+CREATE TABLE `estacionamiento` (
+  `no_registro` int(11) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `accion` tinyint(1) DEFAULT NULL,
+  `rfid` int(11) DEFAULT NULL,
+  `id_visitante` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estacionamiento`
+--
+
+INSERT INTO `estacionamiento` (`no_registro`, `fecha`, `accion`, `rfid`, `id_visitante`) VALUES
+(137, '2025-11-15 23:31:00', 1, NULL, NULL),
+(138, '2025-11-15 23:31:32', 0, NULL, NULL),
+(139, '2025-11-15 23:35:43', 0, NULL, 113),
+(140, '2025-11-15 23:36:01', 1, NULL, 113),
+(141, '2025-11-16 00:07:43', 0, NULL, 114),
+(142, '2025-11-16 00:07:48', 1, NULL, 114),
+(143, '2025-11-16 00:09:56', 0, NULL, 115),
+(144, '2025-11-16 00:10:16', 1, NULL, 115),
+(145, '2025-11-16 00:11:08', 0, NULL, 116),
+(146, '2025-11-16 00:11:21', 1, NULL, 116),
+(147, '2025-11-16 15:03:41', 0, NULL, NULL),
+(148, '2025-11-16 15:03:52', 1, NULL, NULL),
+(149, '2025-11-16 15:04:52', 0, NULL, NULL),
+(150, '2025-11-16 15:04:58', 1, NULL, NULL),
+(151, '2025-11-16 15:23:39', 0, NULL, NULL),
+(152, '2025-11-16 16:12:34', 0, NULL, NULL),
+(153, '2025-11-16 16:12:51', 1, NULL, NULL),
+(154, '2025-11-16 16:13:16', 0, NULL, NULL),
+(155, '2025-11-16 16:17:25', 1, NULL, NULL),
+(156, '2025-11-16 16:24:46', 0, NULL, NULL),
+(157, '2025-11-16 16:24:56', 1, NULL, NULL),
+(158, '2025-11-16 18:03:40', 0, NULL, NULL),
+(159, '2025-11-16 18:03:55', 1, NULL, NULL),
+(160, '2025-11-16 18:53:57', 0, NULL, NULL),
+(161, '2025-11-16 23:06:57', 0, NULL, NULL),
+(162, '2025-11-17 01:00:25', 0, NULL, 117),
+(163, '2025-11-17 13:44:08', 0, NULL, 118),
+(164, '2025-11-17 13:44:26', 0, NULL, 119),
+(165, '2025-11-17 14:32:53', 1, NULL, 119),
+(166, '2025-11-17 14:36:27', 0, NULL, 120),
+(167, '2025-11-17 14:36:48', 1, NULL, 120),
+(168, '2025-11-17 14:36:51', 0, NULL, 121),
+(169, '2025-11-17 14:37:09', 1, NULL, 121),
+(170, '2025-11-17 14:37:45', 1, NULL, NULL),
+(171, '2025-11-17 14:37:59', 0, NULL, NULL),
+(172, '2025-11-17 14:54:07', 0, NULL, 122),
+(173, '2025-11-17 17:26:07', 1, NULL, 118),
+(174, '2025-11-17 17:31:11', 1, NULL, NULL),
+(175, '2025-11-17 17:31:13', 0, NULL, NULL),
+(176, '2025-11-17 17:40:19', 0, NULL, NULL),
+(177, '2025-11-17 17:40:42', 1, NULL, NULL),
+(178, '2025-11-17 17:41:06', 0, NULL, 123),
+(179, '2025-11-17 17:41:21', 1, NULL, 123),
+(180, '2025-11-19 07:35:05', 0, NULL, 124),
+(181, '2025-11-19 07:36:33', 1, NULL, 124),
+(182, '2025-11-19 07:36:46', 1, NULL, 117),
+(183, '2025-11-19 07:37:02', 0, NULL, 125),
+(185, '2025-11-19 07:39:11', 0, NULL, NULL),
+(186, '2025-11-19 07:39:44', 1, NULL, NULL),
+(187, '2025-11-19 11:33:50', 0, NULL, NULL),
+(188, '2025-11-19 11:33:59', 1, NULL, NULL),
+(189, '2025-11-19 11:34:02', 0, NULL, NULL),
+(190, '2025-11-19 11:34:03', 1, NULL, NULL),
+(191, '2025-11-19 11:47:44', 0, NULL, NULL),
+(192, '2025-11-19 11:47:47', 1, NULL, NULL),
+(193, '2025-11-19 11:47:49', 0, NULL, NULL),
+(194, '2025-11-19 11:47:51', 1, NULL, NULL),
+(195, '2025-11-19 11:47:55', 0, NULL, NULL),
+(196, '2025-11-19 11:49:11', 1, NULL, NULL),
+(197, '2025-11-19 11:56:06', 0, NULL, NULL),
+(198, '2025-11-19 11:56:08', 1, NULL, NULL),
+(199, '2025-11-19 11:56:09', 0, NULL, NULL),
+(200, '2025-11-19 11:56:13', 1, NULL, NULL),
+(201, '2025-11-19 11:56:14', 0, NULL, NULL),
+(202, '2025-11-19 11:56:16', 1, NULL, NULL),
+(203, '2025-11-21 20:34:12', 0, 65979080, NULL),
+(204, '2025-11-21 20:34:35', 0, NULL, 126),
+(205, '2025-11-21 20:37:35', 0, 987654321, NULL),
+(206, '2025-11-21 20:37:38', 1, 987654321, NULL),
+(207, '2025-11-21 20:37:53', 0, 998877, NULL),
+(208, '2025-11-21 20:37:55', 1, 998877, NULL),
+(209, '2025-11-21 20:42:54', 0, 653423241, NULL),
+(210, '2025-11-22 19:14:40', 0, NULL, 127),
+(211, '2025-11-22 19:14:46', 1, NULL, 122),
+(212, '2025-11-22 21:45:52', 0, NULL, 128),
+(213, '2025-11-22 21:46:15', 0, NULL, 129),
+(214, '2025-11-23 00:48:23', 0, NULL, 130),
+(215, '2025-11-23 00:48:26', 1, NULL, 129),
+(216, '2025-11-23 00:48:29', 1, NULL, 126),
+(217, '2025-11-25 08:10:46', 0, NULL, 131),
+(218, '2025-11-25 08:11:01', 1, NULL, 131),
+(219, '2025-11-25 08:13:54', 0, 641, NULL),
+(220, '2025-11-25 08:14:16', 1, 641, NULL),
+(221, '2025-11-27 09:48:15', 0, 641, NULL),
+(222, '2025-11-27 10:10:07', 1, 641, NULL),
+(223, '2025-11-27 11:02:36', 0, 641, NULL),
+(224, '2025-11-27 11:53:26', 0, NULL, 132),
+(225, '2025-11-27 13:19:49', 1, 641, NULL),
+(226, '2025-11-27 13:19:52', 0, 641, NULL),
+(227, '2025-11-27 21:01:20', 0, 11115, NULL),
+(228, '2025-11-27 21:01:27', 1, 11115, NULL),
+(229, '2025-11-27 21:01:49', 0, NULL, 133),
+(230, '2025-11-27 23:31:43', 1, NULL, 133),
+(231, '2025-11-27 23:31:53', 1, NULL, 128);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `guardia`
+--
+
+CREATE TABLE `guardia` (
+  `id_guardia` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `turno` varchar(20) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `guardia`
+--
+
+INSERT INTO `guardia` (`id_guardia`, `nombre`, `apellido`, `curp`, `telefono`, `turno`, `estado`) VALUES
+(3001, 'Jorge', 'Mendoza', 'MENJ900102HBCNDL08', '6463312244', 'Matutino', 'activo'),
+(3002, 'Elena', 'Ramos', 'RAME920530MBCSRN03', '6464423355', 'Nocturno', 'Activo'),
+(4662374, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'nocturno', 'inactivo'),
+(5212341, 'Angel', 'Cruz', 'CARE341297JIFRFGW2', '6461238664', 'vespertino', 'activo'),
+(8492341, 'Bladimir', 'Nava', 'VHRN341297JIFRFGW2', '6462643932', 'vespertino', 'inactivo'),
+(23523435, 'Jorg', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Matutino', 'activo'),
+(47234235, 'Eric', 'Cabrera', 'CARE050820HBFGARA7', '6461238664', 'matutino', 'activo');
+
+--
+-- Disparadores `guardia`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_guardia` BEFORE DELETE ON `guardia` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_guardia = OLD.id_guardia);
+
+  DELETE FROM vehiculo WHERE id_guardia = OLD.id_guardia;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos`
+--
+
+CREATE TABLE `movimientos` (
+  `id` int(11) NOT NULL,
+  `rfid` varchar(20) NOT NULL,
+  `tipo_movimiento` enum('entrada','salida') NOT NULL,
+  `fecha_hora` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `movimientos`
+--
+
+INSERT INTO `movimientos` (`id`, `rfid`, `tipo_movimiento`, `fecha_hora`) VALUES
+(1, '34223', 'entrada', '2025-11-09 00:42:09'),
+(2, '34223', 'salida', '2025-11-10 13:19:15'),
+(3, '34223', 'entrada', '2025-11-10 13:19:50'),
+(4, '34223', 'salida', '2025-11-10 13:19:53');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal`
+--
+
+CREATE TABLE `personal` (
+  `id_personal` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `curp` varchar(18) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `area` varchar(20) DEFAULT NULL,
+  `turno` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `personal`
+--
+
+INSERT INTO `personal` (`id_personal`, `nombre`, `apellido`, `curp`, `telefono`, `area`, `turno`) VALUES
+(266, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(2661, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(4001, 'Sofía', 'Martínez', 'MARS910311MBCNRF07', '6468892211', 'Mantenimiento', 'Matutino'),
+(4002, 'Diego', 'Carrillo', 'CARD950928HBCMRS05', '6467783322', 'Sistemas', 'Vespertino'),
+(45266, 'Erick', 'Mercado', 'FARE050820HBCBDD53', '4352123566', 'Mantenimiento', 'vespertino'),
+(6732849, 'Edwin', 'Nava', 'GRVE341297JIFRFGW2', '6462738932', 'Mantenimiento', 'vespertino'),
+(89345678, 'Doris Berenice', 'Cruz', 'CARE341297JIFRFGW2', '6462738932', 'Cafetería', 'Matutino');
+
+--
+-- Disparadores `personal`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_personal` BEFORE DELETE ON `personal` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_personal = OLD.id_personal);
+
+  DELETE FROM vehiculo WHERE id_personal = OLD.id_personal;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proveedor`
+--
+
+CREATE TABLE `proveedor` (
+  `id_proveedor` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellido` varchar(50) DEFAULT NULL,
+  `razon_social` varchar(50) DEFAULT NULL,
+  `rfc` char(13) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `tipo_servicio` varchar(50) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`id_proveedor`, `nombre`, `apellido`, `razon_social`, `rfc`, `telefono`, `correo`, `tipo_servicio`, `empresa`) VALUES
+(501, 'Carlos', 'Mendoza', 'Servicios Integrales Mendoza', 'CAME820315HG1', '6641123344', 'carlos.mendoza@sim.com', 'Mantenimiento', 'SIM SA de CV'),
+(502, 'Andrea', 'López', 'Limpieza Profesional López', 'ANLO900522JH3', '6642234455', 'andrea.lopez@lpl.com', 'Limpieza', 'LPL Servicios'),
+(85123, 'Mariaaaaa', 'Rodriguez', 'S. de R.L. de C.V.', 'XADS124533GSD', '6461480335', 'cecilia@twins.com', 'Flores', 'Twins S.A de C.V'),
+(5598543, 'Jesus', 'Guzman', 'S.A. de C.V.', 'RED325125LKN', '6461146234', 'miguelin@desinformador.com', 'Electronica', 'Electronica S.A DE CV');
+
+--
+-- Disparadores `proveedor`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_delete_proveedor` BEFORE DELETE ON `proveedor` FOR EACH ROW BEGIN
+  DELETE FROM estacionamiento
+  WHERE rfid IN (SELECT rfid FROM vehiculo WHERE id_proveedor = OLD.id_proveedor);
+
+  DELETE FROM vehiculo WHERE id_proveedor = OLD.id_proveedor;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
+  `rol` enum('admin','guardia') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `contraseña`, `rol`) VALUES
+(1, 'admin', 'admin123', 'admin'),
+(2, 'juan', 'juanpass', 'guardia'),
+(3, 'maria', 'mariapass', 'guardia');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vehiculo`
+--
+
+CREATE TABLE `vehiculo` (
+  `rfid` int(11) NOT NULL,
+  `tipo_vehiculo` varchar(20) DEFAULT NULL,
+  `marca` varchar(50) DEFAULT NULL,
+  `modelo` varchar(50) DEFAULT NULL,
+  `año` int(11) DEFAULT NULL,
+  `color` varchar(15) DEFAULT NULL,
+  `placa` varchar(10) DEFAULT NULL,
+  `id_docente` int(11) DEFAULT NULL,
+  `no_control` varchar(8) DEFAULT NULL,
+  `id_personal` int(11) DEFAULT NULL,
+  `id_guardia` int(11) DEFAULT NULL,
+  `id_proveedor` int(11) DEFAULT NULL,
+  `id_administrativo` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `vehiculo`
+--
+
+INSERT INTO `vehiculo` (`rfid`, `tipo_vehiculo`, `marca`, `modelo`, `año`, `color`, `placa`, `id_docente`, `no_control`, `id_personal`, `id_guardia`, `id_proveedor`, `id_administrativo`) VALUES
+(641, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 266, NULL, NULL, NULL),
+(6411, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 2661, NULL, NULL, NULL),
+(9001, 'Auto', 'Nissan', 'March', 2019, 'Gris', 'ABC123', 12345, NULL, NULL, NULL, NULL, NULL),
+(9002, 'Moto', 'Honda', 'CBR150', 2020, 'Negro', 'XYZ789', 12346, NULL, NULL, NULL, NULL, NULL),
+(9901, 'Auto', 'Nissan', 'Versa', 2018, 'Azul', 'ABC123', NULL, '23780130', NULL, NULL, NULL, NULL),
+(9902, 'Moto', 'Honda', 'CBR250', 2020, 'Rojo', 'XYZ789', NULL, '23780131', NULL, NULL, NULL, NULL),
+(9910, 'Auto', 'Chevrolet', 'Spark', 2017, 'Blanco', 'JHG231', NULL, '23780140', NULL, NULL, NULL, NULL),
+(9911, 'Auto', 'Kia', 'Rio', 2019, 'Negro', 'TRW540', NULL, '23780141', NULL, NULL, NULL, NULL),
+(9912, 'Moto', 'Yamaha', 'R15', 2021, 'Azul', 'PLM921', NULL, '23780142', NULL, NULL, NULL, NULL),
+(9913, 'Auto', 'Toyota', 'Yaris', 2018, 'Gris', 'KSD442', NULL, '23780143', NULL, NULL, NULL, NULL),
+(9914, 'Auto', 'Hyundai', 'Accent', 2020, 'Rojo', 'DFB882', NULL, '23780144', NULL, NULL, NULL, NULL),
+(9915, 'Auto', 'Mazda', '3', 2021, 'Plata', 'LKU203', NULL, '23780145', NULL, NULL, NULL, NULL),
+(9916, 'Moto', 'Suzuki', 'GSX150', 2019, 'Negro', 'RTE918', NULL, '23780146', NULL, NULL, NULL, NULL),
+(9917, 'Auto', 'Volkswagen', 'Polo', 2016, 'Azul', 'WER651', NULL, '23780147', NULL, NULL, NULL, NULL),
+(9918, 'Auto', 'Ford', 'Fiesta', 2017, 'Rojo', 'MBL762', NULL, '23780148', NULL, NULL, NULL, NULL),
+(9919, 'Auto', 'Honda', 'Civic', 2018, 'Blanco', 'TYU889', NULL, '23780149', NULL, NULL, NULL, NULL),
+(11115, 'automovil', 'BMW', 'Corolla', 2009, 'Marrón', 'asfq2312', 67004, NULL, NULL, NULL, NULL, NULL),
+(11152, 'automovil', 'BMW', 'Corolla', 2009, 'Marrón', 'asfq2312', 62004, NULL, NULL, NULL, NULL, NULL),
+(11312, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, '23760300', NULL, NULL, NULL, NULL),
+(34223, 'motocicleta', 'Honda', 'Jetta', 2002, 'Turquesa', 'SFLLASD', 2353241, NULL, NULL, NULL, NULL, NULL),
+(42123, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, NULL, NULL, NULL, 85123, NULL),
+(44123, 'Automovil', 'Nissan', 'Corola', 2011, 'Azul', '243HGV3', NULL, '23780125', NULL, NULL, NULL, NULL),
+(88001, 'Auto', 'Toyota', 'Corolla', 2019, 'Gris', 'XZT901', 5001, NULL, NULL, NULL, NULL, NULL),
+(88002, 'Pickup', 'Ford', 'Ranger', 2021, 'Blanco', 'PLK442', 5002, NULL, NULL, NULL, NULL, NULL),
+(88101, 'Camioneta', 'Ford', 'Ranger', 2019, 'Blanco', 'XZT452', NULL, NULL, NULL, NULL, 501, NULL),
+(88102, 'Auto', 'Toyota', 'Corolla', 2021, 'Gris', 'LPM903', NULL, NULL, NULL, NULL, 502, NULL),
+(99051, 'Auto', 'Kia', 'Rio', 2018, 'Plateado', 'RIO512', NULL, NULL, NULL, 3001, NULL, NULL),
+(99052, 'Moto', 'Yamaha', 'MT15', 2021, 'Negro', 'YMH210', NULL, NULL, NULL, 3002, NULL, NULL),
+(99101, 'Auto', 'Hyundai', 'Elantra', 2019, 'Gris', 'HLT910', NULL, NULL, 4001, NULL, NULL, NULL),
+(99102, 'Camioneta', 'Toyota', 'Hilux', 2020, 'Blanco', 'TYH550', NULL, NULL, 4002, NULL, NULL, NULL),
+(175979, 'automovil', 'Ford', 'Corolla', 2009, 'Celeste', 'asfq2312', 543123, NULL, NULL, NULL, NULL, NULL),
+(645664, 'motocicleta', 'Subaru', 'Bocho', 2003, 'Celeste', 'WDF3223SD', NULL, NULL, NULL, 5212341, NULL, NULL),
+(672341, 'automovil', 'General Motors', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, 45266, NULL, NULL, NULL),
+(880101, 'Auto', 'Toyota', 'Corolla', 2019, 'Blanco', 'ABC901', NULL, NULL, NULL, NULL, NULL, 5001),
+(880102, 'Camioneta', 'Ford', 'Ranger', 2020, 'Negro', 'XYZ450', NULL, NULL, NULL, NULL, NULL, 5002),
+(998877, 'camioneta', 'BMW', 'Jetta', 2004, 'Naranja', 'IOHG4F', NULL, NULL, 89345678, NULL, NULL, NULL),
+(2894234, 'camion', 'Ford', 'Versa', 2024, 'Verde militar', 'WDF3223SD', NULL, NULL, 6732849, NULL, NULL, NULL),
+(2924813, 'camioneta', 'Mercedes-Benz', 'Bocho', 2003, 'Morado', 'KJHD42', NULL, NULL, NULL, NULL, 5598543, NULL),
+(3242332, 'automovil', 'BMW', 'Corolla', 2005, 'Celeste', 'SDFFDS221', NULL, NULL, NULL, 4662374, NULL, NULL),
+(3452413, 'automovil', 'Audi', 'Corolla', 1997, 'Rosa', 'WDF3223SD', NULL, NULL, NULL, 47234235, NULL, NULL),
+(4564577, 'motocicleta', 'Chevrolet', 'Corolla', 2009, 'Turquesa', 'asfq2312', 54312355, NULL, NULL, NULL, NULL, NULL),
+(8348752, 'motocicleta', 'General Motors', 'Jetta', 2010, 'Bronce', 'SFL42SD', NULL, NULL, NULL, NULL, NULL, 83424123),
+(8708843, 'automovil', 'Mitsubishi', 'Corolla', 2009, 'Verde militar', 'asfq2312', 678954, NULL, NULL, NULL, NULL, NULL),
+(32485123, 'Automovil', 'Nissan', 'Corola', 2009, 'Rojo', '213HGV3', NULL, '23780124', NULL, NULL, NULL, NULL),
+(32523424, 'motocicleta', 'BMW', 'Bocho', 1997, 'Celeste', 'WDF3223SD', NULL, '23760752', NULL, NULL, NULL, NULL),
+(42123123, 'automovil', 'Peugeot', 'Corolla', 2009, 'Celeste', 'asfq2312', 451334234, NULL, NULL, NULL, NULL, NULL),
+(45645664, 'automovil', 'Chevrolet', 'Bocho', 2008, 'Turquesa', 'SFLLASD', NULL, NULL, NULL, NULL, NULL, 3270001),
+(48328491, 'motocicleta', 'Peugeot', 'Corolla', 2009, 'Celeste', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 2147483647),
+(51123123, 'automovil', 'Volkswagen', 'Corolla', 2009, 'Rosa', 'asfq2312', 543123233, NULL, NULL, NULL, NULL, NULL),
+(51123423, 'automovil', 'Volkswagen', 'Corolla', 2009, 'Rosa', 'asfq2312', 71123233, NULL, NULL, NULL, NULL, NULL),
+(65979080, 'motocicleta', 'Chevrolet', 'Corolla', 2009, 'Turquesa', 'asfq2312', 4563234, NULL, NULL, NULL, NULL, NULL),
+(67529341, 'motocicleta', 'Mercedes-Benz', 'Bocho', 2003, 'Verde militar', 'SFLLASD', 85710153, NULL, NULL, NULL, NULL, NULL),
+(87085843, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', 6700, NULL, NULL, NULL, NULL, NULL),
+(88014202, 'Camioneta', 'Ford', 'Ranger', 2020, 'Negro', 'XYZ450', NULL, NULL, NULL, NULL, NULL, 523002),
+(88230101, 'Auto', 'Toyota', 'Corolla', 2019, 'Blanco', 'ABC901', NULL, NULL, NULL, NULL, NULL, 500231),
+(234123123, 'motocicleta', 'Mercedes-Benz', 'Corolla', 2009, 'Celeste', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 652414251),
+(653423241, 'motocicleta', 'Peugeot', 'Corolla', 2004, 'Celeste', 'KJHD42', NULL, NULL, NULL, NULL, NULL, 65241231),
+(832492343, 'automovil', 'Mazda', 'Jetta', 2006, 'Celeste', '743rnt241', NULL, NULL, NULL, 8492341, NULL, NULL),
+(870858431, 'motocicleta', 'BMW', 'Corolla', 2009, 'Verde militar', 'asfq2312', 67001, NULL, NULL, NULL, NULL, NULL),
+(870884311, 'automovil', 'Mitsubishi', 'Corolla', 2009, 'Verde militar', 'asfq2312', 67895411, NULL, NULL, NULL, NULL, NULL),
+(987654321, 'automovil', 'BMW', 'Corolla', 2005, 'Turquesa', 'SDFFDS221', NULL, NULL, NULL, 23523435, NULL, NULL),
+(2147483647, 'motocicleta', 'Mercedes-Benz', 'Corolla', 2009, 'Verde militar', 'asfq2312', NULL, NULL, NULL, NULL, NULL, 353246222);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `visitante`
+--
+
+CREATE TABLE `visitante` (
+  `id_visitante` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `motivo` text DEFAULT NULL,
+  `numero` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `visitante`
+--
+
+INSERT INTO `visitante` (`id_visitante`, `nombre`, `motivo`, `numero`) VALUES
+(113, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 11),
+(114, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 11),
+(115, 'Memo Guzman', 'Reprobar calculo', 19),
+(116, 'Eric Cabrera Rodriguez', 'Para recoger papeles', 16),
+(117, 'Miguel', 'Hacer un proyecto de estacionamiento', 85),
+(118, 'Eric Cabrera Rodriguez', 'Recorger su titulo', 14),
+(119, 'Miguel', 'Porque si', 15),
+(120, 'CECILIA', 'A molestar', 24),
+(121, 'Eric Cabrera', 'Ver a un profe', 24),
+(122, 'Eric Cabrera Rodriguez', 'Ver a un profe', 12),
+(123, 'Cecilia', 'Dejar Flores', 18),
+(124, 'Angel', 'Jugar Smash', 23),
+(125, 'Angel', 'Jugar Smash', 23),
+(126, 'Bladimir', 'Jugar Smash', 21),
+(127, 'Eric Cabrera Rodriguez', 'Reprobar calculo', 1),
+(128, 'Bladimir', 'Jugar Smash', 9),
+(129, 'Eric', 'Dejar Flores', 32),
+(130, 'Juan', 'Porque si', 15),
+(131, 'Eric', 'Recoger papeles', 17),
+(132, 'Eric', 'Recoger papeles', 17),
+(133, 'Doris', 'Porque si', 24);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `administrativo`
+--
+ALTER TABLE `administrativo`
+  ADD PRIMARY KEY (`id_administrativo`);
+
+--
+-- Indices de la tabla `alumno`
+--
+ALTER TABLE `alumno`
+  ADD PRIMARY KEY (`no_control`);
+
+--
+-- Indices de la tabla `docente`
+--
+ALTER TABLE `docente`
+  ADD PRIMARY KEY (`id_docente`);
+
+--
+-- Indices de la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  ADD PRIMARY KEY (`no_registro`),
+  ADD KEY `id_visitante` (`id_visitante`),
+  ADD KEY `fk_estacionamiento_rfid` (`rfid`);
+
+--
+-- Indices de la tabla `guardia`
+--
+ALTER TABLE `guardia`
+  ADD PRIMARY KEY (`id_guardia`);
+
+--
+-- Indices de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_rfid` (`rfid`),
+  ADD KEY `idx_fecha` (`fecha_hora`);
+
+--
+-- Indices de la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD PRIMARY KEY (`id_personal`);
+
+--
+-- Indices de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  ADD PRIMARY KEY (`id_proveedor`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `vehiculo`
+--
+ALTER TABLE `vehiculo`
+  ADD PRIMARY KEY (`rfid`),
+  ADD KEY `id_docente` (`id_docente`),
+  ADD KEY `no_control` (`no_control`),
+  ADD KEY `id_personal` (`id_personal`),
+  ADD KEY `id_guardia` (`id_guardia`),
+  ADD KEY `id_proveedor` (`id_proveedor`),
+  ADD KEY `id_administrativo` (`id_administrativo`);
+
+--
+-- Indices de la tabla `visitante`
+--
+ALTER TABLE `visitante`
+  ADD PRIMARY KEY (`id_visitante`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  MODIFY `no_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
+
+--
+-- AUTO_INCREMENT de la tabla `movimientos`
+--
+ALTER TABLE `movimientos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7898544;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `visitante`
+--
+ALTER TABLE `visitante`
+  MODIFY `id_visitante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `estacionamiento`
+--
+ALTER TABLE `estacionamiento`
+  ADD CONSTRAINT `estacionamiento_ibfk_2` FOREIGN KEY (`id_visitante`) REFERENCES `visitante` (`id_visitante`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_estacionamiento_rfid` FOREIGN KEY (`rfid`) REFERENCES `vehiculo` (`rfid`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `vehiculo`
+--
+ALTER TABLE `vehiculo`
+  ADD CONSTRAINT `vehiculo_ibfk_1` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_2` FOREIGN KEY (`no_control`) REFERENCES `alumno` (`no_control`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_3` FOREIGN KEY (`id_personal`) REFERENCES `personal` (`id_personal`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_4` FOREIGN KEY (`id_guardia`) REFERENCES `guardia` (`id_guardia`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_5` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`id_proveedor`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vehiculo_ibfk_6` FOREIGN KEY (`id_administrativo`) REFERENCES `administrativo` (`id_administrativo`) ON DELETE SET NULL ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

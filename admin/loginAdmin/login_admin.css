@@ -1,0 +1,123 @@
+/* ---- ESTILO GENERAL ---- */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #0a3f8a, #0f61c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #001e40;
+}
+
+/* ---- CONTENEDOR ---- */
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* ---- TARJETA ---- */
+.login-card {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 18px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.25);
+    text-align: center;
+    animation: fadeUp 0.8s ease-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- ENCABEZADO ---- */
+.login-header h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+    color: #0a3f8a;
+    font-weight: 700;
+}
+
+.login-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #003566;
+}
+
+.login-header h2 {
+    margin-top: 12px;
+    font-size: 20px;
+    color: #0f61c4;
+}
+
+/* ---- LOGOS ---- */
+.logo {
+    width: 90px;
+    height: auto;
+    margin: 10px 0;
+    user-select: none;
+}
+
+.logo-main {
+    margin-bottom: 5px;
+}
+
+.logo-secondary {
+    margin-top: 15px;
+}
+
+/* ---- FORMULARIO ---- */
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #002855;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d0d8e0;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #0f61c4;
+    outline: none;
+    box-shadow: 0px 0px 6px rgba(15,97,196,0.4);
+}
+
+/* ---- BOTÓN ---- */
+.btn-primary {
+    width: 100%;
+    background-color: #0f61c4;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    background-color: #0a3f8a;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+}
+
+/* Alertas */
+#alert-container {
+    margin-top: 15px;
+}

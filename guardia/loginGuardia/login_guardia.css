@@ -1,0 +1,111 @@
+/* ---- FONDO ---- */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #004b9b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ---- TARJETA ---- */
+.login-container {
+    width: 100%;
+    max-width: 430px;
+}
+
+.login-card {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.25);
+}
+
+/* ---- LOGOS ---- */
+.logos-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+    user-select: none;
+}
+
+.logo-1 {
+    margin-top: 5px;
+}
+
+.logo-2 {
+    margin-bottom: 10px;
+}
+
+/* ---- TITULOS ---- */
+.login-header h1 {
+    font-size: 28px;
+    margin: 0;
+    color: #004b9b;
+}
+
+.login-header p {
+    margin: 3px 0 0 0;
+    font-size: 14px;
+    color: #003366;
+}
+
+.login-header h2 {
+    color: #004b9b;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ---- FORM ---- */
+.form-group {
+    text-align: left;
+    margin-bottom: 14px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #003366;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d9d9d9;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: 0.25s ease;
+}
+
+input:focus {
+    border-color: #0066cc;
+    box-shadow: 0 0 5px rgba(0,102,204,0.4);
+}
+
+/* ---- BOTÓN ---- */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #0066cc;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    background-color: #004b9b;
+}

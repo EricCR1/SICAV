@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAV - Login Administrador</title>
+    <link rel="stylesheet" href="login_admin.css">
+    <script src="login_admin.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+
+                <!-- LOGO PRINCIPAL -->
+                <img src="Imagenes/logo_tecnm.png" class="logo logo-main" alt="Logo principal">
+
+                <h1>SICAV</h1>
+                <p>Sistema Integral de Control de Acceso Vehicular</p>
+                <h2>Panel de Administración</h2>
+
+                <!-- LOGO SECUNDARIO -->
+                <img src="Imagenes/logo_ite.png" class="logo logo-secondary" alt="Logo secundario">
+
+            </div>
+
+            <div class="login-body">
+                <form action="loginAdmin.php" method="post" class="login-form">
+                    <div class="form-group">
+                        <label for="admin-usuario">Usuario</label>
+                        <input type="text" id="admin-usuario" name="usuario" placeholder="Ingrese su usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Contraseña</label>
+                        <input type="password" id="admin-password" name="password" placeholder="Ingrese su contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-container"></div>
+
+</body>
+</html>
